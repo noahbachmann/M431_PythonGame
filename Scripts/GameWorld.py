@@ -10,8 +10,10 @@ class GameWorld:
     def remove_object(self, obj):
         self.objects.remove(obj)
     
-    def update(self):
-        pass
+    def update(self, surface, dt):
+        surface.fill((0, 0, 0))
+        for obj in self.objects:
+            obj.update(surface, dt)
     
     def draw(self, surface):
         for obj in self.objects:
