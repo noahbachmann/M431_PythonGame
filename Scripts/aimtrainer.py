@@ -1,7 +1,7 @@
 import pygame
 import sys
 import time
-from GameObject import GameObject
+from GameObject import Target
 from GameWorld import GameWorld
 from AssetsManager import BULLSEYE_IMAGE as bullseye
     
@@ -13,7 +13,8 @@ screen = pygame.display.set_mode(WINDOW_SIZE)
 pygame.display.set_caption("My Point and Click Adventure Game")
 
 world = GameWorld()
-world.add_object(GameObject(100, 200, bullseye))
+world.add_object(Target(100, 200, bullseye, (50,50)))
+world.add_object(Target(400, 500, bullseye, (100,100)))
 world.draw(screen)
 pygame.display.flip()
 running = True
