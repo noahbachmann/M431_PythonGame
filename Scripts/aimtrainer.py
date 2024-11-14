@@ -16,7 +16,7 @@ world = GameWorld()
 world.add_object(Target(100, 200, bullseye, (50,50)))
 world.add_object(Target(400, 500, bullseye, (100,100)))
 world.draw(screen)
-pygame.display.flip()
+pygame.display.update()
 running = True
 while running:
     for event in pygame.event.get():
