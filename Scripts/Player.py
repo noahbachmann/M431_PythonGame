@@ -1,10 +1,13 @@
 import pygame
+from Timer import *
 from AssetsManager import LASER_IMAGE as shot
 
 class Player:
     def __init__(self, x: float, y:float, image, size:tuple = None):
         self.direction = "top"
         self.speed = 100
+        self.atkSpeed = 1
+        self.atkTimer = Timer(self.atkSpeed)
         self.shots = []
         if size:
             self.image = pygame.transform.scale(image, size)
@@ -21,8 +24,11 @@ class Player:
         self.draw(surface)
 
         keys = pygame.mouse.get_pressed()
-        if(keys[0]):
+        if keys[0] and not self.atkTimer.active:
             self.shoot()  
+            self.atkTimer.activate()
+        if self.atkTimer.active:
+            self.atkTimer.update()
         for shot in self.shots:
             shot.update(surface, dt)
     
