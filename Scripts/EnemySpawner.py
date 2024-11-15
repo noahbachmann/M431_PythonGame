@@ -18,7 +18,8 @@ class Spawner:
         self.spawnTimer.update()
         
     def SpawnEnemy(self):
-        Enemy(choice(self.spawnPoints), 3, 1, 80, self.player, ENEMY_IMAGE, self.enemyGroups, (64, 64))
+        #Enemy(choice(self.spawnPoints), 3, 1, 80, self.player, ENEMY_IMAGE, self.enemyGroups, (64, 64))
+        BasicShooter(choice(self.spawnPoints), 2, 1, 1, 150, self.player, ENEMY_IMAGE, self.enemyGroups, 300, (64,64))
 
     def SetDifficulty(self):
         if self.difficulty == "normal":

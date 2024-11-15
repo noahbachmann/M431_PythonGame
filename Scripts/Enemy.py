@@ -1,5 +1,8 @@
 import pygame
 import math
+from Shot import *
+from Timer import *
+from AssetsManager import LASER_IMAGE
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, health, damage, speed, player, image, groups, size:tuple = None):
@@ -8,6 +11,7 @@ class Enemy(pygame.sprite.Sprite):
         self.damage = damage
         self.speed = speed
         self.player = player
+        self.isEnemy = True
         if size:
             self.image = pygame.transform.scale(image, size)
         else:
@@ -32,13 +36,16 @@ class Enemy(pygame.sprite.Sprite):
             del self
 
 class BasicShooter(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, health, damage, speed, player, image, groups, range=None, size:tuple = None):
+    def __init__(self, pos:tuple, health, damage, atkSpeed, speed, player, image, groups, range=None, size:tuple = None):
         super().__init__(groups)
+        self.atkSpeed = atkSpeed
+        self.atkTimer = Timer(atkSpeed)
         self.health = health
         self.damage = damage
         self.speed = speed
         self.player = player
         self.range = range
+        self.isEnemy = True
         if size:
             self.image = pygame.transform.scale(image, size)
         else:
@@ -55,15 +62,24 @@ class BasicShooter(pygame.sprite.Sprite):
         distanceToPlayer = directionToPlayer.length()
         angle = math.degrees(math.atan2(playerPos.y - self.rect.centery, playerPos.x - self.rect.centerx))
         self.image = pygame.transform.rotate(self.savedImage, -angle-90)
+        if not self.atkTimer.active:
+            self.shoot(angle)
+            self.atkTimer.activate()
         if self.range:
             if distanceToPlayer > self.range:
                 self.rect.center += directionToPlayer.normalize() * self.speed * dt
             else:
                 self.rect.center += directionToPlayer.normalize() * 0
+        self.atkTimer.update()
         self.draw(surface)
         
     def hit(self, damage):
         self.health -= damage
         if self.health <= 0:
             self.kill()
-            del self            
+            del self 
+
+    def shoot(self, angle):
+        offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
+        spawnPos = self.rect.center + offset
+        Shot(spawnPos,self.damage,450,1,angle,LASER_IMAGE, self.groups(), (4,8))         

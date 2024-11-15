@@ -10,13 +10,16 @@ def collisions():
     for laser in laserSprites:       
         enemies = pygame.sprite.spritecollide(laser, enemySprites, False)
         for enemy in enemies:
-            if enemy not in laser.collidedEnemies:
+            if enemy not in laser.collidedEnemies and enemy.isEnemy:
                 print(f"Laser {laser} hitting Enemy {enemy}")
                 laser.hit(enemy)
                 enemy.hit(laser.damage)
-    playerCol = pygame.sprite.spritecollide(player, enemySprites, False)
-    if playerCol:
-        player.hit(playerCol[0].damage)
+    enemies = pygame.sprite.spritecollide(player, enemySprites, False)
+    if enemies:
+        player.hit(enemies[0].damage)
+        for enemy in enemies:
+            if not enemy.isEnemy:
+                enemy.hit()  
         
 pygame.init()
 WINDOW_WIDTH, WINDOW_HEIGHT = 900, 900

@@ -2,6 +2,7 @@ import pygame
 import math
 from Timer import *
 from AssetsManager import *
+from Shot import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, health, speed, attackGroups, size:tuple = None):
@@ -49,7 +50,7 @@ class Player(pygame.sprite.Sprite):
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Shot(spawnPos,2,500,1,angle,LASER_IMAGE, self.attackGroups, (4,8))
+        Shot(spawnPos,2,500,1,angle,LASER_BLUE_IMAGE, self.attackGroups, (4,8))
     
     def heavy(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
@@ -66,38 +67,6 @@ class Player(pygame.sprite.Sprite):
         if self.health <= 0:
             self.kill()
             
-
-class Shot(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, damage, speed, hits, angle, image, groups, size:tuple = None):
-        super().__init__(groups)
-        self.damage = damage
-        self.speed = speed      
-        self.hits = hits
-        self.direction = pygame.math.Vector2(
-            math.cos(math.radians(angle)), 
-            math.sin(math.radians(angle))
-        ).normalize()
-        self.collidedEnemies = set()
-        if size:
-            self.image = pygame.transform.scale(image, size)
-        else:
-            self.image = image
-        self.image = pygame.transform.rotate(self.image, -angle-90)
-        self.rect = self.image.get_frect(center=pos)
-
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)
-    
-    def update(self, surface, dt):   
-        self.rect.center += self.direction * self.speed * dt
-        self.draw(surface)
-
-    def hit(self, enemy):
-        self.hits -= 1
-        self.collidedEnemies.add(enemy)
-        if self.hits <= 0:
-            self.kill()
-            del self
 
 class Heavy(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, speed, angle, image, groups, size:tuple = None):
