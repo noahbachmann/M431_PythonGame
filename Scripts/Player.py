@@ -9,6 +9,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = "top"
         self.speed = speed
         self.health = health
+        self.damageTimer = Timer(0.5)
         self.atkSpeed = 1
         self.atkTimer = Timer(self.atkSpeed)
         self.heavyCd = 10
@@ -31,13 +32,14 @@ class Player(pygame.sprite.Sprite):
         if (mouse[0] or keys[pygame.K_SPACE]) and not self.atkTimer.active:
             self.shoot()  
             self.atkTimer.activate()
-        if self.atkTimer.active:
-            self.atkTimer.update()
         if (mouse[2] or keys[pygame.K_f]) and not self.heavyCdTimer.active:
             self.heavy()
             self.heavyCdTimer.activate()
-        if self.heavyCdTimer.active:
-           self.heavyCdTimer.update()
+        
+        self.atkTimer.update()
+        self.heavyCdTimer.update()
+        self.damageTimer.update()
+
         self.draw(surface)
         
     def shoot(self):
@@ -59,6 +61,17 @@ class Player(pygame.sprite.Sprite):
             Heavy(self.rect.midbottom,200,self.direction,HEAVY_IMAGE,self.attackGroups,(8,8))
         elif self.direction == "left":
             Heavy(self.rect.midleft,200,self.direction,HEAVY_IMAGE,self.attackGroups,(8,8))
+
+    def hit(self, damage):
+        if self.damageTimer.active:
+            print("player hit while timer up")
+            return
+        self.damageTimer.activate()
+        self.health -= damage
+        print(f"player hit and this much hp left: {self.health}")
+        if self.health <= 0:
+            self.kill()
+            
 
 class Shot(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, damage, speed, hits, direction:str, image, groups, size:tuple = None):

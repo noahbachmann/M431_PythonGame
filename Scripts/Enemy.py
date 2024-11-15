@@ -1,9 +1,10 @@
 import pygame
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, health, speed, image, groups, size:tuple = None):
+    def __init__(self, pos:tuple, health, damage, speed, image, groups, size:tuple = None):
         super().__init__(groups)
         self.health = health
+        self.damage = damage
         self.speed = speed
         if size:
             self.image = pygame.transform.scale(image, size)

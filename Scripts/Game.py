@@ -14,7 +14,10 @@ def collisions():
                 print(f"Laser {laser} hitting Enemy {enemy}")
                 laser.hit(enemy)
                 enemy.hit(laser.damage)
-
+    playerCol = pygame.sprite.spritecollide(player, enemySprites, False)
+    if playerCol:
+        player.hit(playerCol[0].damage)
+        
 pygame.init()
 WINDOW_WIDTH, WINDOW_HEIGHT = 640, 640
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -24,7 +27,7 @@ clock = pygame.time.Clock()
 allSprites = pygame.sprite.Group()
 enemySprites = pygame.sprite.Group()
 laserSprites = pygame.sprite.Group()
-player = Player((WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 10, 150, (allSprites,laserSprites), (64, 64))
+player = Player((WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 6, 150, (allSprites,laserSprites), (64, 64))
 enemySpawner = Spawner("normal", (allSprites, enemySprites))
 allSprites.draw(screen)
 player.draw(screen)
@@ -49,6 +52,9 @@ while running:
                 player.direction = "left"
 
     collisions()
+    if player.health <= 0:
+            running = False
+            continue
     enemySpawner.update()
     allSprites.update(screen, dt)
     player.update(screen, dt)
