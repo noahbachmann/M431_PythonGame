@@ -23,8 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_frect(center=pos)
 
     def draw(self, surface):
-        rotatedImage = RotateImageOfObject(self)
-        surface.blit(rotatedImage, self.rect)
+        surface.blit(self.image, self.rect)
 
     def update(self, surface, dt): 
         mousePos = pygame.mouse.get_pos()
@@ -53,14 +52,9 @@ class Player(pygame.sprite.Sprite):
         Shot(spawnPos,2,500,1,angle,LASER_IMAGE, self.attackGroups, (4,8))
     
     def heavy(self, angle):
-        if self.direction == "top":
-            Heavy(self.rect.midtop,200,self.direction,HEAVY_IMAGE,self.attackGroups,(8,8))
-        elif self.direction == "right":
-            Heavy(self.rect.midright,200,self.direction,HEAVY_IMAGE,self.attackGroups,(8,8))
-        elif self.direction == "bottom":
-            Heavy(self.rect.midbottom,200,self.direction,HEAVY_IMAGE,self.attackGroups,(8,8))
-        elif self.direction == "left":
-            Heavy(self.rect.midleft,200,self.direction,HEAVY_IMAGE,self.attackGroups,(8,8))
+        offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
+        spawnPos = self.rect.center + offset
+        Heavy(spawnPos,200,angle,HEAVY_IMAGE,self.attackGroups,(8,8))
 
     def hit(self, damage):
         if self.damageTimer.active:
@@ -106,48 +100,29 @@ class Shot(pygame.sprite.Sprite):
             del self
 
 class Heavy(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, speed, direction, image, groups, size:tuple = None):
+    def __init__(self, pos:tuple, speed, angle, image, groups, size:tuple = None):
         super().__init__(groups)
-        self.vectorDir = GetDirection(direction)
-        self.direction = direction
         self.speed = speed
+        self.direction = pygame.math.Vector2(
+            math.cos(math.radians(angle)), 
+            math.sin(math.radians(angle))
+        ).normalize()
         self.collidedEnemies = set()
         if size:
             self.image = pygame.transform.scale(image, size)
         else:
             self.image = image
-        self.image = RotateImageOfObject(self)
+        self.image = pygame.transform.rotate(self.image, -angle-90)
         self.rect = self.image.get_frect(center=pos)
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
     
     def update(self, surface, dt):   
-        self.rect.center += self.vectorDir * self.speed * dt
+        self.rect.center += self.direction * self.speed * dt
         self.draw(surface)
     
-    def hit(self):
+    def hit(self, enemy):
+        self.collidedEnemies.add(enemy)
         self.kill()
         del self
-
-def RotateImageOfObject(object):
-        return object.image
-        if object.direction == "top":
-            return object.image 
-        elif object.direction == "right":
-            return pygame.transform.rotate(object.image, -90)
-        elif object.direction == "bottom":
-            return pygame.transform.rotate(object.image, 180)
-        elif object.direction == "left":
-            return pygame.transform.rotate(object.image, 90)
-
-def GetDirection(direction:str):
-        return pygame.math.Vector2(0, -1)
-        if direction == "top":
-            return pygame.math.Vector2(0, -1)
-        elif direction == "right":
-            return pygame.math.Vector2(1, 0)
-        elif direction == "bottom":
-            return pygame.math.Vector2(0, 1)
-        elif direction == "left":
-            return pygame.math.Vector2(-1, 0)
