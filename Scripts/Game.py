@@ -3,16 +3,30 @@ import sys
 import time
 from Player import *
 from Enemy import *
+from EnemySpawner import *
 from AssetsManager import *
-    
+
+def collisions():
+    for laser in laserSprites:       
+        enemies = pygame.sprite.spritecollide(laser, enemySprites, False)
+        for enemy in enemies:
+            if enemy not in laser.collided_enemies:
+                print(f"Laser {laser} hitting Enemy {enemy}")
+                laser.hit(enemy)
+                enemy.hit(laser.damage)
+
 pygame.init()
 WINDOW_WIDTH, WINDOW_HEIGHT = 640, 640
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("My Space Shooter")
 
 clock = pygame.time.Clock()
-
-player = Player(WINDOW_WIDTH / 2, 500, SPACESHIP_IMAGE, (64, 64))
+allSprites = pygame.sprite.Group()
+enemySprites = pygame.sprite.Group()
+laserSprites = pygame.sprite.Group()
+player = Player((WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 10, 150, (allSprites,laserSprites), (64, 64))
+enemySpawner = Spawner("normal", (allSprites, enemySprites))
+allSprites.draw(screen)
 player.draw(screen)
 pygame.display.update()
 
@@ -34,7 +48,9 @@ while running:
             elif event.key == pygame.K_a:
                 player.direction = "left"
 
-
+    collisions()
+    enemySpawner.update()
+    allSprites.update(screen, dt)
     player.update(screen, dt)
     pygame.display.update()    
 

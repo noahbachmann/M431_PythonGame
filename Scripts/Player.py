@@ -2,20 +2,22 @@ import pygame
 from Timer import *
 from AssetsManager import *
 
-class Player:
-    def __init__(self, x: float, y:float, image, size:tuple = None):
+class Player(pygame.sprite.Sprite):
+    def __init__(self, pos:tuple, health, speed, attackGroups, size:tuple = None):
+        super().__init__()
+        self.attackGroups = attackGroups
         self.direction = "top"
-        self.speed = 100
+        self.speed = speed
+        self.health = health
         self.atkSpeed = 1
         self.atkTimer = Timer(self.atkSpeed)
         self.heavyCd = 10
         self.heavyCdTimer = Timer(self.heavyCd)
-        self.shots = []
         if size:
-            self.image = pygame.transform.scale(image, size)
+            self.image = pygame.transform.scale(SPACESHIP_IMAGE, size)
         else:
-            self.image = image
-        self.rect = self.image.get_frect(center=(x, y))
+            self.image = SPACESHIP_IMAGE
+        self.rect = self.image.get_frect(center=pos)
 
     def draw(self, surface):
         rotatedImage = RotateImageOfObject(self)
@@ -23,42 +25,74 @@ class Player:
 
     def update(self, surface, dt): 
         self.rect.center += GetDirection(self.direction) * self.speed * dt
-        self.draw(surface)
 
-        keys = pygame.mouse.get_pressed()
-        if keys[0] and not self.atkTimer.active:
+        mouse = pygame.mouse.get_pressed()
+        keys = pygame.key.get_pressed()
+        if (mouse[0] or keys[pygame.K_SPACE]) and not self.atkTimer.active:
             self.shoot()  
             self.atkTimer.activate()
         if self.atkTimer.active:
             self.atkTimer.update()
-        if keys[2] and not self.heavyCdTimer.active:
+        if (mouse[2] or keys[pygame.K_f]) and not self.heavyCdTimer.active:
             self.heavy()
             self.heavyCdTimer.activate()
-        for shot in self.shots:
-            shot.update(surface, dt)
-    
+        if self.heavyCdTimer.active:
+           self.heavyCdTimer.update()
+        self.draw(surface)
+        
     def shoot(self):
         if self.direction == "top":
-            self.shots.append(Shot(self.rect.midtop,self.direction,200,LASER_IMAGE,(4,8)))
+            Shot(self.rect.midtop,2,200,1,self.direction,LASER_IMAGE, self.attackGroups, (4,8))
         elif self.direction == "right":
-            self.shots.append(Shot(self.rect.midright,self.direction,200,LASER_IMAGE,(4,8)))
+            Shot(self.rect.midright,2,200,1,self.direction,LASER_IMAGE, self.attackGroups, (4,8))
         elif self.direction == "bottom":
-            self.shots.append(Shot(self.rect.midbottom,self.direction,200,LASER_IMAGE,(4,8)))
+            Shot(self.rect.midbottom,2,200,1,self.direction,LASER_IMAGE, self.attackGroups, (4,8))
         elif self.direction == "left":
-            self.shots.append(Shot(self.rect.midleft,self.direction,200,LASER_IMAGE,(4,8)))
+            Shot(self.rect.midleft,2,200,1,self.direction,LASER_IMAGE, self.attackGroups, (4,8))
     
     def heavy(self):
         if self.direction == "top":
-            self.shots.append(Heavy(self.rect.midtop,self.direction,200,HEAVY_IMAGE,(8,8)))
+            Heavy(self.rect.midtop,200,self.direction,HEAVY_IMAGE,self.attackGroups,(8,8))
         elif self.direction == "right":
-            self.shots.append(Heavy(self.rect.midright,self.direction,200,HEAVY_IMAGE,(8,8)))
+            Heavy(self.rect.midright,200,self.direction,HEAVY_IMAGE,self.attackGroups,(8,8))
         elif self.direction == "bottom":
-            self.shots.append(Heavy(self.rect.midbottom,self.direction,200,HEAVY_IMAGE,(8,8)))
+            Heavy(self.rect.midbottom,200,self.direction,HEAVY_IMAGE,self.attackGroups,(8,8))
         elif self.direction == "left":
-            self.shots.append(Heavy(self.rect.midleft,self.direction,200,HEAVY_IMAGE,(8,8)))
+            Heavy(self.rect.midleft,200,self.direction,HEAVY_IMAGE,self.attackGroups,(8,8))
 
-class Shot:
-    def __init__(self, pos:tuple, direction:str, speed, image, size:tuple = None):
+class Shot(pygame.sprite.Sprite):
+    def __init__(self, pos:tuple, damage, speed, hits, direction:str, image, groups, size:tuple = None):
+        super().__init__(groups)
+        self.damage = damage
+        self.speed = speed      
+        self.hits = hits
+        self.direction = direction
+        self.vectorDir = GetDirection(direction)
+        self.collided_enemies = set()
+        if size:
+            self.image = pygame.transform.scale(image, size)
+        else:
+            self.image = image
+        self.image = RotateImageOfObject(self)
+        self.rect = self.image.get_frect(center=pos)
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+    
+    def update(self, surface, dt):   
+        self.rect.center += self.vectorDir * self.speed * dt
+        self.draw(surface)
+
+    def hit(self, enemy):
+        self.hits -= 1
+        self.collided_enemies.add(enemy)
+        if self.hits <= 0:
+            self.kill()
+            del self
+
+class Heavy(pygame.sprite.Sprite):
+    def __init__(self, pos:tuple, speed, direction:str, image, groups, size:tuple = None):
+        super().__init__(groups)
         self.vectorDir = GetDirection(direction)
         self.direction = direction
         self.speed = speed
@@ -75,26 +109,11 @@ class Shot:
     def update(self, surface, dt):   
         self.rect.center += self.vectorDir * self.speed * dt
         self.draw(surface)
-
-class Heavy:
-    def __init__(self, pos:tuple, direction:str, speed, image, size:tuple = None):
-        self.vectorDir = GetDirection(direction)
-        self.direction = direction
-        self.speed = speed
-        if size:
-            self.image = pygame.transform.scale(image, size)
-        else:
-            self.image = image
-        self.image = RotateImageOfObject(self)
-        self.rect = self.image.get_frect(center=pos)
-
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)
     
-    def update(self, surface, dt):   
-        self.rect.center += self.vectorDir * self.speed * dt
-        self.draw(surface)
-        
+    def hit(self):
+        self.kill()
+        del self
+
 def RotateImageOfObject(object):
         if object.direction == "top":
             return object.image 
