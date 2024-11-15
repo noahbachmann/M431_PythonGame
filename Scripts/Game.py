@@ -10,7 +10,7 @@ def collisions():
     for laser in laserSprites:       
         enemies = pygame.sprite.spritecollide(laser, enemySprites, False)
         for enemy in enemies:
-            if enemy not in laser.collided_enemies:
+            if enemy not in laser.collidedEnemies:
                 print(f"Laser {laser} hitting Enemy {enemy}")
                 laser.hit(enemy)
                 enemy.hit(laser.damage)
@@ -19,7 +19,7 @@ def collisions():
         player.hit(playerCol[0].damage)
         
 pygame.init()
-WINDOW_WIDTH, WINDOW_HEIGHT = 640, 640
+WINDOW_WIDTH, WINDOW_HEIGHT = 900, 900
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("My Space Shooter")
 
@@ -35,21 +35,12 @@ pygame.display.update()
 
 running = True
 while running:
-    screen.fill((0, 0, 0))
+    screen.fill((7, 0, 25))
     dt = clock.tick() / 1000
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
             continue
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
-                player.direction = "top"
-            elif event.key == pygame.K_d:
-                player.direction = "right"
-            elif event.key == pygame.K_s:
-                player.direction = "bottom"
-            elif event.key == pygame.K_a:
-                player.direction = "left"
 
     collisions()
     if player.health <= 0:
