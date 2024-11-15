@@ -1,11 +1,12 @@
 import pygame
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, health, damage, speed, image, groups, size:tuple = None):
+    def __init__(self, pos:tuple, health, damage, speed, player, image, groups, size:tuple = None):
         super().__init__(groups)
         self.health = health
         self.damage = damage
         self.speed = speed
+        self.player = player
         if size:
             self.image = pygame.transform.scale(image, size)
         else:
@@ -16,9 +17,10 @@ class Enemy(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
     
     def update(self, surface, dt):
-        self.rect.center += pygame.math.Vector2(1, 0) * self.speed * dt
+        player_pos = pygame.Vector2(self.player.rect.center)
+        self.rect.center += (player_pos - pygame.Vector2(self.rect.center)).normalize() * self.speed * dt
         self.draw(surface)
-    
+
     def hit(self, damage):
         self.health -= damage
         if self.health <= 0:

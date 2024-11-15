@@ -10,7 +10,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = speed
         self.health = health
         self.damageTimer = Timer(0.5)
-        self.atkSpeed = 1
+        self.atkSpeed = 0.5
         self.atkTimer = Timer(self.atkSpeed)
         self.heavyCd = 10
         self.heavyCdTimer = Timer(self.heavyCd)
@@ -34,12 +34,10 @@ class Player(pygame.sprite.Sprite):
             self.atkTimer.activate()
         if (mouse[2] or keys[pygame.K_f]) and not self.heavyCdTimer.active:
             self.heavy()
-            self.heavyCdTimer.activate()
-        
+            self.heavyCdTimer.activate()       
         self.atkTimer.update()
         self.heavyCdTimer.update()
         self.damageTimer.update()
-
         self.draw(surface)
         
     def shoot(self):

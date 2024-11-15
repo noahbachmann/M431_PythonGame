@@ -5,7 +5,8 @@ from AssetsManager import ENEMY_IMAGE
 from random import choice
 
 class Spawner:
-    def __init__(self, difficulty:str, groups):
+    def __init__(self, difficulty:str, player, groups):
+        self.player = player
         self.enemyGroups = groups
         self.spawnPoints = [(0,0), (0,100), (0,300), (0,400), (0, 500)]
         self.spawnRate = 5
@@ -17,7 +18,7 @@ class Spawner:
         self.spawnTimer.update()
         
     def SpawnEnemy(self):
-        Enemy(choice(self.spawnPoints), 3, 1, 100, ENEMY_IMAGE, self.enemyGroups, (64, 64))
+        Enemy(choice(self.spawnPoints), 3, 1, 80, self.player, ENEMY_IMAGE, self.enemyGroups, (64, 64))
 
     def SetDifficulty(self):
         if self.difficulty == "normal":
