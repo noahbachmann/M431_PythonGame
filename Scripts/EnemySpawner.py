@@ -10,9 +10,10 @@ class Spawner:
         self.enemyGroups = groups
         self.spawnPoints = []
         self.enemies = [
-            {"class": BasicShooter, "weight": 50, "args": (2, 1, 1, 150, self.player,
+            #self, *groups, health, damage, gold, speed, player, image, size:tuple = None
+            {"class": BasicShooter, "weight": 50, "args": (2, 1, 1,5, 150, self.player,
             ENEMY_IMAGE,self.enemyGroups, 200, (64, 64))}, 
-            {"class": BasicMelee, "weight": 50, "args": (2, 1, 200, self.player,
+            {"class": BasicMelee, "weight": 50, "args": (2,1,3, 200, self.player,
             ENEMY_IMAGE, self.enemyGroups, (64, 64))},
             ]
         self.spawnPoints.extend([(x, 0) for x in range(0, 800, 100)])
@@ -39,7 +40,7 @@ class Spawner:
                     *self.enemies[x]["args"],                 
                 )
                 break
-            
+
     def SetDifficulty(self):
         if self.difficulty == "normal":
             self.spawnRate = 2

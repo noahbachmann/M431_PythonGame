@@ -16,6 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.atkTimer = Timer(self.atkSpeed)
         self.heavyCd = 10
         self.heavyCdTimer = Timer(self.heavyCd)
+        self.gold = 0
         if size:
             self.image = pygame.transform.scale(SPACESHIP_IMAGE, size)
         else:
