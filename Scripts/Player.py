@@ -50,7 +50,7 @@ class Player(pygame.sprite.Sprite):
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Shot(spawnPos,2,500,1,angle,LASER_BLUE_IMAGE, self.attackGroups, (4,8))
+        Shot(spawnPos,2,500,1,angle,LASER_BLUE_IMAGE, self.attackGroups,size=(4,8))
     
     def heavy(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2

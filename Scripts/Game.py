@@ -52,6 +52,6 @@ while running:
     enemySpawner.update()
     allSprites.update(screen, dt)
     player.update(screen, dt)
-    pygame.display.update()    
+    pygame.display.update()
 
 pygame.quit()

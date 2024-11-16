@@ -4,7 +4,7 @@ from Shot import *
 from Timer import *
 from AssetsManager import LASER_IMAGE
 
-class Enemy(pygame.sprite.Sprite):
+class BasicMelee(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, health, damage, speed, player, image, groups, size:tuple = None):
         super().__init__(groups)
         self.health = health
@@ -82,4 +82,4 @@ class BasicShooter(pygame.sprite.Sprite):
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Shot(spawnPos,self.damage,450,1,angle,LASER_IMAGE, self.groups(), (4,8))         
+        Shot(spawnPos,self.damage,450,1,angle,LASER_IMAGE, self.groups(),700, (4,8))         

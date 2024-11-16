@@ -8,7 +8,11 @@ class Spawner:
     def __init__(self, difficulty:str, player, groups):
         self.player = player
         self.enemyGroups = groups
-        self.spawnPoints = [(0,0), (0,100), (0,300), (0,400), (0, 500)]
+        self.spawnPoints = []
+        self.spawnPoints.extend([(x, 0) for x in range(0, 800, 100)])
+        self.spawnPoints.extend([(x, 800) for x in range(0,800, 100)])
+        self.spawnPoints.extend([(0, y) for y in range(0, 800, 100)])
+        self.spawnPoints.extend([(800, y) for y in range(0, 800, 100)])
         self.spawnRate = 5
         self.difficulty = difficulty
         self.SetDifficulty()
