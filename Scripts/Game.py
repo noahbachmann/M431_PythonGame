@@ -7,13 +7,13 @@ from EnemySpawner import *
 from AssetsManager import *
 
 def collisions():
-    for laser in laserSprites:       
-        enemies = pygame.sprite.spritecollide(laser, enemySprites, False)
+    for shot in playerShotSprites:       
+        enemies = pygame.sprite.spritecollide(shot, enemySprites, False)
         for enemy in enemies:
-            if enemy not in laser.collidedEnemies and enemy.isEnemy:
-                print(f"Laser {laser} hitting Enemy {enemy}")
-                laser.hit(enemy)
-                enemy.hit(laser.damage)
+            if enemy not in shot.collidedEnemies and enemy.isEnemy:
+                print(f"Laser {shot} hitting Enemy {enemy}")
+                shot.hit(enemy)
+                enemy.hit(shot.damage)
     enemies = pygame.sprite.spritecollide(player, enemySprites, False)
     if enemies:
         player.hit(enemies[0].damage)
@@ -29,8 +29,8 @@ pygame.display.set_caption("My Space Shooter")
 clock = pygame.time.Clock()
 allSprites = pygame.sprite.Group()
 enemySprites = pygame.sprite.Group()
-laserSprites = pygame.sprite.Group()
-player = Player((WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 6, 250, (allSprites,laserSprites), (64, 64))
+playerShotSprites = pygame.sprite.Group()
+player = Player((WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 6, 250, (allSprites,playerShotSprites), (64, 64))
 hudController = HUDController(player)
 enemySpawner = Spawner("normal", player, (allSprites, enemySprites))
 allSprites.draw(screen)
