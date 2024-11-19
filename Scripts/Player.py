@@ -16,7 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.atkTimer = Timer(self.atkSpeed)
         self.heavyCd = 10
         self.heavyCdTimer = Timer(self.heavyCd)
-        self.gold = 0
+        self.gold = 0      
         if size:
             self.image = pygame.transform.scale(SPACESHIP_IMAGE, size)
         else:
@@ -42,7 +42,7 @@ class Player(pygame.sprite.Sprite):
             self.atkTimer.activate()
         if (mouse[2] or keys[pygame.K_f]) and not self.heavyCdTimer.active:
             self.heavy(angle)
-            self.heavyCdTimer.activate()       
+            self.heavyCdTimer.activate()    
         self.atkTimer.update()
         self.heavyCdTimer.update()
         self.damageTimer.update()

@@ -2,7 +2,7 @@ import pygame
 import sys
 import time
 from Player import *
-from Enemy import *
+from HUDController import *
 from EnemySpawner import *
 from AssetsManager import *
 
@@ -22,7 +22,7 @@ def collisions():
                 enemy.hit()  
         
 pygame.init()
-WINDOW_WIDTH, WINDOW_HEIGHT = 900, 900
+WINDOW_WIDTH, WINDOW_HEIGHT = 850, 850
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("My Space Shooter")
 
@@ -31,6 +31,7 @@ allSprites = pygame.sprite.Group()
 enemySprites = pygame.sprite.Group()
 laserSprites = pygame.sprite.Group()
 player = Player((WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 6, 250, (allSprites,laserSprites), (64, 64))
+hudController = HUDController(player)
 enemySpawner = Spawner("normal", player, (allSprites, enemySprites))
 allSprites.draw(screen)
 player.draw(screen)
@@ -49,9 +50,11 @@ while running:
     if player.health <= 0:
             running = False
             continue
+        
+    player.update(screen, dt)
     enemySpawner.update()
     allSprites.update(screen, dt)
-    player.update(screen, dt)
+    hudController.update(screen)
     pygame.display.update()
 
 pygame.quit()
