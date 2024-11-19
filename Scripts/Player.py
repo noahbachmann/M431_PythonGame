@@ -5,18 +5,23 @@ from AssetsManager import *
 from Shot import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, health, speed, attackGroups, size:tuple = None):
+    def __init__(self, pos:tuple, health, speed, boostStrength, boostAmount:float, attackGroups, size:tuple = None):
         super().__init__()
-        self.attackGroups = attackGroups
         self.direction = pygame.math.Vector2(0, 0)
+        self.normalSpeed = speed
         self.speed = speed
         self.health = health
+        self.boostTank = boostAmount
+        self.boostAmount = boostAmount
+        self.boostStrength = boostStrength
+        self.boosting = False
+        self.attackGroups = attackGroups
         self.damageTimer = Timer(0.5)
         self.atkSpeed = 0.5
         self.atkTimer = Timer(self.atkSpeed)
         self.heavyCd = 10
         self.heavyCdTimer = Timer(self.heavyCd)
-        self.gold = 0      
+        self.gold = 0
         if size:
             self.image = pygame.transform.scale(SPACESHIP_IMAGE, size)
         else:
@@ -31,6 +36,24 @@ class Player(pygame.sprite.Sprite):
         mousePos = pygame.mouse.get_pos()
         mouse = pygame.mouse.get_pressed()
         keys = pygame.key.get_pressed()
+        if keys[pygame.K_LSHIFT]:
+            if not self.boosting and self.boostAmount > 0:
+                self.boosting = True
+        elif self.boosting:
+            self.boosting = False
+            self.speed = self.normalSpeed
+        if self.boosting:
+            self.boostAmount -= dt
+            if self.speed == self.normalSpeed and self.boostAmount > 0:
+                self.speed += self.boostStrength
+        elif self.boostAmount < self.boostTank:
+            if self.boostAmount + dt > self.boostTank:
+                self.boostAmount = self.boostTank
+            else:
+                self.boostAmount += dt
+        if self.boostAmount <= 0:
+            self.boosting = False
+            self.speed = self.normalSpeed
         self.direction.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
         self.direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
         angle = math.degrees(math.atan2(mousePos[1] - self.rect.centery, mousePos[0] - self.rect.centerx))
@@ -42,7 +65,7 @@ class Player(pygame.sprite.Sprite):
             self.atkTimer.activate()
         if (mouse[2] or keys[pygame.K_f]) and not self.heavyCdTimer.active:
             self.heavy(angle)
-            self.heavyCdTimer.activate()    
+            self.heavyCdTimer.activate()       
         self.atkTimer.update()
         self.heavyCdTimer.update()
         self.damageTimer.update()
@@ -51,12 +74,12 @@ class Player(pygame.sprite.Sprite):
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Shot(spawnPos,1,500,1,angle,LASER_BLUE_IMAGE, self.attackGroups,size=(4,8))
+        Shot(spawnPos,2,500,1,angle,LASER_BLUE_IMAGE, self.attackGroups,size=(4,8))
     
     def heavy(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Heavy(spawnPos,2,200,angle,HEAVY_IMAGE,self.attackGroups,(8,8))
+        Heavy(spawnPos,200,angle,HEAVY_IMAGE,self.attackGroups,(8,8))
 
     def hit(self, damage):
         if self.damageTimer.active:
@@ -70,9 +93,8 @@ class Player(pygame.sprite.Sprite):
             
 
 class Heavy(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, damage, speed, angle, image, groups, size:tuple = None):
+    def __init__(self, pos:tuple, speed, angle, image, groups, size:tuple = None):
         super().__init__(groups)
-        self.damage = damage
         self.speed = speed
         self.direction = pygame.math.Vector2(
             math.cos(math.radians(angle)), 
