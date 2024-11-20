@@ -10,7 +10,7 @@ class HUDController():
         self.hudSpritesGroup = hudSpritesGroup
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))        
         self.goldTextRect = self.goldText.get_frect(midtop = (800, 800))  
-        self.upgradeButton = Button((700,700),BUTTON_IMAGE,hudSpritesGroup, self.toggleSettings, (64,64))
+        self.upgradeButton = Button((700,700),BUTTON_IMAGE,hudSpritesGroup, "Upgrades", self.toggleSettings, (64,64))
         self.upgradeMenu = UpgradesMenu(self.player)
     
     def draw(self, surface):
@@ -24,6 +24,5 @@ class HUDController():
 
     def toggleSettings(self):
         self.pause = not self.pause
-        print("settings toggled")
         if self.pause:
             self.upgradeMenu.draw()

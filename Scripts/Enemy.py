@@ -65,7 +65,6 @@ class BasicShooter(Enemy):
                 self.rect.center += directionToPlayer.normalize() * 0
         self.atkTimer.update()
         self.draw(surface)
-        print("shooter updating")
 
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2

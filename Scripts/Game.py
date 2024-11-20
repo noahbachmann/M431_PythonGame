@@ -12,7 +12,6 @@ def collisions():
         enemies = pygame.sprite.spritecollide(shot, enemySprites, False)
         for enemy in enemies:
             if enemy not in shot.collidedEnemies and enemy.isEnemy:
-                print(f"Laser {shot} hitting Enemy {enemy}")
                 shot.hit(enemy)
                 enemy.hit(shot.damage)
     enemies = pygame.sprite.spritecollide(player, enemySprites, False)

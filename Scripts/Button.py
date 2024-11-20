@@ -1,22 +1,26 @@
 import pygame
+from Timer import *
+from AssetsManager import font
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, image, groups, func= None, size:tuple = None):
+    def __init__(self, pos:tuple, image, groups, text:str = None, func= None, size:tuple = None):
         super().__init__(groups)
         self.func = func
         self.image = image
-        self.rect = self.image.get_frect(topleft = pos)
-        self.clicked = False
+        self.text = font.render(text, False, (0,0,0))
+        self.textRect = self.text.get_frect(center = (pos))
+        self.cdTimer = Timer(1.5)
+        self.rect = self.image.get_frect(center = pos)
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+        surface.blit(self.text, self.textRect)
 
     def update(self, surface):
         if self.rect.collidepoint(pygame.mouse.get_pos()):
-            if pygame.mouse.get_pressed()[0] and not self.clicked:
+            if pygame.mouse.get_pressed()[0] and not self.cdTimer.active:
                 self.func()
                 self.clicked = True
-        else:
-            self.clicked = False    
+                self.cdTimer.activate()
 
         self.draw(surface)
