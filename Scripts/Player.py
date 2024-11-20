@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.attackGroups = attackGroups
         self.damageTimer = Timer(0.5)
         self.atkSpeed = 0.5
+        self.atkDamage = 1
         self.atkTimer = Timer(self.atkSpeed)
         self.heavyCd = 10
         self.heavyCdTimer = Timer(self.heavyCd)
@@ -74,12 +75,12 @@ class Player(pygame.sprite.Sprite):
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Shot(spawnPos,2,500,1,angle,LASER_BLUE_IMAGE, self.attackGroups,size=(4,8))
+        Shot(spawnPos,2,500,self.atkDamage,angle,LASER_BLUE_IMAGE, self.attackGroups,size=(4,8))
     
     def heavy(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Heavy(spawnPos,200,angle,HEAVY_IMAGE,self.attackGroups,(8,8))
+        Heavy(spawnPos,2,200,angle,HEAVY_IMAGE,self.attackGroups,(8,8))
 
     def hit(self, damage):
         if self.damageTimer.active:
@@ -90,11 +91,28 @@ class Player(pygame.sprite.Sprite):
         print(f"player hit and this much hp left: {self.health}")
         if self.health <= 0:
             self.kill()
-            
 
+    def upgrade(self, type:str, cost):
+        match type:
+            case "atkSpeed":
+                self.atkSpeed += 5
+            case "atkDmg":
+                self.atkDamage += 1
+            case "health":
+                self.health += 1
+            case "heavyCd":
+                self.heavyCd -= 0.5
+            case "boostTank":
+                self.boostTank += 0.5
+            case "boostStrength":
+                self.boostStrength += 10
+        self.gold -= cost
+            
+                
 class Heavy(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, speed, angle, image, groups, size:tuple = None):
+    def __init__(self, pos:tuple, damage, speed, angle, image, groups, size:tuple = None):
         super().__init__(groups)
+        self.damage = damage
         self.speed = speed
         self.direction = pygame.math.Vector2(
             math.cos(math.radians(angle)), 

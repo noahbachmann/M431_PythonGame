@@ -11,4 +11,7 @@ ENEMY_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'enemyspaceship.png'))
 LASER_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'laser.png'))
 LASER_BLUE_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'laser_blue.png'))
 HEAVY_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'heavy.png'))
+BUTTON_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'button.png'))
+
+
 font = pygame.font.Font(os.path.join(ASSETS_PATH, 'upheavtt.ttf'), 20)

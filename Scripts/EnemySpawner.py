@@ -10,9 +10,10 @@ class Spawner:
         self.enemyGroups = groups
         self.spawnPoints = []
         self.enemies = [
-            #self, *groups, health, damage, gold, speed, player, image, size:tuple = None
-            {"class": BasicShooter, "weight": 50, "args": (2, 1, 1 , 5, 150, self.player,
+            #self, pos:tuple, health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
+            {"class": BasicShooter, "weight": 50, "args": (2, 1, 1, 150, 5, self.player,
             ENEMY_IMAGE,self.enemyGroups, 200, (64, 64))}, 
+            #self, pos:tuple, health, damage, gold, speed, player, image, groups, size:tuple = None
             {"class": BasicMelee, "weight": 50, "args": (2, 1, 3, 200, self.player,
             ENEMY_IMAGE, self.enemyGroups, (64, 64))},
             ]
@@ -27,6 +28,7 @@ class Spawner:
 
     def update(self):
         self.spawnTimer.update()
+        print("enemySpawn updating")
         
     def SpawnEnemy(self):
         rollNum = randint(1,100)

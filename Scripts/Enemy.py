@@ -42,7 +42,7 @@ class BasicMelee(Enemy):
         self.draw(surface)  
 
 class BasicShooter(Enemy):
-    def __init__(self, pos:tuple, health, damage, gold, atkSpeed, speed, player, image, groups, range=None, size:tuple = None):
+    def __init__(self, pos:tuple, health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None):
         super().__init__(pos, health, damage, gold, speed, player, image, groups, size)
         self.range = range
         self.atkSpeed = atkSpeed
@@ -65,6 +65,7 @@ class BasicShooter(Enemy):
                 self.rect.center += directionToPlayer.normalize() * 0
         self.atkTimer.update()
         self.draw(surface)
+        print("shooter updating")
 
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
