@@ -39,7 +39,7 @@ class BasicMelee(Enemy):
         super().__init__(pos, health, damage, gold, speed, player, image, groups, size)  
         self.isEnemy = True
         self.isAttacking = False
-        self.atkDistance = 100
+        self.atkDistance = 150
         self.atkDistancePassed = 0
         self.atkDirection = pygame.Vector2(0,0)
         self.atkTimer = Timer(0.5, func=self.attack)
@@ -48,7 +48,7 @@ class BasicMelee(Enemy):
     def update(self, surface, dt):
         directionToPlayer = (pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center))
         if self.isAttacking:
-            if self.atkDistancePassed >= self.atkDistance * 2:
+            if self.atkDistancePassed >= self.atkDistance * 1.5:
                 if not self.atkTimer.active:
                     #self.angle = 0
                     self.atkTimer.activate()

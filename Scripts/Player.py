@@ -10,6 +10,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0, 0)
         self.normalSpeed = speed
         self.speed = speed
+        self.maxHealth = health
         self.health = health
         self.boostTank = boostAmount
         self.boostAmount = boostAmount
@@ -84,7 +85,7 @@ class Player(pygame.sprite.Sprite):
 
     def hit(self, damage):
         if self.damageTimer.active:
-            print("player hit while timer up")
+            print("dmg while timer up")
             return
         self.damageTimer.activate()
         self.health -= damage
@@ -111,6 +112,7 @@ class Player(pygame.sprite.Sprite):
                 cost = (upgradesLevel[2]+1) * 1
                 if cost > self.gold or upgradesLevel[2] >= 10:
                     return
+                self.maxHealth += 1
                 self.health += 1
                 upgradesLevel[2] += 1
             case "heavyCd":
