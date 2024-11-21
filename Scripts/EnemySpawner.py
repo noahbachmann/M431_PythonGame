@@ -12,7 +12,7 @@ class Spawner:
         self.enemies = [
             #self, pos:tuple, health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
             {"class": BasicShooter, "weight": 50, "args": (2, 1, 1, 150, 5, self.player,
-            ENEMY_IMAGE,self.enemyGroups, 200, (64, 64))}, 
+            ENEMY_IMAGE,self.enemyGroups, 400, (64, 64))}, 
             #self, pos:tuple, health, damage, gold, speed, player, image, groups, size:tuple = None
             {"class": BasicMelee, "weight": 50, "args": (2, 1, 3, 200, self.player,
             ENEMY_IMAGE, self.enemyGroups, (64, 64))},

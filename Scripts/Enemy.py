@@ -29,6 +29,10 @@ class Enemy(pygame.sprite.Sprite):
             self.player.gold += self.gold
             self.kill()
             del self
+    
+    def getAngle(self):
+        playerPos = pygame.Vector2(self.player.rect.center)
+        return math.degrees(math.atan2(playerPos.y - self.rect.centery, playerPos.x - self.rect.centerx))
 
 class BasicMelee(Enemy):
     def __init__(self, pos:tuple, health, damage, gold, speed, player, image, groups, size:tuple = None):
@@ -39,22 +43,29 @@ class BasicMelee(Enemy):
         self.atkDistancePassed = 0
         self.atkDirection = pygame.Vector2(0,0)
         self.atkTimer = Timer(0.5, func=self.attack)
+        self.rechargeSpeed = 0.1
         
     def update(self, surface, dt):
-        playerPos = pygame.Vector2(self.player.rect.center)
-        distanceToPlayer = (playerPos - pygame.Vector2(self.rect.center)).length()
+        directionToPlayer = (pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center))
         if self.isAttacking:
             if self.atkDistancePassed >= self.atkDistance * 2:
                 if not self.atkTimer.active:
+                    #self.angle = 0
                     self.atkTimer.activate()
                 else:
                     self.atkTimer.update()
+                #targetAngle = self.getAngle()
+                #self.angle += (targetAngle - self.angle) / 500 
+                #self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
+                self.rect.center += self.atkDirection * self.speed * self.rechargeSpeed * dt
+                if self.rechargeSpeed < 0.8:
+                    self.rechargeSpeed += 0.04
             else:
                 self.rect.center += self.atkDirection * self.speed * 5 * dt
                 self.atkDistancePassed += self.atkDirection.length() * self.speed * 5 * dt
         else:
-            if distanceToPlayer <= 100 and not self.atkTimer.active:
-                self.angle = math.degrees(math.atan2(playerPos.y - self.rect.centery, playerPos.x - self.rect.centerx))
+            self.angle = self.getAngle()
+            if directionToPlayer.length() <= 100 and not self.atkTimer.active:
                 self.atkDirection = pygame.Vector2(
                     math.cos(math.radians(self.angle)),
                     math.sin(math.radians(self.angle)) 
@@ -63,9 +74,8 @@ class BasicMelee(Enemy):
             elif self.atkTimer.active:
                 self.atkTimer.update()
             else:
-                self.angle = math.degrees(math.atan2(playerPos.y - self.rect.centery, playerPos.x - self.rect.centerx))
                 self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
-                self.rect.center += (playerPos - pygame.Vector2(self.rect.center)).normalize() * self.speed * dt
+                self.rect.center += directionToPlayer.normalize() * self.speed * dt
         
         self.draw(surface) 
 
@@ -83,16 +93,14 @@ class BasicShooter(Enemy):
         self.isEnemy = True
     
     def update(self, surface, dt):
-        playerPos = pygame.Vector2(self.player.rect.center)
-        directionToPlayer = playerPos-pygame.Vector2(self.rect.center)
-        distanceToPlayer = directionToPlayer.length()
-        self.angle = math.degrees(math.atan2(playerPos.y - self.rect.centery, playerPos.x - self.rect.centerx))
+        directionToPlayer = pygame.Vector2(self.player.rect.center)-pygame.Vector2(self.rect.center)
+        self.angle = self.getAngle()
         self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
         if not self.atkTimer.active:
             self.shoot(self.angle)
             self.atkTimer.activate()
         if self.range:
-            if distanceToPlayer > self.range:
+            if directionToPlayer.length() > self.range:
                 self.rect.center += directionToPlayer.normalize() * self.speed * dt
             else:
                 self.rect.center += directionToPlayer.normalize() * 0
