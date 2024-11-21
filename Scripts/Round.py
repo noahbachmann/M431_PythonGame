@@ -37,7 +37,6 @@ class Round:
             dt = self.clock.tick() / 1000
 
             if self.hudController.pause:
-                self.hudController.upgradeMenu.draw()
                 self.hudController.update(self.screen)
                 pygame.display.update()
                 continue

@@ -92,21 +92,47 @@ class Player(pygame.sprite.Sprite):
         if self.health <= 0:
             self.kill()
 
-    def upgrade(self, type:str, cost):
+    def upgrade(self, type:str, upgradesLevel):
+        cost = 0
         match type:
             case "atkSpeed":
+                cost = (upgradesLevel[0]+1) * 1
+                if cost > self.gold or upgradesLevel[0] >= 10:
+                    return
                 self.atkSpeed += 5
+                upgradesLevel[0] += 1
             case "atkDmg":
+                cost = (upgradesLevel[1]+1) * 1
+                if cost > self.gold or upgradesLevel[1] >= 10:
+                    return
                 self.atkDamage += 1
+                upgradesLevel[1] += 1
             case "health":
+                cost = (upgradesLevel[2]+1) * 1
+                if cost > self.gold or upgradesLevel[2] >= 10:
+                    return
                 self.health += 1
+                upgradesLevel[2] += 1
             case "heavyCd":
+                cost = (upgradesLevel[3]+1) * 1
+                if cost > self.gold or upgradesLevel[3] >= 10:
+                    return
                 self.heavyCd -= 0.5
+                upgradesLevel[3] += 1
             case "boostTank":
+                cost = (upgradesLevel[4]+1) * 1
+                if cost > self.gold or upgradesLevel[4] >= 10:
+                    return
                 self.boostTank += 0.5
+                upgradesLevel[4] += 1
             case "boostStrength":
+                cost = (upgradesLevel[5]+1) * 1
+                if cost > self.gold or upgradesLevel[5] >= 10:
+                    return
                 self.boostStrength += 10
+                upgradesLevel[5] += 1
         self.gold -= cost
+        print(f"Upgraded {type}")
             
                 
 class Heavy(pygame.sprite.Sprite):

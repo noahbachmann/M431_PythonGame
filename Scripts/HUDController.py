@@ -10,12 +10,14 @@ class HUDController():
         self.hudSpritesGroup = hudSpritesGroup
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))        
         self.goldTextRect = self.goldText.get_frect(midtop = (800, 800))  
-        self.upgradeButton = Button((900,100),BUTTON_IMAGE,hudSpritesGroup, "Upgrades", self.toggleSettings, (64,64))
+        self.upgradeButton = Button((900,100),BUTTON_IMAGE, "Upgrades", self.toggleSettings, (64,64), hudSpritesGroup)
         self.upgradeMenu = UpgradesMenu(self.player)
     
     def draw(self, surface):
         self.upgradeButton.draw(surface)
         surface.blit(self.goldText, self.goldTextRect)
+        if self.pause:
+            self.upgradeMenu.draw(surface)
 
     def update(self, surface):
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))
@@ -24,5 +26,3 @@ class HUDController():
 
     def toggleSettings(self):
         self.pause = not self.pause
-        if self.pause:
-            self.upgradeMenu.draw()

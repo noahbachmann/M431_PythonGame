@@ -3,10 +3,14 @@ from Timer import *
 from AssetsManager import font
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, image, groups, text:str = None, func= None, size:tuple = None):
-        super().__init__(groups)
+    def __init__(self, pos:tuple, image, text:str = None, func= None, size:tuple = None, groups = None):
+        if groups:
+            super().__init__(groups)
         self.func = func
-        self.image = image
+        if size:
+            self.image = pygame.transform.scale(image, size)
+        else:
+            self.image = image
         self.text = font.render(text, False, (0,0,0))
         self.textRect = self.text.get_frect(center = (pos))
         self.cdTimer = Timer(0.5)
