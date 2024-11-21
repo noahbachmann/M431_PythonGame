@@ -16,7 +16,7 @@ class Button(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
         surface.blit(self.text, self.textRect)
 
-    def update(self, surface):
+    def update(self, surface, dt = None):
         if self.rect.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0] and not self.cdTimer.active:
                 self.func()

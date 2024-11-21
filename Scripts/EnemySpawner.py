@@ -28,7 +28,6 @@ class Spawner:
 
     def update(self):
         self.spawnTimer.update()
-        print("enemySpawn updating")
         
     def SpawnEnemy(self):
         rollNum = randint(1,100)
