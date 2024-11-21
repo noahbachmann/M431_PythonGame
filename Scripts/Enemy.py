@@ -12,6 +12,7 @@ class Enemy(pygame.sprite.Sprite):
         self.gold = gold
         self.speed = speed
         self.player = player
+        self.angle = 0
         if size:
             self.image = pygame.transform.scale(image, size)
         else:
@@ -33,13 +34,45 @@ class BasicMelee(Enemy):
     def __init__(self, pos:tuple, health, damage, gold, speed, player, image, groups, size:tuple = None):
         super().__init__(pos, health, damage, gold, speed, player, image, groups, size)  
         self.isEnemy = True
-    
+        self.isAttacking = False
+        self.atkDistance = 100
+        self.atkDistancePassed = 0
+        self.atkDirection = pygame.Vector2(0,0)
+        self.atkTimer = Timer(0.5, func=self.attack)
+        
     def update(self, surface, dt):
         playerPos = pygame.Vector2(self.player.rect.center)
-        angle = math.degrees(math.atan2(playerPos.y - self.rect.centery, playerPos.x - self.rect.centerx))
-        self.image = pygame.transform.rotate(self.savedImage, -angle-90)
-        self.rect.center += (playerPos - pygame.Vector2(self.rect.center)).normalize() * self.speed * dt
-        self.draw(surface)  
+        distanceToPlayer = (playerPos - pygame.Vector2(self.rect.center)).length()
+        if self.isAttacking:
+            if self.atkDistancePassed >= self.atkDistance * 2:
+                if not self.atkTimer.active:
+                    self.atkTimer.activate()
+                else:
+                    self.atkTimer.update()
+            else:
+                self.rect.center += self.atkDirection * self.speed * 5 * dt
+                self.atkDistancePassed += self.atkDirection.length() * self.speed * 5 * dt
+        else:
+            if distanceToPlayer <= 100 and not self.atkTimer.active:
+                self.angle = math.degrees(math.atan2(playerPos.y - self.rect.centery, playerPos.x - self.rect.centerx))
+                self.atkDirection = pygame.Vector2(
+                    math.cos(math.radians(self.angle)),
+                    math.sin(math.radians(self.angle)) 
+                    ).normalize()
+                self.atkTimer.activate()
+            elif self.atkTimer.active:
+                self.atkTimer.update()
+            else:
+                self.angle = math.degrees(math.atan2(playerPos.y - self.rect.centery, playerPos.x - self.rect.centerx))
+                self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
+                self.rect.center += (playerPos - pygame.Vector2(self.rect.center)).normalize() * self.speed * dt
+        
+        self.draw(surface) 
+
+    def attack(self):
+        if self.isAttacking:
+            self.atkDistancePassed = 0
+        self.isAttacking = not self.isAttacking
 
 class BasicShooter(Enemy):
     def __init__(self, pos:tuple, health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None):
@@ -53,10 +86,10 @@ class BasicShooter(Enemy):
         playerPos = pygame.Vector2(self.player.rect.center)
         directionToPlayer = playerPos-pygame.Vector2(self.rect.center)
         distanceToPlayer = directionToPlayer.length()
-        angle = math.degrees(math.atan2(playerPos.y - self.rect.centery, playerPos.x - self.rect.centerx))
-        self.image = pygame.transform.rotate(self.savedImage, -angle-90)
+        self.angle = math.degrees(math.atan2(playerPos.y - self.rect.centery, playerPos.x - self.rect.centerx))
+        self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
         if not self.atkTimer.active:
-            self.shoot(angle)
+            self.shoot(self.angle)
             self.atkTimer.activate()
         if self.range:
             if distanceToPlayer > self.range:
