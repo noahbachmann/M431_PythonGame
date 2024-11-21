@@ -9,7 +9,7 @@ class Button(pygame.sprite.Sprite):
         self.image = image
         self.text = font.render(text, False, (0,0,0))
         self.textRect = self.text.get_frect(center = (pos))
-        self.cdTimer = Timer(1.5)
+        self.cdTimer = Timer(0.5)
         self.rect = self.image.get_frect(center = pos)
 
     def draw(self, surface):
@@ -20,7 +20,9 @@ class Button(pygame.sprite.Sprite):
         if self.rect.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0] and not self.cdTimer.active:
                 self.func()
-                self.clicked = True
                 self.cdTimer.activate()
+        
+        if self.cdTimer.active:
+            self.cdTimer.update()
 
         self.draw(surface)
