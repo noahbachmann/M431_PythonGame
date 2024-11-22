@@ -1,7 +1,7 @@
 import pygame
 from math import ceil
 from Settings import *
-from AssetsManager import font, BUTTON_IMAGE, Heart_Assets
+from AssetsManager import font, BUTTON_IMAGE, Heart_Assets, Energybar_Assets
 from Button import *
 from UpgradesMenu import *
 
@@ -16,10 +16,12 @@ class HUDController:
         self.upgradeButton = Button((900,100),BUTTON_IMAGE, "Upgrades", self.toggleSettings, (64,64), hudSpritesGroup)
         self.upgradeMenu = UpgradesMenu(self.player)
         self.hearts = []
+        self.energyBar = EnergyBar((WINDOW_WIDTH/2 - 64, 32), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR_BACK, self.hudSpritesGroup, (128,32))
         self.showHealth()
     
     def draw(self, surface):
         self.upgradeButton.draw(surface)
+        self.energyBar.draw(surface)
         surface.blit(self.goldText, self.goldTextRect)
         for heart in self.hearts:
             heart.draw(surface)
@@ -85,8 +87,10 @@ class EnergyBar(pygame.sprite.Sprite):
         else:
             self.image = image
             self.barImage = barImage
-        self.rect = self.image.get_frect(centerleft=pos)
+        self.rect = self.image.get_frect(midleft=pos)
 
     def draw(self, surface):
+        energyPercentage = self.player.boostAmount / self.player.boostTank
+        barWidth = self.size[0] * energyPercentage
         surface.blit(self.image, self.rect)
-        surface.blit(self.barImage, self.rect)
+        surface.blit(self.barImage, self.rect, (0,0,barWidth,self.size[0]))

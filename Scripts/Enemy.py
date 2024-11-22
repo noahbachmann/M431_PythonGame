@@ -39,7 +39,7 @@ class BasicMelee(Enemy):
         super().__init__(pos, health, damage, gold, speed, player, image, groups, size)  
         self.isEnemy = True
         self.isAttacking = False
-        self.atkDistance = 150
+        self.atkDistance = 180
         self.atkDistancePassed = 0
         self.atkDirection = pygame.Vector2(0,0)
         self.atkTimer = Timer(0.5, func=self.attack)
