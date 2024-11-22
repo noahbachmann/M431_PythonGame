@@ -4,9 +4,10 @@ from Settings import *
 from AssetsManager import font, BUTTON_IMAGE, Heart_Assets, Energybar_Assets
 from Button import *
 from UpgradesMenu import *
+from Player import *
 
 class HUDController:
-    def __init__(self, player, hudSpritesGroup):
+    def __init__(self, player:Player, hudSpritesGroup):
         self.player = player
         self.playerHealth = self.player.health
         self.pause = False
@@ -32,7 +33,10 @@ class HUDController:
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))
         self.upgradeButton.update(surface)
         if self.playerHealth != self.player.health:
-            self.takeDamage()
+            if self.pause:
+                self.healthUpgrade()
+            else:
+                self.takeDamage()
         self.draw(surface)
 
     def toggleSettings(self):
@@ -50,12 +54,29 @@ class HUDController:
         
     def takeDamage(self):
         if self.player.maxHealth % 2 != 0 and self.player.health == self.player.maxHealth - 1:
-            self.hearts[self.hearts.count -1].newImage(Heart_Assets.HALFHEART_EMPTY)
+            self.hearts[len(self.hearts)-1].newImage(Heart_Assets.HALFHEART_EMPTY)
         elif self.player.health % 2 != 0:
             self.hearts[self.player.health // 2].newImage(Heart_Assets.HEART_HALFFULL)
         else:
             self.hearts[self.player.health // 2].newImage(Heart_Assets.HEART_EMPTY)
         self.playerHealth = self.player.health
+    
+    def healthUpgrade(self):
+        x = 32
+        y = 32
+        if self.player.maxHealth / 2 > len(self.hearts):
+            if self.player.maxHealth == self.player.health:
+                self.hearts.append(Heart((x+(64*len(self.hearts)),y),Heart_Assets.HALFHEART_FULL, self.hudSpritesGroup, (32,32)))
+            else:
+                self.hearts.append(Heart((x+(64*len(self.hearts)),y),Heart_Assets.HALFHEART_EMPTY, self.hudSpritesGroup, (32,32)))
+        if self.player.health != self.playerHealth:
+            if self.player.health % 2 == 0:
+                self.hearts[(self.player.health // 2)-1].newImage(Heart_Assets.HEART_FULL)
+            else:
+                self.hearts[self.player.health // 2].newImage(Heart_Assets.HEART_HALFFULL)           
+            if self.player.maxHealth % 2 == 0 and self.player.maxHealth != self.player.health:
+                self.hearts[len(self.hearts)-1].newImage(Heart_Assets.HEART_EMPTY)
+            self.playerHealth = self.player.health
 
 class Heart(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, image, groups, size:tuple = None ):
