@@ -1,5 +1,6 @@
 import pygame
 from Timer import *
+from Settings import *
 from AssetsManager import font, BUTTON_IMAGE
 
 class Button(pygame.sprite.Sprite):
@@ -7,6 +8,8 @@ class Button(pygame.sprite.Sprite):
         if groups:
             super().__init__(groups)
         self.func = func
+        self.offset = pygame.display.get_window_size()
+        self.offset = (self.offset[0] // 2 - WINDOW_WIDTH // 2, self.offset[1] // 2 - WINDOW_HEIGHT // 2)
         if image:
             if size:
                 self.image = pygame.transform.scale(image, size)
@@ -27,7 +30,9 @@ class Button(pygame.sprite.Sprite):
         surface.blit(self.text, self.textRect)
 
     def update(self, surface, dt = None):
-        if self.rect.collidepoint(pygame.mouse.get_pos()):
+        mousePos = pygame.mouse.get_pos()
+        mousePos = (mousePos[0] - self.offset[0], mousePos[1] - self.offset[1])
+        if self.rect.collidepoint(mousePos):
             if pygame.mouse.get_pressed()[0] and not self.cdTimer.active:
                 self.func()
                 self.cdTimer.activate()

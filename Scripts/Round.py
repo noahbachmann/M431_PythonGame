@@ -4,20 +4,22 @@ import time
 from Settings import *
 from Player import *
 from HUDController import *
-from UpgradesMenu import *
 from EnemySpawner import *
 from AssetsManager import *
 
 class Round:
-    def __init__(self):  
-        self.screen = pygame.display.get_surface() 
+    def __init__(self, surface, screen):
+        self.screen = screen  
+        self.cameraSurface = surface
+        screenSize = screen.get_size()
+        self.offset = (screenSize[0] // 2 - WINDOW_WIDTH // 2, screenSize[1] // 2 - WINDOW_HEIGHT // 2)
         self.clock = pygame.time.Clock()
         self.allSprites = pygame.sprite.Group()
         self.hudSprites = pygame.sprite.Group()
         self.enemySprites = pygame.sprite.Group()
         self.playerShotSprites = pygame.sprite.Group()
-        self.player = Player((WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 6, 250, 150, 3, (self.allSprites,self.playerShotSprites), (64, 64))
-        self.hudController = HUDController(self.player, self.allSprites)
+        self.player = Player((WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), self.offset, 6, 250, 150, 3, (self.allSprites,self.playerShotSprites), (64, 64))
+        self.hudController = HUDController(self.cameraSurface, self.player, self.allSprites)
         self.enemySpawner = Spawner("normal", self.player, (self.allSprites, self.enemySprites))
         self.running = True
 
@@ -35,21 +37,21 @@ class Round:
             dt = self.clock.tick() / 1000
 
             if self.hudController.pause:
-                self.hudController.update(self.screen)
-                pygame.display.update()
+                self.hudController.update(self.cameraSurface)
+                self.drawToScreen()
                 continue
         
             if not self.hudController.pause:
-                self.screen.fill((7, 0, 25))
+                self.cameraSurface.fill((7, 0, 25))
                 self.collisions()
                 if self.player.health <= 0:
                     self.running = False
                     return self.player.score          
                 self.enemySpawner.update()
-                self.allSprites.update(self.screen, dt)
-                self.player.update(self.screen, dt)
-                self.hudController.update(self.screen)
-                pygame.display.update()
+                self.allSprites.update(self.cameraSurface, dt)
+                self.player.update(self.cameraSurface, dt)
+                self.hudController.update(self.cameraSurface)
+                self.drawToScreen()
         
 
     def collisions(self):
@@ -65,3 +67,9 @@ class Round:
             for enemy in enemies:
                 if not enemy.isEnemy:
                     enemy.hit()  
+
+    def drawToScreen(self):
+        screenSize = self.screen.get_size()
+        self.screen.fill((0,0,0))
+        self.screen.blit(self.cameraSurface, self.cameraSurface.get_frect(center = (screenSize[0]//2,screenSize[1]//2)))
+        pygame.display.update()

@@ -5,8 +5,9 @@ from AssetsManager import *
 from Shot import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, health, speed, boostStrength, boostAmount:float, attackGroups, size:tuple = None):
+    def __init__(self, pos:tuple, camOffset:tuple, health, speed, boostStrength, boostAmount:float, attackGroups, size:tuple = None):
         super().__init__()
+        self.camOffset = camOffset
         self.direction = pygame.math.Vector2(0, 0)
         self.normalSpeed = speed
         self.speed = speed
@@ -37,6 +38,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, surface, dt): 
         mousePos = pygame.mouse.get_pos()
+        mousePos = (mousePos[0] - self.camOffset[0], mousePos[1] - self.camOffset[1])
         mouse = pygame.mouse.get_pressed()
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LSHIFT]:
