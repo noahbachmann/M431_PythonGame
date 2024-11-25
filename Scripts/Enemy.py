@@ -27,6 +27,7 @@ class Enemy(pygame.sprite.Sprite):
         self.health -= damage
         if self.health <= 0:
             self.player.gold += self.gold
+            self.player.score += self.gold*5
             self.kill()
             del self
     

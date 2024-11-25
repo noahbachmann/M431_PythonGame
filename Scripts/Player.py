@@ -24,6 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.heavyCd = 10
         self.heavyCdTimer = Timer(self.heavyCd)
         self.gold = 0
+        self.score = 0
         if size:
             self.image = pygame.transform.scale(SPACESHIP_IMAGE, size)
         else:
@@ -85,13 +86,9 @@ class Player(pygame.sprite.Sprite):
 
     def hit(self, damage):
         if self.damageTimer.active:
-            print("dmg while timer up")
             return
         self.damageTimer.activate()
         self.health -= damage
-        print(f"player hit and this much hp left: {self.health}")
-        if self.health <= 0:
-            self.kill()
 
     def upgrade(self, type:str, upgradesLevel):
         cost = 0

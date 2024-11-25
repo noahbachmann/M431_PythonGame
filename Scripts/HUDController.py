@@ -4,6 +4,7 @@ from Settings import *
 from AssetsManager import font, BUTTON_IMAGE, Heart_Assets, Energybar_Assets
 from Button import *
 from UpgradesMenu import *
+from GameMenus import *
 from Player import *
 
 class HUDController:

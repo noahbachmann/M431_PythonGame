@@ -9,10 +9,8 @@ from EnemySpawner import *
 from AssetsManager import *
 
 class Round:
-    def __init__(self):
-        pygame.init()
-        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        pygame.display.set_caption("My Space Shooter")
+    def __init__(self):  
+        self.screen = pygame.display.get_surface() 
         self.clock = pygame.time.Clock()
         self.allSprites = pygame.sprite.Group()
         self.hudSprites = pygame.sprite.Group()
@@ -28,7 +26,7 @@ class Round:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                    continue
+                    return -1
                 if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
                             self.hudController.pause = not self.hudController.pause
@@ -46,14 +44,13 @@ class Round:
                 self.collisions()
                 if self.player.health <= 0:
                     self.running = False
-                    continue            
+                    return self.player.score          
                 self.enemySpawner.update()
                 self.allSprites.update(self.screen, dt)
                 self.player.update(self.screen, dt)
                 self.hudController.update(self.screen)
                 pygame.display.update()
         
-        pygame.quit()
 
     def collisions(self):
         for shot in self.playerShotSprites:       
