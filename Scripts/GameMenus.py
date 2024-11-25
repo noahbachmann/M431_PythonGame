@@ -1,5 +1,7 @@
 import pygame
 from Button import *
+from Settings import *
+from tkinter import filedialog
 
 class Menu:
     def __init__(self, left, top, color = None, enabled = False, size:tuple = None):
@@ -41,7 +43,7 @@ class EndGameMenu(Menu):
 
     def mainMenu(self):
         self.enabled = False
-        self.gameState['gaming'] = False
+        self.gameState['gaming'] = "MainMenu"
     
     def quitGame(self):
         self.enabled = False
@@ -49,27 +51,54 @@ class EndGameMenu(Menu):
 
 
 class MainMenu(Menu):
-    def __init__(self, left, top, size:tuple, enabled, gameState, score):
+    def __init__(self, left, top, size:tuple, enabled, gameState):
         super().__init__(left, top, enabled=enabled, size=size)
         self.gameState = gameState
-
         
         self.buttons.append(Button((self.rect.centerx, self.rect.centery), text="Play", func=self.newGame))   
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 90), text="Settings", func=self.quitGame))   
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 90), text="Settings", func=self.settings))   
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + 180), text="Exit", func=self.quitGame))   
         self.texts.append((font.render(str("My Space Shooter"), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 90)))
 
-
     def newGame(self):
         self.enabled = False
-        self.gameState['gaming'] = True
+        self.gameState['gaming'] = "Gaming"
 
-
-    def mainMenu(self):
+    def settings(self):
         self.enabled = False
-        self.gameState['gaming'] = False
+        self.gameState['gaming'] = "Settings"
     
     def quitGame(self):
         self.enabled = False
         self.gameState['quit'] = True
+
+
+
+class SettingsMenu(Menu):
+    def __init__(self, left, top, size:tuple, enabled, gameState):
+        super().__init__(left, top, enabled=enabled, size=size)
+        self.gameState = gameState
+
+        self.texts.append((font.render(str("Settings"), False, (0,0,0)), None))
+        self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
+        self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.exit))   
+        self.buttons.append(Button((self.rect.centerx + 125, self.rect.centery - 50), text="upload", func=self.cursorUpload))   
+
+
+    def exit(self):
+        self.enabled = False
+        self.gameState['gaming'] = "MainMenu"
+
+    def cursorUpload(event=None):
+        
+        cursorPath = filedialog.askopenfilename()
+        clock = pygame.time.Clock()
+        cursor_image = pygame.image.load(cursorPath).convert_alpha()
+        cursor_image = pygame.transform.scale(cursor_image, (32, 32))
+        hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
+        pygame.mouse.set_cursor((hotspot[0], hotspot[1]), cursor_image)
+
+
+
+  
