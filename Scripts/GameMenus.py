@@ -3,13 +3,17 @@ from Button import *
 from Player import *
 
 class Menu:
-    def __init__(self, left, top, enabled, size:tuple = None):
+    def __init__(self, left, top, color = None, enabled = False, size:tuple = None):
         self.displaySurface = pygame.display.get_surface()
         self.left = left
         self.top = top
         self.buttons = []
         self.texts = []
         self.enabled = enabled
+        if color:
+            self.color = color
+        else:
+            self.color = (240,240,240)
         if size:
             self.size = size
             self.rect = pygame.FRect(self.left, self.top, size[0], size[1])
@@ -17,7 +21,7 @@ class Menu:
             self.rect = pygame.FRect(self.left, self.top, 500, 500)
 
     def draw(self):
-        pygame.draw.rect(self.displaySurface, (240,240,240), self.rect, 0, 0)
+        pygame.draw.rect(self.displaySurface, self.color, self.rect, 0, 0)
         for button in self.buttons:
             button.update(self.displaySurface)
         for text, textRect in self.texts:
@@ -25,7 +29,7 @@ class Menu:
 
 class EndGameMenu(Menu):
     def __init__(self, left, top, size:tuple, enabled, gameState, score):
-        super().__init__(left, top, enabled, size=size)
+        super().__init__(left, top, enabled=enabled, size=size)
         self.gameState = gameState
         self.buttons.append(Button((self.rect.centerx, self.rect.centery), text="Play Again", func=self.newGame))
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + 96), text="Main Menu", func=self.mainMenu))
