@@ -15,8 +15,8 @@ while not gameState['quit']:
         if score < 0:
             gameState['quit'] = True
             continue
-        endGameMenu = EndGameMenu(200, 50, gameState, score)
-        while endGameMenu.ending: 
+        endGameMenu = EndGameMenu(200, 50,(600,600), True, gameState, score)
+        while endGameMenu.enabled: 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     gameState['quit'] = True
