@@ -24,4 +24,49 @@ class Energybar_Assets:
     ENERGYBAR_ENERGY = pygame.image.load(os.path.join(ASSETS_PATH, 'Energybar', 'Energybar_Energy.png'))
     ENERGYBAR_BACK = pygame.image.load(os.path.join(ASSETS_PATH, 'Energybar', 'Energybar_Back.png'))
 
+class Apex:
+    APEX_IDLE_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Apex', 'Apex_Idle_1.png'))
+    APEX_IDLE_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Apex', 'Apex_Idle_2.png'))
+
+class Arachnis:
+    ARACHNIS_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Arachnis', 'Arachnis_1.png'))
+    ARACHNIS_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Arachnis', 'Arachnis_2.png'))
+
+class Brawler:
+    BRAWLER_IDLE_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Brawler', 'Brawler Idle', 'Brawler_1.png'))
+    BRAWLER_IDLE_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Brawler', 'Brawler Idle', 'Brawler_2.png'))
+    BRAWLER_IDLE_3 = pygame.image.load(os.path.join(ASSETS_PATH, 'Brawler', 'Brawler Idle', 'Brawler_3.png'))
+
+    BRAWLER_BOOSTATTACK_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Brawler', 'Boost Attack', 'Brawler_Boostattack_1.png'))
+    BRAWLER_BOOSTATTACK_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Brawler', 'Boost Attack', 'Brawler_Boostattack_2.png'))
+
+class Crypto:
+    CRYPTO_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crypto', 'Crypto_1.png'))
+    CRYPTO_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crypto', 'Crypto_2.png'))
+    CRYPTO_3 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crypto', 'Crypto_3.png'))
+    CRYPTO_4 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crypto', 'Crypto_4.png'))
+    CRYPTO_5 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crypto', 'Crypto_5.png'))
+
+class Dark_Force:
+    DARK_FORCE_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Dark Force', 'Dark_Force_1.png'))
+    DARK_FORCE_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Dark Force', 'Dark_Force_2.png'))
+
+# class Moculus:
+#   WIP
+    
+# class Sunset:
+#   WIP
+
+class Enemy_Explosion:
+    ENEMY_EXPLOSION_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_1.png'))
+    ENEMY_EXPLOSION_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_2.png'))
+    ENEMY_EXPLOSION_3 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_3.png'))
+    ENEMY_EXPLOSION_4 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_4.png'))
+    ENEMY_EXPLOSION_5 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_5.png'))
+    ENEMY_EXPLOSION_6 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_6.png'))
+    ENEMY_EXPLOSION_7 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_7.png'))
+    ENEMY_EXPLOSION_8 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_8.png'))
+    ENEMY_EXPLOSION_9 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_9.png'))
+    
+
 font = pygame.font.Font(os.path.join(ASSETS_PATH, 'upheavtt.ttf'), 20)
