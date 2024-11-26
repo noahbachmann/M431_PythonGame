@@ -4,7 +4,6 @@ import time
 from Settings import *
 from Round import *
 from GameMenus import *
-#test
 pygame.init()
 cameraSurface = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
@@ -22,7 +21,7 @@ while not gameState['quit']:
         if score < 0:
             pygame.quit()
             sys.exit()
-        endGameMenu = EndGameMenu(cameraSurface, 200, 50,(600,600), True, gameState, score)
+        endGameMenu = EndGameMenu(cameraSurface, 200, 200,(600,600), True, gameState, score)
         while endGameMenu.enabled: 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -34,7 +33,7 @@ while not gameState['quit']:
             pygame.display.update()
 
     elif gameState['gaming'] == "MainMenu":
-        MainMenuGame = MainMenu(cameraSurface, 200, 50,(650,650), True, gameState)
+        MainMenuGame = MainMenu(cameraSurface, 200, 175,(650,650), True, gameState)
         while MainMenuGame.enabled:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -48,7 +47,7 @@ while not gameState['quit']:
             pygame.display.update()
             
     elif gameState['gaming'] == "Settings":
-        SettingsMenuGame = SettingsMenu(cameraSurface, 200, 50,(650,650), True, gameState)
+        SettingsMenuGame = SettingsMenu(cameraSurface, 200, 175,(650,650), True, gameState)
         while SettingsMenuGame.enabled:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:   
