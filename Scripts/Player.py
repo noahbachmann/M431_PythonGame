@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.camOffset = camOffset
         self.moveOffset = pygame.math.Vector2(0,0)
-        self.direction = pygame.math.Vector2(0, 0)
+        self.direction = pygame.math.Vector2(0,0)
         self.normalSpeed = speed
         self.speed = speed
         self.maxHealth = health
@@ -80,12 +80,12 @@ class Player(pygame.sprite.Sprite):
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Shot(spawnPos,2,500,self.atkDamage,angle,LASER_BLUE_IMAGE, self.attackGroups, playerOffset=self.moveOffset, size=(4,8))
+        Shot(spawnPos,self.atkDamage,500,1,angle,LASER_BLUE_IMAGE, self.attackGroups, playerOffset=self.moveOffset.copy(), size=(4,8))
     
     def heavy(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Heavy(spawnPos,2,200,angle,HEAVY_IMAGE,self.attackGroups, self.moveOffset, (8,8))
+        Heavy(spawnPos,2,200,angle,HEAVY_IMAGE,self.attackGroups, self.moveOffset.copy(), (8,8))
 
     def hit(self, damage):
         if self.damageTimer.active:
