@@ -13,6 +13,7 @@ LASER_BLUE_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'laser_blue.png')
 HEAVY_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'heavy.png'))
 BUTTON_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'button.png'))
 STAR_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'star.png'))
+BORDER_BLOCK = pygame.image.load(os.path.join(ASSETS_PATH, 'meteor.png'))
 
 class Heart_Assets:
     HEART_EMPTY = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Heart_Empty.png'))
