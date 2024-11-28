@@ -6,6 +6,7 @@ from Player import *
 from HUDController import *
 from EnemySpawner import *
 from AssetsManager import *
+from Groups import AllSprites
 
 class Round:
     def __init__(self, surface, screen):
@@ -14,11 +15,11 @@ class Round:
         screenSize = screen.get_size()
         self.offset = (screenSize[0] // 2 - WINDOW_WIDTH // 2, screenSize[1] // 2 - WINDOW_HEIGHT // 2)
         self.clock = pygame.time.Clock()
-        self.allSprites = pygame.sprite.Group()
+        self.allSprites = AllSprites()
         self.hudSprites = pygame.sprite.Group()
         self.enemySprites = pygame.sprite.Group()
         self.playerShotSprites = pygame.sprite.Group()
-        self.player = Player((WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), self.offset, 6, 250, 150, 3, (self.allSprites,self.playerShotSprites), (64, 64))
+        self.player = Player((WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2), self.offset, 6, 250, 150, 3, (self.allSprites,self.playerShotSprites), (64, 64))
         self.hudController = HUDController(self.cameraSurface, self.player, self.allSprites)
         self.enemySpawner = Spawner("normal", self.player, (self.allSprites, self.enemySprites))
         self.running = True
@@ -48,7 +49,7 @@ class Round:
                     self.running = False
                     return self.player.score          
                 self.enemySpawner.update()
-                self.allSprites.update(self.cameraSurface, dt)
+                self.allSprites.update(self.cameraSurface, dt, self.player.moveOffset)
                 self.player.update(self.cameraSurface, dt)
                 self.hudController.update(self.cameraSurface)
                 self.drawToScreen()
