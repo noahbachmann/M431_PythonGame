@@ -19,6 +19,7 @@ class Enemy(pygame.sprite.Sprite):
             self.image = image
         self.savedImage = self.image
         self.rect = self.image.get_frect(center=pos)
+        self.offset = player.moveOffset.copy()
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
@@ -46,7 +47,7 @@ class BasicMelee(Enemy):
         self.atkTimer = Timer(0.5, func=self.attack)
         self.rechargeSpeed = 0.1
         
-    def update(self, surface, dt):
+    def update(self, dt):
         directionToPlayer = (pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center))
         if self.isAttacking:
             if self.atkDistancePassed >= self.atkDistance * 1.5:
@@ -78,8 +79,6 @@ class BasicMelee(Enemy):
             else:
                 self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
                 self.rect.center += directionToPlayer.normalize() * self.speed * dt
-        
-        self.draw(surface) 
 
     def attack(self):
         if self.isAttacking:
@@ -94,7 +93,7 @@ class BasicShooter(Enemy):
         self.atkTimer = Timer(atkSpeed)
         self.isEnemy = True
     
-    def update(self, surface, dt):
+    def update(self, dt):
         directionToPlayer = pygame.Vector2(self.player.rect.center)-pygame.Vector2(self.rect.center)
         self.angle = self.getAngle()
         self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
@@ -107,7 +106,6 @@ class BasicShooter(Enemy):
             else:
                 self.rect.center += directionToPlayer.normalize() * 0
         self.atkTimer.update()
-        self.draw(surface)
 
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
