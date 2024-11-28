@@ -3,9 +3,10 @@ import math
 from Timer import *
 from AssetsManager import *
 from Shot import *
+from Settings import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, camOffset:tuple, health, speed, boostStrength, boostAmount:float, attackGroups, size:tuple = None):
+    def __init__(self, pos:tuple, camOffset:tuple, health, speed, boostStrength, boostAmount:float, attackGroups, collisionSprites, size:tuple = None):
         super().__init__()
         self.camOffset = camOffset
         self.moveOffset = pygame.math.Vector2(0,0)
@@ -19,6 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.boostStrength = boostStrength
         self.boosting = False
         self.attackGroups = attackGroups
+        self.collisionSprites = collisionSprites
         self.damageTimer = Timer(0.5)
         self.atkSpeed = 0.5
         self.atkDamage = 1
@@ -64,7 +66,14 @@ class Player(pygame.sprite.Sprite):
         self.direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
         angle = math.degrees(math.atan2(mousePos[1] - self.rect.centery, mousePos[0] - self.rect.centerx))
         self.image = pygame.transform.rotate(self.savedImage, -angle-90)
-        self.moveOffset += self.direction * self.speed * dt
+        if self.direction.length() > 0:
+            self.direction = self.direction.normalize()
+        check:pygame.math.Vector2 = self.moveOffset + (self.direction * self.speed * dt)
+        halfSize = MAP_SIZE // 2 - TILE_SIZE // 2
+        if -halfSize <= check.x <= halfSize:
+            self.moveOffset.x = check.x
+        if -halfSize <= check.y <= halfSize:
+            self.moveOffset.y = check.y
         self.rect = self.image.get_frect(center=self.rect.center)
         if (mouse[0] or keys[pygame.K_SPACE]) and not self.atkTimer.active:
             self.shoot(angle)  
@@ -91,7 +100,7 @@ class Player(pygame.sprite.Sprite):
         if self.damageTimer.active:
             return
         self.damageTimer.activate()
-        self.health -= damage
+        self.health -= damage           
 
     def upgrade(self, type:str, upgradesLevel):
         cost = 0

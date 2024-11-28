@@ -20,14 +20,17 @@ class Round:
         self.hudSprites = pygame.sprite.Group()
         self.enemySprites = pygame.sprite.Group()
         self.playerShotSprites = pygame.sprite.Group()
+        self.collisionSprites = pygame.sprite.Group()
+        self.border = []
         self.stars = []
-        self.player = Player((WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2), self.offset, 6, 250, 150, 3, (self.allSprites,self.playerShotSprites), (64, 64))
+        self.player = Player((WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2), self.offset, 6, 250, 150, 3, (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64))
         self.hudController = HUDController(self.cameraSurface, self.player, self.allSprites)
         self.enemySpawner = Spawner("normal", self.player, (self.allSprites, self.enemySprites))
         self.running = True
 
     def run(self):
         self.createBackground()
+        self.createBorder()
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -57,7 +60,6 @@ class Round:
                 self.hudController.update(self.cameraSurface)
                 self.drawToScreen()
         
-
     def collisions(self):
         for shot in self.playerShotSprites:       
             enemies = pygame.sprite.spritecollide(shot, self.enemySprites, False)
@@ -70,7 +72,7 @@ class Round:
             self.player.hit(enemies[0].damage)
             for enemy in enemies:
                 if not enemy.isEnemy:
-                    enemy.hit()  
+                    enemy.hit()
 
     def drawToScreen(self):
         screenSize = self.screen.get_size()
@@ -79,28 +81,58 @@ class Round:
         pygame.display.update()
 
     def createBackground(self):
-        mapSize = WINDOW_WIDTH*2
-        currentPointX = currentPointY = -WINDOW_WIDTH + (TILE_SIZE//2)
+        currentPointX = currentPointY = -WINDOW_WIDTH*1.5 + (TILE_SIZE//2)
         randomNum = randint(1, 20)
         x = 1
-        while currentPointY < mapSize:
-            while currentPointX < mapSize:
+        while currentPointY < MAP_SIZE - (WINDOW_WIDTH//2):
+            while currentPointX < MAP_SIZE - (WINDOW_WIDTH//2):
                 if x == randomNum:
-                    self.stars.append(Star((currentPointX, currentPointY), self.allSprites))
-                    randomNum = randint(1,20)
+                    self.stars.append(ImageSprite((currentPointX + randint(-16,16), currentPointY + randint(-16,16)), self.allSprites, STAR_IMAGE, (32,32)))
+                    randomNum = randint(4,20)
                     x = 1
                 else:    
                     x += 1
                 currentPointX += TILE_SIZE
-            currentPointX = -WINDOW_WIDTH + (TILE_SIZE//2)
+            currentPointX = -WINDOW_WIDTH*1.5 + (TILE_SIZE//2)
             currentPointY += TILE_SIZE
+    
+    def createBorder(self):
+        currentPoint = -WINDOW_WIDTH - (TILE_SIZE//2)
+        while currentPoint < MAP_SIZE - WINDOW_WIDTH + TILE_SIZE:
+            self.border.append(BorderSprite((currentPoint, -WINDOW_WIDTH - (TILE_SIZE//2)), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
+            self.border.append(BorderSprite((currentPoint, MAP_SIZE - WINDOW_WIDTH + (TILE_SIZE//2)), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
+            if not (currentPoint == -WINDOW_WIDTH - (TILE_SIZE//2) or currentPoint == MAP_SIZE - WINDOW_WIDTH + (TILE_SIZE//2)):
+                self.border.append(BorderSprite((-WINDOW_WIDTH - (TILE_SIZE//2), currentPoint), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
+                self.border.append(BorderSprite((MAP_SIZE - WINDOW_WIDTH + (TILE_SIZE//2), currentPoint), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
+            currentPoint += TILE_SIZE
 
-class Star(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, groups):
+class ImageSprite(pygame.sprite.Sprite):
+    def __init__(self, pos:tuple, groups, image, size:tuple=None):
         super().__init__(groups)
-        self.image = pygame.transform.scale(STAR_IMAGE, (32,32))
+        if size:
+            self.image = pygame.transform.scale(image, size)
+        else:
+            self.image = image
         self.rect = self.image.get_frect(center=pos)
         self.offset = pygame.math.Vector2(0,0)
     
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+
+class BorderSprite(ImageSprite):
+    def __init__(self, pos, groups, image, size = None):
+        super().__init__(pos, groups, image, size)
+        self.rotation = float(randint(1,360))
+        self.savedImage = self.image
+        self.image = pygame.transform.rotate(self.savedImage, self.rotation)
+        if randint(1,2) == 1:
+            self.rotationDir = True
+        else:
+            self.rotationDir = False
+
+    def update(self, dt):
+        if self.rotationDir:
+            self.rotation -= 0.5
+        else:
+            self.rotation += 0.5
+        self.image = pygame.transform.rotate(self.savedImage, self.rotation)
