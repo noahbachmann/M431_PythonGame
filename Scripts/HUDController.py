@@ -66,9 +66,9 @@ class HUDController:
         y = 32
         if self.player.maxHealth / 2 > len(self.hearts):
             if self.player.maxHealth == self.player.health:
-                self.hearts.append(Heart((x+(64*len(self.hearts)),y),Heart_Assets.HALFHEART_FULL, self.hudSpritesGroup, (32,32)))
+                self.hearts.append(Heart((x+(64*len(self.hearts)),y),Heart_Assets.HALFHEART_FULL, (32,32)))
             else:
-                self.hearts.append(Heart((x+(64*len(self.hearts)),y),Heart_Assets.HALFHEART_EMPTY, self.hudSpritesGroup, (32,32)))
+                self.hearts.append(Heart((x+(64*len(self.hearts)),y),Heart_Assets.HALFHEART_EMPTY, (32,32)))
         if self.player.health != self.playerHealth:
             if self.player.health % 2 == 0:
                 self.hearts[(self.player.health // 2)-1].newImage(Heart_Assets.HEART_FULL)
