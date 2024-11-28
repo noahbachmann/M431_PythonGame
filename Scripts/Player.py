@@ -27,9 +27,9 @@ class Player(pygame.sprite.Sprite):
         self.gold = 0
         self.score = 0
         if size:
-            self.image = pygame.transform.scale(SPACESHIP_IMAGE, size)
+            self.image = pygame.transform.scale(Sunset.SUNSET, size)
         else:
-            self.image = SPACESHIP_IMAGE
+            self.image = Sunset.SUNSET
         self.savedImage = self.image
         self.rect = self.image.get_frect(center=pos)
 

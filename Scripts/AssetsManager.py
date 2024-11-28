@@ -54,8 +54,8 @@ class Dark_Force:
 # class Moculus:
 #   WIP
     
-# class Sunset:
-#   WIP
+class Sunset:
+    SUNSET = pygame.image.load(os.path.join(ASSETS_PATH, 'Sunset', 'Sunset Idle', 'Sunset Idle.png'))
 
 class Enemy_Explosion:
     ENEMY_EXPLOSION_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_1.png'))
