@@ -66,7 +66,8 @@ class BasicMelee(Enemy):
                 self.atkDistancePassed += self.atkDirection.length() * self.speed * 5 * dt
         else:
             self.angle = self.getAngle()
-            if directionToPlayer.length() <= 100 and not self.atkTimer.active:
+            if directionToPlayer.length() <= self.atkDistance and not self.atkTimer.active:
+                self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
                 self.atkDirection = pygame.Vector2(
                     math.cos(math.radians(self.angle)),
                     math.sin(math.radians(self.angle)) 
