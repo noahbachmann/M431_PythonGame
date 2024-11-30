@@ -5,12 +5,12 @@ import Settings
 from Round import *
 from GameMenus import *
 pygame.init()
-cameraSurface = pygame.Surface((WINDOW_SIZE, WINDOW_SIZE))
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 screenSize = screen.get_size()
-if screenSize[1] < WINDOW_SIZE:
+if screenSize[1] < Settings.WINDOW_SIZE:
     Settings.WINDOW_SIZE = screenSize[1]
-offset = (screenSize[0] // 2 - WINDOW_SIZE // 2, screenSize[1] // 2 - WINDOW_SIZE // 2)
+cameraSurface = pygame.Surface((Settings.WINDOW_SIZE, Settings.WINDOW_SIZE))
+offset = (screenSize[0] // 2 - Settings.WINDOW_SIZE // 2, screenSize[1] // 2 - Settings.WINDOW_SIZE // 2)
 pygame.display.set_caption("My Space Shooter")
 gameState = {'gaming': "MainMenu", 'quit': False}
 
