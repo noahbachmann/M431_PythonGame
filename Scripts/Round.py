@@ -14,7 +14,7 @@ class Round:
         self.screen = screen  
         self.cameraSurface = surface
         screenSize = screen.get_size()
-        self.offset = (screenSize[0] // 2 - WINDOW_WIDTH // 2, screenSize[1] // 2 - WINDOW_HEIGHT // 2)
+        self.offset = (screenSize[0] // 2 - WINDOW_SIZE // 2, screenSize[1] // 2 - WINDOW_SIZE // 2)
         self.clock = pygame.time.Clock()
         self.allSprites = AllSprites()
         self.hudSprites = pygame.sprite.Group()
@@ -23,7 +23,7 @@ class Round:
         self.collisionSprites = pygame.sprite.Group()
         self.border = []
         self.stars = []
-        self.player = Player((WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2), self.offset, 6, 250, 150, 3, (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64))
+        self.player = Player((WINDOW_SIZE // 2, WINDOW_SIZE // 2), self.offset, 6, 250, 150, 3, (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64))
         self.hudController = HUDController(self.cameraSurface, self.player, self.allSprites)
         self.enemySpawner = Spawner("normal", self.player, (self.allSprites, self.enemySprites))
         self.running = True
@@ -81,11 +81,11 @@ class Round:
         pygame.display.update()
 
     def createBackground(self):
-        currentPointX = currentPointY = -WINDOW_WIDTH*1.5 + (TILE_SIZE//2)
+        currentPointX = currentPointY = -(MAP_SIZE//3)*1.5 + (TILE_SIZE//2)
         randomNum = randint(1, 20)
         x = 1
-        while currentPointY < MAP_SIZE - (WINDOW_WIDTH//2):
-            while currentPointX < MAP_SIZE - (WINDOW_WIDTH//2):
+        while currentPointY < MAP_SIZE - ((MAP_SIZE//3)//2):
+            while currentPointX < MAP_SIZE - ((MAP_SIZE//3)//2):
                 if x == randomNum:
                     self.stars.append(ImageSprite((currentPointX + randint(-16,16), currentPointY + randint(-16,16)), self.allSprites, STAR_IMAGE, (32,32)))
                     randomNum = randint(4,20)
@@ -93,17 +93,17 @@ class Round:
                 else:    
                     x += 1
                 currentPointX += TILE_SIZE
-            currentPointX = -WINDOW_WIDTH*1.5 + (TILE_SIZE//2)
+            currentPointX = -(MAP_SIZE//3)*1.5 + (TILE_SIZE//2)
             currentPointY += TILE_SIZE
     
     def createBorder(self):
-        currentPoint = -WINDOW_WIDTH - (TILE_SIZE//2)
-        while currentPoint < MAP_SIZE - WINDOW_WIDTH + TILE_SIZE:
-            self.border.append(BorderSprite((currentPoint, -WINDOW_WIDTH - (TILE_SIZE//2)), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
-            self.border.append(BorderSprite((currentPoint, MAP_SIZE - WINDOW_WIDTH + (TILE_SIZE//2)), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
-            if not (currentPoint == -WINDOW_WIDTH - (TILE_SIZE//2) or currentPoint == MAP_SIZE - WINDOW_WIDTH + (TILE_SIZE//2)):
-                self.border.append(BorderSprite((-WINDOW_WIDTH - (TILE_SIZE//2), currentPoint), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
-                self.border.append(BorderSprite((MAP_SIZE - WINDOW_WIDTH + (TILE_SIZE//2), currentPoint), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
+        currentPoint = -(MAP_SIZE//3) - (TILE_SIZE//2)
+        while currentPoint < MAP_SIZE - (MAP_SIZE//3) + TILE_SIZE:
+            self.border.append(BorderSprite((currentPoint, -(MAP_SIZE//3) - (TILE_SIZE//2)), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
+            self.border.append(BorderSprite((currentPoint, MAP_SIZE - (MAP_SIZE//3) + (TILE_SIZE//2)), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
+            if not (currentPoint == -(MAP_SIZE//3) - (TILE_SIZE//2) or currentPoint == MAP_SIZE - (MAP_SIZE//3) + (TILE_SIZE//2)):
+                self.border.append(BorderSprite((-(MAP_SIZE//3) - (TILE_SIZE//2), currentPoint), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
+                self.border.append(BorderSprite((MAP_SIZE - (MAP_SIZE//3) + (TILE_SIZE//2), currentPoint), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
             currentPoint += TILE_SIZE
 
 class ImageSprite(pygame.sprite.Sprite):

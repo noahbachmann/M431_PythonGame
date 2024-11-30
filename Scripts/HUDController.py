@@ -17,7 +17,7 @@ class HUDController:
         self.upgradeButton = Button((900,100),BUTTON_IMAGE, "Upgrades", self.toggleSettings, (64,64))
         self.upgradeMenu = UpgradesMenu(surface, 200, 50, self.player)
         self.hearts = []
-        self.energyBar = EnergyBar((WINDOW_WIDTH/2 - 64, 32), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR_BACK, (128,32))
+        self.energyBar = EnergyBar((WINDOW_SIZE/2 - 64, 32), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR_BACK, (128,32))
         self.showHealth()
     
     def draw(self, surface):

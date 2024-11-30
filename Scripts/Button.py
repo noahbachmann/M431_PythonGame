@@ -9,7 +9,7 @@ class Button(pygame.sprite.Sprite):
             super().__init__(groups)
         self.func = func
         self.offset = pygame.display.get_window_size()
-        self.offset = (self.offset[0] // 2 - WINDOW_WIDTH // 2, self.offset[1] // 2 - WINDOW_HEIGHT // 2)
+        self.offset = (self.offset[0] // 2 - WINDOW_SIZE // 2, self.offset[1] // 2 - WINDOW_SIZE // 2)
         if image:
             if size:
                 self.image = pygame.transform.scale(image, size)
