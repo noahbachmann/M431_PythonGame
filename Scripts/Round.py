@@ -23,7 +23,7 @@ class Round:
         self.collisionSprites = pygame.sprite.Group()
         self.border = []
         self.stars = []
-        self.player = Player((WINDOW_SIZE // 2, WINDOW_SIZE // 2), self.offset, 6, 250, 150, 3, (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64))
+        self.player = Player((WINDOW_SIZE // 2, WINDOW_SIZE // 2), self.offset, 6, 220, 150, 3, (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64))
         self.hudController = HUDController(self.cameraSurface, self.player, self.allSprites)
         self.enemySpawner = Spawner("normal", self.player, (self.allSprites, self.enemySprites))
         self.running = True
