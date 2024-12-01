@@ -135,12 +135,21 @@ class BasicShooter(Enemy):
         Shot(spawnPos,self.damage,450,1,self.angle,LASER_IMAGE, self.groups(),700, self.offset.copy(), (4,8))
         
 class DoubleShooter(BasicShooter):
-    def __init__(self, pos: tuple, health, damage, gold, speed, atkSpeed, player, image, frames, groups, range=None, size: tuple = None):
+    def __init__(self, pos: tuple, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range=None, size: tuple = None):
         super().__init__(pos, health, damage, gold, speed, atkSpeed, player, image, frames, groups, range, size)
-              
+        self.swap = swap
+        if self.swap:
+            self.right = True
+        
     def shoot(self):
-        offset1 = pygame.math.Vector2(math.cos(math.radians(self.angle)), math.sin(math.radians(self.angle))) * self.rect.height / 2
-        offset2 = pygame.math.Vector2(math.cos(math.radians(self.angle)), math.sin(math.radians(self.angle))) * self.rect.height / 2
         sideOffset = pygame.math.Vector2(math.cos(math.radians(self.angle + 90)), math.sin(math.radians(self.angle + 90))) * (self.rect.width / 3)
-        Shot(self.rect.center + offset1 - sideOffset,self.damage,450,1,self.angle,LASER_IMAGE, self.groups(),700, self.offset.copy(), (4,8))
-        Shot(self.rect.center + offset2 + sideOffset,self.damage,450,1,self.angle,LASER_IMAGE, self.groups(),700, self.offset.copy(), (4,8))
+        offset = pygame.math.Vector2(math.cos(math.radians(self.angle)), math.sin(math.radians(self.angle))) * self.rect.height / 2
+        if not self.swap:
+            Shot(self.rect.center + offset - sideOffset,self.damage,450,1,self.angle,LASER_IMAGE, self.groups(),700, self.offset.copy(), (4,8))
+            Shot(self.rect.center + offset + sideOffset,self.damage,450,1,self.angle,LASER_IMAGE, self.groups(),700, self.offset.copy(), (4,8))
+        else:
+            if self.right:
+                Shot(self.rect.center + offset + sideOffset,self.damage,450,1,self.angle,LASER_IMAGE, self.groups(),700, self.offset.copy(), (4,8))
+            else:
+                Shot(self.rect.center + offset - sideOffset,self.damage,450,1,self.angle,LASER_IMAGE, self.groups(),700, self.offset.copy(), (4,8))
+            self.right = not self.right
