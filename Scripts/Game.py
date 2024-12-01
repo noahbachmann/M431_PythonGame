@@ -15,8 +15,6 @@ offset = (screenSize[0] // 2 - Settings.WINDOW_SIZE // 2, screenSize[1] // 2 - S
 pygame.display.set_caption("My Space Shooter")
 gameState = {'gaming': "MainMenu", 'quit': False}
 
-
-
 while not gameState['quit']:
     if gameState['gaming'] == "Gaming":
         round = Round(cameraSurface, screen)
