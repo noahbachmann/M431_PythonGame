@@ -6,10 +6,11 @@ import tkinter
 from AssetsManager import *
 
 class Menu:
-    def __init__(self, surface, left, top, color = None, enabled = False, size:tuple = None):
+    def __init__(self, surface, left, top, gameState, color = None, enabled = False, size:tuple = None):
         self.cameraSurface = surface
         self.left = left
         self.top = top
+        self.gameState = gameState
         self.buttons = []
         self.texts = []
         self.enabled = enabled
@@ -29,10 +30,18 @@ class Menu:
             button.update(self.cameraSurface)
         for text, textRect in self.texts:
             self.cameraSurface.blit(text, textRect)
+            
+    def quitGame(self):
+        self.enabled = False
+        self.gameState['quit'] = True
+    
+    def mainMenu(self):
+        self.enabled = False
+        self.gameState['gaming'] = "MainMenu"
 
 class EndGameMenu(Menu):
-    def __init__(self, surface, left, top, size:tuple, enabled, gameState, score):
-        super().__init__(surface, left, top, enabled=enabled, size=size)
+    def __init__(self, surface, left, top, size:tuple, gameState, enabled,  score):
+        super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
         self.gameState = gameState
         self.buttons.append(Button((self.rect.centerx, self.rect.centery), text="Play Again", func=self.newGame))
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + 96), text="Main Menu", func=self.mainMenu))
@@ -43,23 +52,18 @@ class EndGameMenu(Menu):
     def newGame(self):
         self.enabled = False
 
-    def mainMenu(self):
-        self.enabled = False
-        self.gameState['gaming'] = "MainMenu"
-    
-    def quitGame(self):
-        self.enabled = False
-        self.gameState['quit'] = True
-
 class UpgradesMenu(Menu):
-    def __init__(self, surface, left, top, player, color = None, size:tuple = None):
-        super().__init__(surface,left,top,color,size=size)
+    def __init__(self, surface, left, top, player, gameState, color = None, size:tuple = None):
+        super().__init__(surface,left,top, gameState, color,size=size)
         self.player = player
+        self.gameState = gameState
         self.left = left
         self.top = top
         self.upgrades = ["atkSpeed", "atkDmg", "health", "heavyCd", "boostTank", "boostStrength"]
         self.upgradesLevel = [0,0,0,0,0,0]
         self.generatedButtons = False
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + self.rect.height), text="Main Menu", func=self.mainMenu))
+        self.buttons.append(Button((self.rect.centerx + 128, self.rect.centery + self.rect.height), text="Exit", func=self.quitGame))
 
     def general(self):
         rect = pygame.FRect(self.left, self.top, 600, 900)
@@ -86,9 +90,7 @@ class UpgradesMenu(Menu):
 
 class MainMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, enabled, gameState):
-        super().__init__(surface, left, top, enabled=enabled, size=size)
-        self.gameState = gameState
-        
+        super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
         self.buttons.append(Button((self.rect.centerx, self.rect.centery), text="Play", func=self.newGame))   
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + 90), text="Settings", func=self.settings))   
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + 180), text="Exit", func=self.quitGame))   
@@ -102,25 +104,14 @@ class MainMenu(Menu):
     def settings(self):
         self.enabled = False
         self.gameState['gaming'] = "Settings"
-    
-    def quitGame(self):
-        self.enabled = False
-        self.gameState['quit'] = True
 
 class SettingsMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, enabled, gameState):
-        super().__init__(surface, left, top, enabled=enabled, size=size)
-        self.gameState = gameState
-
+        super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
         self.texts.append((font.render(str("Settings"), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
-        self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.exit))   
+        self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.mainMenu))   
         self.buttons.append(Button((self.rect.centerx + 125, self.rect.centery - 50), text="upload", func=self.cursorUpload))   
-
-
-    def exit(self):
-        self.enabled = False
-        self.gameState['gaming'] = "MainMenu"
 
     def cursorUpload(event=None):
         

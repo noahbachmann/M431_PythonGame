@@ -7,7 +7,7 @@ from GameMenus import *
 from Player import *
 
 class HUDController:
-    def __init__(self, surface, player:Player, hudSpritesGroup):
+    def __init__(self, surface, player:Player, gameState, hudSpritesGroup):
         self.player = player
         self.playerHealth = self.player.health
         self.pause = False
@@ -15,7 +15,7 @@ class HUDController:
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))        
         self.goldTextRect = self.goldText.get_frect(midtop = (800, 800))  
         self.upgradeButton = Button((900,100),BUTTON_IMAGE, "Upgrades", self.toggleSettings, (64,64))
-        self.upgradeMenu = UpgradesMenu(surface, 200, 50, self.player)
+        self.upgradeMenu = UpgradesMenu(surface, 200, 50, self.player, gameState)
         self.hearts = []
         self.energyBar = EnergyBar((WINDOW_SIZE/2 - 64, 32), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR_BACK, (128,32))
         self.showHealth()
