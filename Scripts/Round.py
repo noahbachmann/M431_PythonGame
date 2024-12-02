@@ -10,9 +10,10 @@ from AssetsManager import *
 from Groups import AllSprites
 
 class Round:
-    def __init__(self, surface, screen):
+    def __init__(self, surface, screen, gameState):
         self.screen = screen  
         self.cameraSurface = surface
+        self.gameState = gameState
         screenSize = screen.get_size()
         self.offset = (screenSize[0] // 2 - WINDOW_SIZE // 2, screenSize[1] // 2 - WINDOW_SIZE // 2)
         self.clock = pygame.time.Clock()
@@ -24,7 +25,7 @@ class Round:
         self.border = []
         self.stars = []
         self.player = Player((WINDOW_SIZE // 2, WINDOW_SIZE // 2), self.offset, 6, 220, 150, 3, (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64))
-        self.hudController = HUDController(self.cameraSurface, self.player, self.allSprites)
+        self.hudController = HUDController(self.cameraSurface, self.player, gameState, self.allSprites)
         self.enemySpawner = Spawner("normal", self.player, (self.allSprites, self.enemySprites))
         self.running = True
 
@@ -46,6 +47,8 @@ class Round:
             if self.hudController.pause:
                 self.hudController.update(self.cameraSurface)
                 self.drawToScreen()
+                if self.gameState['gaming'] != "Gaming" or self.gameState['quit']:
+                    return -1
                 continue
         
             if not self.hudController.pause:

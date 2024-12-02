@@ -17,11 +17,14 @@ gameState = {'gaming': "MainMenu", 'quit': False}
 
 while not gameState['quit']:
     if gameState['gaming'] == "Gaming":
-        round = Round(cameraSurface, screen)
+        round = Round(cameraSurface, screen, gameState)
         score = round.run()
         if score < 0:
-            pygame.quit()
-            sys.exit()
+            if gameState['quit']:
+                pygame.quit()
+                sys.exit()
+            else:
+                continue
         endGameMenu = EndGameMenu(cameraSurface, 200, 50,(600,600), True, gameState, score)
         while endGameMenu.enabled: 
             for event in pygame.event.get():
