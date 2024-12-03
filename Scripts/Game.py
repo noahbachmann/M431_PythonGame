@@ -8,9 +8,11 @@ from GameMenus import *
 pygame.init()
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 screenSize = screen.get_size()
+print(Settings.WINDOW_SIZE)
 if screenSize[1] < Settings.WINDOW_SIZE:
     Settings.WINDOW_SIZE = screenSize[1]
 cameraSurface = pygame.Surface((Settings.WINDOW_SIZE, Settings.WINDOW_SIZE))
+print(Settings.WINDOW_SIZE)
 offset = (screenSize[0] // 2 - Settings.WINDOW_SIZE // 2, screenSize[1] // 2 - Settings.WINDOW_SIZE // 2)
 pygame.display.set_caption("My Space Shooter")
 gameState = {'gaming': "MainMenu", 'quit': False}
@@ -25,7 +27,7 @@ while not gameState['quit']:
                 sys.exit()
             else:
                 continue
-        endGameMenu = EndGameMenu(cameraSurface, 200, 50,(600,600), True, gameState, score)
+        endGameMenu = EndGameMenu(cameraSurface, (Settings.WINDOW_SIZE - 600) // 2, 50,(600,600), gameState, True, score)
         while endGameMenu.enabled: 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -37,7 +39,7 @@ while not gameState['quit']:
             pygame.display.update()
 
     elif gameState['gaming'] == "MainMenu":
-        MainMenuGame = MainMenu(cameraSurface, 200, 50,(650,650), True, gameState)
+        MainMenuGame = MainMenu(cameraSurface, (Settings.WINDOW_SIZE - 650) // 2, 50,(650,650), True, gameState)
         while MainMenuGame.enabled:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -51,7 +53,7 @@ while not gameState['quit']:
             pygame.display.update()
             
     elif gameState['gaming'] == "Settings":
-        SettingsMenuGame = SettingsMenu(cameraSurface, 200, 50,(650,650), True, gameState)
+        SettingsMenuGame = SettingsMenu(cameraSurface, (Settings.WINDOW_SIZE - 650) // 2,  50,(650,650), True, gameState)
         while SettingsMenuGame.enabled:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:   
