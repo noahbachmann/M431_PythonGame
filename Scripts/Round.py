@@ -2,7 +2,7 @@ import pygame
 import sys
 import time
 from random import randint
-from Settings import *
+import Settings
 from Player import *
 from HUDController import *
 from EnemySpawner import *
@@ -11,11 +11,12 @@ from Groups import AllSprites
 
 class Round:
     def __init__(self, surface, screen, gameState):
+        print(f"in round: {Settings.WINDOW_SIZE}")
         self.screen = screen  
         self.cameraSurface = surface
         self.gameState = gameState
         screenSize = screen.get_size()
-        self.offset = (screenSize[0] // 2 - WINDOW_SIZE // 2, screenSize[1] // 2 - WINDOW_SIZE // 2)
+        self.offset = (screenSize[0] // 2 - Settings.WINDOW_SIZE // 2, screenSize[1] // 2 - Settings.WINDOW_SIZE // 2)
         self.clock = pygame.time.Clock()
         self.allSprites = AllSprites()
         self.hudSprites = pygame.sprite.Group()
@@ -24,7 +25,7 @@ class Round:
         self.collisionSprites = pygame.sprite.Group()
         self.border = []
         self.stars = []
-        self.player = Player((WINDOW_SIZE // 2, WINDOW_SIZE // 2), self.offset, 6, 220, 150, 3, (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64))
+        self.player = Player((Settings.WINDOW_SIZE // 2, Settings.WINDOW_SIZE // 2), self.offset, 6, 220, 150, 3, (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64))
         self.hudController = HUDController(self.cameraSurface, self.player, gameState, self.allSprites)
         self.enemySpawner = Spawner("normal", self.player, (self.allSprites, self.enemySprites))
         self.running = True
@@ -36,6 +37,7 @@ class Round:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                    self.gameState['quit'] = True
                     return -1
                 if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
