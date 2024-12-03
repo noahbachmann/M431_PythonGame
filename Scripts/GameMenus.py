@@ -127,7 +127,7 @@ class SettingsMenu(Menu):
         cursorPath = filedialog.askopenfilename()
         clock = pygame.time.Clock()
         cursor_image = pygame.image.load(cursorPath).convert_alpha()
-        cursor_image = pygame.transform.scale(cursor_image, (132, 132))
+        cursor_image = pygame.transform.scale(cursor_image, (32, 32))
         hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
         pygame.mouse.set_cursor((hotspot[0], hotspot[1]), cursor_image)
 
