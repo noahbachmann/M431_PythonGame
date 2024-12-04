@@ -13,7 +13,7 @@ LASER_BLUE_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'laser_blue.png')
 HEAVY_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'heavy.png'))
 STAR_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'star.png'))
 BORDER_BLOCK = pygame.image.load(os.path.join(ASSETS_PATH, 'meteor.png'))
-
+EXPLOSION_RADIUS = pygame.image.load(os.path.join(ASSETS_PATH, 'explosionRadius.png'))
 class UI_Assets:
     BUTTON_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'button.png'))
     BUTTON_32x32 = pygame.image.load(os.path.join(ASSETS_PATH, 'button_32x32.png'))

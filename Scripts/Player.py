@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.atkSpeed = 0.5
         self.atkDamage = 1
         self.atkTimer = Timer(self.atkSpeed)
-        self.heavyCd = 10
+        self.heavyCd = 8
         self.heavyCdTimer = Timer(self.heavyCd)
         self.gold = 0
         self.score = 0
@@ -106,38 +106,38 @@ class Player(pygame.sprite.Sprite):
         cost = 0
         match type:
             case "atkSpeed":
-                cost = (upgradesLevel[0]+1) * 1
+                cost = (upgradesLevel[0]+1*50) * 1
                 if cost > self.gold or upgradesLevel[0] >= 10:
                     return
                 self.atkSpeed += 5
                 upgradesLevel[0] += 1
             case "atkDmg":
-                cost = (upgradesLevel[1]+1) * 1
+                cost = (upgradesLevel[1]+1*100) * 1
                 if cost > self.gold or upgradesLevel[1] >= 10:
                     return
                 self.atkDamage += 1
                 upgradesLevel[1] += 1
             case "health":
-                cost = (upgradesLevel[2]+1) * 1
+                cost = (upgradesLevel[2]+1*100) * 1
                 if cost > self.gold or upgradesLevel[2] >= 10:
                     return
                 self.maxHealth += 1
                 self.health += 1
                 upgradesLevel[2] += 1
             case "heavyCd":
-                cost = (upgradesLevel[3]+1) * 1
+                cost = (upgradesLevel[3]+1*30) * 1
                 if cost > self.gold or upgradesLevel[3] >= 10:
                     return
                 self.heavyCd -= 0.5
                 upgradesLevel[3] += 1
             case "boostTank":
-                cost = (upgradesLevel[4]+1) * 1
+                cost = (upgradesLevel[4]+1*50) * 1
                 if cost > self.gold or upgradesLevel[4] >= 10:
                     return
                 self.boostTank += 0.5
                 upgradesLevel[4] += 1
             case "boostStrength":
-                cost = (upgradesLevel[5]+1) * 1
+                cost = (upgradesLevel[5]+1*100) * 1
                 if cost > self.gold or upgradesLevel[5] >= 10:
                     return
                 self.boostStrength += 10

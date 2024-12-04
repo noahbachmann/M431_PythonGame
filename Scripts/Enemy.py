@@ -154,3 +154,9 @@ class DoubleShooter(BasicShooter):
             else:
                 Shot(self.rect.center + offset - sideOffset,self.damage,450,1,self.angle,LASER_IMAGE, self.groups(),700, self.offset.copy(), (4,8))
             self.right = not self.right
+
+class MiniBoss(DoubleShooter):
+    def __init__(self, pos, health, damage, gold, speed, player, image, frames, groups, size = None):
+        super().__init__(pos, health, damage, gold, speed, player, image, frames, groups, size)
+
+    

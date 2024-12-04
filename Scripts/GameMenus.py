@@ -41,7 +41,6 @@ class Menu:
 class EndGameMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, gameState, enabled,  score):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
-        self.gameState = gameState
         self.buttons.append(Button((self.rect.centerx, self.rect.centery), text="Play Again", func=self.newGame))
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + 96), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + 192), text="Exit", func=self.quitGame))
@@ -55,34 +54,43 @@ class UpgradesMenu(Menu):
     def __init__(self, surface, left, top, player, gameState, color = None, size:tuple = None):
         super().__init__(surface,left,top, gameState, color,size=size)
         self.player = player
-        self.gameState = gameState
-        self.left = left
-        self.top = top
-        self.upgrades = ["atkSpeed", "atkDmg", "health", "heavyCd", "boostTank", "boostStrength"]
+        self.upgrades = ["Upgrades", "atkSpeed", "atkDmg", "health", "heavyCd", "boostTank", "boostStrength"]
         self.upgradesLevel = [0,0,0,0,0,0]
+        self.upgradesMultiplier = [50,100,100,30,50,100]
         self.generatedButtons = False
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + self.rect.height), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
-        self.buttons.append(Button((self.rect.centerx + 128, self.rect.centery + self.rect.height), text="Exit", func=self.quitGame))
+        self.buttons.append(Button((self.rect.centerx - TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
+        self.buttons.append(Button((self.rect.centerx + TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), text="Exit", func=self.quitGame))
 
     def general(self):
-        rect = pygame.FRect(self.left, self.top, 600, 900)
-        pygame.draw.rect(self.cameraSurface, (240,240,240), rect, 0, 0)
-        for i in range(1,7):
-            x = rect.left + (rect.width / 3)
-            y = rect.top + (rect.height /12) * (i*2 - 1) 
+        upgrdHeight = self.rect.height - (self.rect.height//4) 
+        upgrdWidth = self.rect.width - TILE_SIZE*2   
+        for i in range(1,8):
+            x = self.rect.left + TILE_SIZE
+            y = self.rect.top + (upgrdHeight /14) * (i*2 - 1)
             upgradeText = font.render(self.upgrades[i-1], False, (0,0,0))
-            upgradeTextRect = upgradeText.get_frect(center = (x,y))
+            upgradeTextRect = upgradeText.get_frect(midleft = (x,y))
             self.cameraSurface.blit(upgradeText, upgradeTextRect)
-            x += (rect.width / 3)*1.25
-            levelText = font.render(str(self.upgradesLevel[i-1]), False, (0,0,0))
+            x += upgrdWidth / 2 + (TILE_SIZE /2)
+            if i == 1:
+                levelText = font.render("Lvl.", False, (0,0,0))
+            else:
+                levelText = font.render(str(self.upgradesLevel[i-2]), False, (0,0,0))
             levelTextRect = levelText.get_frect(center = (x,y))
             self.cameraSurface.blit(levelText, levelTextRect)
-            x += (rect.width / 3)*0.5
-            if not self.generatedButtons:
+            x += (upgrdWidth / 2)*(1/3)
+            if not self.generatedButtons and i > 1:
                 self.buttons.append(Button((x,y),UI_Assets.BUTTON_32x32,"+", lambda j=i: self.player.upgrade(self.upgrades[j-1], self.upgradesLevel)))
+            x += (upgrdWidth / 2)*(1/3)
+            if i == 1:
+                costText = font.render("Cost", False, (0,0,0))
+            else:
+                costText = font.render(str(((self.upgradesLevel[i-2])+1)*self.upgradesMultiplier[i-2]), False, (0,0,0))
+            costTextRect = costText.get_frect(center = (x,y))
+            self.cameraSurface.blit(costText, costTextRect)
         self.generatedButtons = True
 
     def draw(self, surface):
+        pygame.draw.rect(self.cameraSurface, (240,240,240), self.rect, 0, 0)
         self.general()
         for button in self.buttons:
             button.update(surface)
