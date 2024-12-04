@@ -1,24 +1,23 @@
 import pygame
 from math import ceil
-from Settings import *
-from AssetsManager import font, BUTTON_IMAGE, Heart_Assets, Energybar_Assets
+import Settings
+from AssetsManager import font, UI_Assets, Heart_Assets, Energybar_Assets
 from Button import *
-from UpgradesMenu import *
 from GameMenus import *
 from Player import *
 
 class HUDController:
-    def __init__(self, player:Player, hudSpritesGroup):
+    def __init__(self, surface, player:Player, gameState, hudSpritesGroup):
         self.player = player
         self.playerHealth = self.player.health
         self.pause = False
         self.hudSpritesGroup = hudSpritesGroup
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))        
         self.goldTextRect = self.goldText.get_frect(midtop = (800, 800))  
-        self.upgradeButton = Button((900,100),BUTTON_IMAGE, "Upgrades", self.toggleSettings, (64,64), hudSpritesGroup)
-        self.upgradeMenu = UpgradesMenu(self.player)
+        self.upgradeButton = Button((900,100),UI_Assets.BUTTON_32x32, "Upgrades", self.toggleSettings, (64,64))
+        self.upgradeMenu = UpgradesMenu(surface, (Settings.WINDOW_SIZE - 600) // 2, 50, self.player, gameState)
         self.hearts = []
-        self.energyBar = EnergyBar((WINDOW_WIDTH/2 - 64, 32), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR_BACK, self.hudSpritesGroup, (128,32))
+        self.energyBar = EnergyBar((Settings.WINDOW_SIZE/2 - 64, 32), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR_BACK, (128,32))
         self.showHealth()
     
     def draw(self, surface):
@@ -48,10 +47,10 @@ class HUDController:
         y = 32
         maxHealth = self.player.maxHealth // 2
         for i in range(maxHealth):
-            self.hearts.append(Heart((x,y),Heart_Assets.HEART_FULL, self.hudSpritesGroup, (32,32)))
+            self.hearts.append(Heart((x,y),Heart_Assets.HEART_FULL, (32,32)))
             x += 64
         if self.player.maxHealth % 2 != 0:
-            self.hearts.append(Heart((x,y),Heart_Assets.HALFHEART_FULL, self.hudSpritesGroup, (32,32)))
+            self.hearts.append(Heart((x,y),Heart_Assets.HALFHEART_FULL, (32,32)))
         
     def takeDamage(self):
         if self.player.maxHealth % 2 != 0 and self.player.health == self.player.maxHealth - 1:
@@ -67,9 +66,9 @@ class HUDController:
         y = 32
         if self.player.maxHealth / 2 > len(self.hearts):
             if self.player.maxHealth == self.player.health:
-                self.hearts.append(Heart((x+(64*len(self.hearts)),y),Heart_Assets.HALFHEART_FULL, self.hudSpritesGroup, (32,32)))
+                self.hearts.append(Heart((x+(64*len(self.hearts)),y),Heart_Assets.HALFHEART_FULL, (32,32)))
             else:
-                self.hearts.append(Heart((x+(64*len(self.hearts)),y),Heart_Assets.HALFHEART_EMPTY, self.hudSpritesGroup, (32,32)))
+                self.hearts.append(Heart((x+(64*len(self.hearts)),y),Heart_Assets.HALFHEART_EMPTY, (32,32)))
         if self.player.health != self.playerHealth:
             if self.player.health % 2 == 0:
                 self.hearts[(self.player.health // 2)-1].newImage(Heart_Assets.HEART_FULL)
@@ -80,8 +79,8 @@ class HUDController:
             self.playerHealth = self.player.health
 
 class Heart(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, image, groups, size:tuple = None ):
-        super().__init__(groups)
+    def __init__(self, pos:tuple, image, size:tuple = None ):
+        super().__init__()
         if size:
             self.image = pygame.transform.scale(image, size)
             self.size = size
@@ -99,8 +98,8 @@ class Heart(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
 
 class EnergyBar(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, player, barImage, image, groups, size:tuple = None):
-        super().__init__(groups)
+    def __init__(self, pos:tuple, player, barImage, image, size:tuple = None):
+        super().__init__()
         self.player = player
         if size:
             self.image = pygame.transform.scale(image, size)

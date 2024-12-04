@@ -11,7 +11,15 @@ ENEMY_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'enemyspaceship.png'))
 LASER_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'laser.png'))
 LASER_BLUE_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'laser_blue.png'))
 HEAVY_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'heavy.png'))
-BUTTON_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'button.png'))
+STAR_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'star.png'))
+BORDER_BLOCK = pygame.image.load(os.path.join(ASSETS_PATH, 'meteor.png'))
+
+class UI_Assets:
+    BUTTON_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'button.png'))
+    BUTTON_32x32 = pygame.image.load(os.path.join(ASSETS_PATH, 'button_32x32.png'))
+    BUTTON_64x32 = pygame.image.load(os.path.join(ASSETS_PATH, 'button_64x32.png'))
+    ICON_UPGRADE = pygame.image.load(os.path.join(ASSETS_PATH, 'icon_upgrade.png'))
+    ICON_HOME = pygame.image.load(os.path.join(ASSETS_PATH, 'icon_home.png'))
 
 class Heart_Assets:
     HEART_EMPTY = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Heart_Empty.png'))
@@ -54,8 +62,8 @@ class Dark_Force:
 # class Moculus:
 #   WIP
     
-# class Sunset:
-#   WIP
+class Sunset:
+    SUNSET = pygame.image.load(os.path.join(ASSETS_PATH, 'Sunset', 'Sunset Idle', 'Sunset Idle.png'))
 
 class Enemy_Explosion:
     ENEMY_EXPLOSION_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_1.png'))
@@ -67,10 +75,7 @@ class Enemy_Explosion:
     ENEMY_EXPLOSION_7 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_7.png'))
     ENEMY_EXPLOSION_8 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_8.png'))
     ENEMY_EXPLOSION_9 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_9.png'))
-
-class Crosshair:
-    CROSSHAIR_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crosshair', 'Crosshair_1.png'))
-    CROSSHAIR_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crosshair', 'Crosshair_2.png'))
+    animationArray = [ENEMY_EXPLOSION_1,ENEMY_EXPLOSION_2,ENEMY_EXPLOSION_3,ENEMY_EXPLOSION_4,ENEMY_EXPLOSION_5,ENEMY_EXPLOSION_6,ENEMY_EXPLOSION_7,ENEMY_EXPLOSION_8,ENEMY_EXPLOSION_9]
     
 
 font = pygame.font.Font(os.path.join(ASSETS_PATH, 'upheavtt.ttf'), 20)

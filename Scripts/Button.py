@@ -1,12 +1,15 @@
 import pygame
 from Timer import *
-from AssetsManager import font, BUTTON_IMAGE
+import Settings
+from AssetsManager import font, UI_Assets
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, image = None, text:str = None, func= None, size:tuple = None, groups = None):
+    def __init__(self, pos:tuple, image = None, text:str = None, func= None, size:tuple = None, groups = None, icon = None):
         if groups:
             super().__init__(groups)
         self.func = func
+        self.offset = pygame.display.get_window_size()
+        self.offset = (self.offset[0] // 2 - Settings.WINDOW_SIZE // 2, self.offset[1] // 2 - Settings.WINDOW_SIZE // 2)
         if image:
             if size:
                 self.image = pygame.transform.scale(image, size)
@@ -14,20 +17,36 @@ class Button(pygame.sprite.Sprite):
                 self.image = image
         else:
             if size:
-                self.image = pygame.transform.scale(BUTTON_IMAGE, size)
+                self.image = pygame.transform.scale(UI_Assets.BUTTON_32x32, size)
             else:
-                self.image = BUTTON_IMAGE
-        self.text = font.render(text, False, (0,0,0))
-        self.textRect = self.text.get_frect(center = pos)
-        self.cdTimer = Timer(0.5)
+                self.image = pygame.transform.scale(UI_Assets.BUTTON_32x32, (64,64))
+        if icon:
+            if size:
+                self.icon = pygame.transform.scale(icon, size)
+            else:
+                self.icon = pygame.transform.scale(icon, (64,64))
+            self.iconRect = self.icon.get_frect(center = pos)
+        else:
+            self.icon = None
+        if text:
+            self.text = font.render(text, False, (0,0,0))
+            self.textRect = self.text.get_frect(center = pos)
+        else:
+            self.text = None
+        self.cdTimer = Timer(0.3)
         self.rect = self.image.get_frect(center = pos)
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
-        surface.blit(self.text, self.textRect)
+        if self.text:
+            surface.blit(self.text, self.textRect)
+        if self.icon:
+            surface.blit(self.icon, self.iconRect)
 
     def update(self, surface, dt = None):
-        if self.rect.collidepoint(pygame.mouse.get_pos()):
+        mousePos = pygame.mouse.get_pos()
+        mousePos = (mousePos[0] - self.offset[0], mousePos[1] - self.offset[1])
+        if self.rect.collidepoint(mousePos):
             if pygame.mouse.get_pressed()[0] and not self.cdTimer.active:
                 self.func()
                 self.cdTimer.activate()

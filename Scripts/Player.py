@@ -3,11 +3,14 @@ import math
 from Timer import *
 from AssetsManager import *
 from Shot import *
+from Settings import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, health, speed, boostStrength, boostAmount:float, attackGroups, size:tuple = None):
+    def __init__(self, pos:tuple, camOffset:tuple, health, speed, boostStrength, boostAmount:float, attackGroups, collisionSprites, size:tuple = None):
         super().__init__()
-        self.direction = pygame.math.Vector2(0, 0)
+        self.camOffset = camOffset
+        self.moveOffset = pygame.math.Vector2(0,0)
+        self.direction = pygame.math.Vector2(0,0)
         self.normalSpeed = speed
         self.speed = speed
         self.maxHealth = health
@@ -17,6 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.boostStrength = boostStrength
         self.boosting = False
         self.attackGroups = attackGroups
+        self.collisionSprites = collisionSprites
         self.damageTimer = Timer(0.5)
         self.atkSpeed = 0.5
         self.atkDamage = 1
@@ -26,9 +30,9 @@ class Player(pygame.sprite.Sprite):
         self.gold = 0
         self.score = 0
         if size:
-            self.image = pygame.transform.scale(SPACESHIP_IMAGE, size)
+            self.image = pygame.transform.scale(Sunset.SUNSET, size)
         else:
-            self.image = SPACESHIP_IMAGE
+            self.image = Sunset.SUNSET
         self.savedImage = self.image
         self.rect = self.image.get_frect(center=pos)
 
@@ -37,6 +41,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, surface, dt): 
         mousePos = pygame.mouse.get_pos()
+        mousePos = (mousePos[0] - self.camOffset[0], mousePos[1] - self.camOffset[1])
         mouse = pygame.mouse.get_pressed()
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LSHIFT]:
@@ -61,7 +66,14 @@ class Player(pygame.sprite.Sprite):
         self.direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
         angle = math.degrees(math.atan2(mousePos[1] - self.rect.centery, mousePos[0] - self.rect.centerx))
         self.image = pygame.transform.rotate(self.savedImage, -angle-90)
-        self.rect.center += self.direction * self.speed * dt
+        if self.direction.length() > 0:
+            self.direction = self.direction.normalize()
+        check:pygame.math.Vector2 = self.moveOffset + (self.direction * self.speed * dt)
+        halfSize = MAP_SIZE // 2 - TILE_SIZE // 2
+        if -halfSize <= check.x <= halfSize:
+            self.moveOffset.x = check.x
+        if -halfSize <= check.y <= halfSize:
+            self.moveOffset.y = check.y
         self.rect = self.image.get_frect(center=self.rect.center)
         if (mouse[0] or keys[pygame.K_SPACE]) and not self.atkTimer.active:
             self.shoot(angle)  
@@ -77,18 +89,18 @@ class Player(pygame.sprite.Sprite):
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Shot(spawnPos,2,500,self.atkDamage,angle,LASER_BLUE_IMAGE, self.attackGroups,size=(4,8))
+        Shot(spawnPos,self.atkDamage,500,1,angle,LASER_BLUE_IMAGE, self.attackGroups, playerOffset=self.moveOffset.copy(), size=(4,8))
     
     def heavy(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Heavy(spawnPos,2,200,angle,HEAVY_IMAGE,self.attackGroups,(8,8))
+        Heavy(spawnPos,2,200,angle,HEAVY_IMAGE,self.attackGroups, self.moveOffset.copy(), (8,8))
 
     def hit(self, damage):
         if self.damageTimer.active:
             return
         self.damageTimer.activate()
-        self.health -= damage
+        self.health -= damage           
 
     def upgrade(self, type:str, upgradesLevel):
         cost = 0
@@ -135,7 +147,7 @@ class Player(pygame.sprite.Sprite):
             
                 
 class Heavy(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, damage, speed, angle, image, groups, size:tuple = None):
+    def __init__(self, pos:tuple, damage, speed, angle, image, groups, playerOffset:pygame.math.Vector2 = pygame.math.Vector2(0,0), size:tuple = None):
         super().__init__(groups)
         self.damage = damage
         self.speed = speed
@@ -150,13 +162,13 @@ class Heavy(pygame.sprite.Sprite):
             self.image = image
         self.image = pygame.transform.rotate(self.image, -angle-90)
         self.rect = self.image.get_frect(center=pos)
+        self.offset = playerOffset
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
     
-    def update(self, surface, dt):   
+    def update(self, dt):  
         self.rect.center += self.direction * self.speed * dt
-        self.draw(surface)
     
     def hit(self, enemy):
         self.collidedEnemies.add(enemy)
