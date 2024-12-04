@@ -21,10 +21,7 @@ class Button(pygame.sprite.Sprite):
             else:
                 self.image = pygame.transform.scale(UI_Assets.BUTTON_32x32, (64,64))
         if icon:
-            if size:
-                self.icon = pygame.transform.scale(icon, size)
-            else:
-                self.icon = pygame.transform.scale(icon, (64,64))
+            self.icon = pygame.transform.scale(icon, (48, 48))
             self.iconRect = self.icon.get_frect(center = pos)
         else:
             self.icon = None

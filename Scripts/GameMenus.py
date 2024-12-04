@@ -43,7 +43,7 @@ class EndGameMenu(Menu):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
         self.gameState = gameState
         self.buttons.append(Button((self.rect.centerx, self.rect.centery), text="Play Again", func=self.newGame))
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 96), text="Main Menu", func=self.mainMenu))
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 96), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + 192), text="Exit", func=self.quitGame))
         self.texts.append((font.render(str(score), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 96)))
@@ -61,7 +61,7 @@ class UpgradesMenu(Menu):
         self.upgrades = ["atkSpeed", "atkDmg", "health", "heavyCd", "boostTank", "boostStrength"]
         self.upgradesLevel = [0,0,0,0,0,0]
         self.generatedButtons = False
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + self.rect.height), text="Main Menu", func=self.mainMenu))
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + self.rect.height), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
         self.buttons.append(Button((self.rect.centerx + 128, self.rect.centery + self.rect.height), text="Exit", func=self.quitGame))
 
     def general(self):
@@ -109,7 +109,7 @@ class SettingsMenu(Menu):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
         self.texts.append((font.render(str("Settings"), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
-        self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.mainMenu))   
+        self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), func=self.mainMenu, icon=UI_Assets.ICON_HOME))   
         self.buttons.append(Button((self.rect.centerx + 125, self.rect.centery - 50), text="upload", func=self.cursorUpload))   
 
     def cursorUpload(event=None):
