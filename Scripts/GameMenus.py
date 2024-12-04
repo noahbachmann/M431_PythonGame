@@ -1,5 +1,6 @@
 import pygame
 from Button import *
+from AssetsManager import UI_Assets
 from Settings import *
 from tkinter import filedialog
 import tkinter
@@ -80,7 +81,7 @@ class UpgradesMenu(Menu):
             self.cameraSurface.blit(levelText, levelTextRect)
             x += (rect.width / 3)*0.5
             if not self.generatedButtons:
-                self.buttons.append(Button((x,y),BUTTON_IMAGE,"+", lambda j=i: self.player.upgrade(self.upgrades[j-1], self.upgradesLevel)))
+                self.buttons.append(Button((x,y),UI_Assets.BUTTON_32x32,"+", lambda j=i: self.player.upgrade(self.upgrades[j-1], self.upgradesLevel)))
         self.generatedButtons = True
 
     def draw(self, surface):

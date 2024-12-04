@@ -11,7 +11,6 @@ from Groups import AllSprites
 
 class Round:
     def __init__(self, surface, screen, gameState):
-        print(f"in round: {Settings.WINDOW_SIZE}")
         self.screen = screen  
         self.cameraSurface = surface
         self.gameState = gameState
