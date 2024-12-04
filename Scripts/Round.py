@@ -80,7 +80,6 @@ class Round:
 
     def drawToScreen(self):
         screenSize = self.screen.get_size()
-        self.screen.fill((0,0,0))
         self.screen.blit(self.cameraSurface, self.cameraSurface.get_frect(center = (screenSize[0]//2,screenSize[1]//2)))
         pygame.display.update()
 

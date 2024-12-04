@@ -5,6 +5,7 @@ from Timer import *
 class Shot(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, damage, speed, hits, angle, image, groups, lifeDistance = 0, playerOffset:pygame.math.Vector2 = pygame.math.Vector2(0,0), size:tuple = None):
         super().__init__(groups)
+        self.isHeavy = False
         self.damage = damage
         self.speed = speed      
         self.hits = hits

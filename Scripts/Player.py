@@ -94,7 +94,7 @@ class Player(pygame.sprite.Sprite):
     def heavy(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Heavy(spawnPos,2,200,angle,HEAVY_IMAGE,self.attackGroups, self.moveOffset.copy(), (8,8))
+        Heavy(spawnPos,2,200,angle,128,HEAVY_IMAGE, EXPLOSION_RADIUS, self.attackGroups, self.moveOffset.copy(), (8,8))
 
     def hit(self, damage):
         if self.damageTimer.active:
@@ -147,14 +147,21 @@ class Player(pygame.sprite.Sprite):
             
                 
 class Heavy(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, damage, speed, angle, image, groups, playerOffset:pygame.math.Vector2 = pygame.math.Vector2(0,0), size:tuple = None):
+    def __init__(self, pos:tuple, damage, speed, angle, explosionSize, image, explosionImage, groups, playerOffset:pygame.math.Vector2 = pygame.math.Vector2(0,0), size:tuple = None):
         super().__init__(groups)
+        self.isHeavy = True
+        self.exploding = False
         self.damage = damage
         self.speed = speed
         self.direction = pygame.math.Vector2(
             math.cos(math.radians(angle)), 
             math.sin(math.radians(angle))
         ).normalize()
+        self.explosionSize = explosionSize
+        self.explosionImage = explosionImage
+        self.explosionPos:pygame.math.Vector2 = pygame.math.Vector2(0,0)
+        self.currentSize = 4
+        self.savedSize = 0
         self.collidedEnemies = set()
         if size:
             self.image = pygame.transform.scale(image, size)
@@ -168,9 +175,18 @@ class Heavy(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
     
     def update(self, dt):  
-        self.rect.center += self.direction * self.speed * dt
+        if self.exploding:
+            self.savedSize += dt * 200
+            self.currentSize = int(self.savedSize) + 4
+            self.image = pygame.transform.scale(self.explosionImage, (self.currentSize, self.currentSize))
+            self.rect = self.image.get_frect(center = (self.explosionPos.x, self.explosionPos.y))
+        else:
+            self.rect.center += self.direction * self.speed * dt
+        if self.currentSize > 128:
+            self.kill()
     
     def hit(self, enemy):
         self.collidedEnemies.add(enemy)
-        self.kill()
-        del self
+        if not self.exploding:
+            self.exploding = True
+            self.explosionPos = pygame.math.Vector2(self.rect.center)

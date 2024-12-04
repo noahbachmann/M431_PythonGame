@@ -15,5 +15,8 @@ class AllSprites(pygame.sprite.Group):
             sprite.update(dt)
             offsetDifference = playerOffset - sprite.offset
             sprite.offset += offsetDifference
-            sprite.rect.move_ip(-offsetDifference.x, -offsetDifference.y)
+            if hasattr(sprite, 'isHeavy') and sprite.isHeavy and sprite.exploding:
+                sprite.explosionPos -= offsetDifference
+            else:
+                sprite.rect.move_ip(-offsetDifference.x, -offsetDifference.y)
             surface.blit(sprite.image, sprite.rect)
