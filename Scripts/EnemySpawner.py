@@ -1,7 +1,7 @@
 import pygame
 from Enemy import *
 from Timer import Timer
-from AssetsManager import Enemy_Explosion, Dark_Force, Arachnis, Brawler, Apex
+from AssetsManager import Enemy_Explosion, Dark_Force, Arachnis, Brawler, Apex, Crypto
 from random import *
 
 class Spawner:
@@ -26,7 +26,12 @@ class Spawner:
             "Apex": {"class": DoubleShooter, "weight": 0, "args": (2, 1, 2, 150, 2, self.player,
             Apex.APEX_IDLE_1,{"idle":{"frames":[Apex.APEX_IDLE_1,Apex.APEX_IDLE_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":5}},self.enemyGroups, True, 400, (64, 64))},
-            }     
+            } 
+        self.miniBosses = {
+            "Crypto": {
+                "class": MiniBoss, "args": (30, 2, 100, 180, 3, self.player, Crypto.CRYPTO_1,{"idle":{"frames":[Crypto.CRYPTO_1,Crypto.CRYPTO_2,Crypto.CRYPTO_3,Crypto.CRYPTO_4,Crypto.CRYPTO_5], "speed":8},
+                                "death":{"frames":Enemy_Explosion.animationArray, "speed":5}},self.enemyGroups, False, 300, (128, 128))},
+            }
         self.spawnPoints.extend([(x, -200) for x in range(-200, 1200, 100)])
         self.spawnPoints.extend([(x, 1200) for x in range(-200, 1200, 100)])
         self.spawnPoints.extend([(-200, y) for y in range(-200, 1200, 100)])
@@ -35,10 +40,15 @@ class Spawner:
         self.difficulty = difficulty
         self.SetDifficulty()
         self.spawnTimer = Timer(self.spawnRate, True, True, self.spawnEnemy)
+        self.spawnMinibossTimer = Timer(60*5,True, True, self.spawnMiniboss)
         self.enemyUpgradeTimer = Timer(30, True, True, self.upgradeEnemy)
-
+        self.isTrue = False
     def update(self):
+        if not self.isTrue:
+            self.spawnMiniboss()
+            self.isTrue = True
         self.spawnTimer.update()
+        #self.spawnMinibossTimer.update()
         self.enemyUpgradeTimer.update()
         
     def spawnEnemy(self):
@@ -52,6 +62,10 @@ class Spawner:
                     *enemy["args"]
                 )
                 break
+    
+    def spawnMiniboss(self):
+        x = choice(list(self.miniBosses.values()))
+        x["class"]((0, -200), *x["args"])
 
     def upgradeEnemy(self):
         for key, enemy in self.enemies.items():

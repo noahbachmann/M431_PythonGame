@@ -156,7 +156,7 @@ class DoubleShooter(BasicShooter):
             self.right = not self.right
 
 class MiniBoss(DoubleShooter):
-    def __init__(self, pos, health, damage, gold, speed, player, image, frames, groups, size = None):
-        super().__init__(pos, health, damage, gold, speed, player, image, frames, groups, size)
+    def __init__(self, pos, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range=None, size: tuple = None):
+        super().__init__(pos, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range, size)
 
     

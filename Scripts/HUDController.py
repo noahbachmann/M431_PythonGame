@@ -13,7 +13,7 @@ class HUDController:
         self.pause = False
         self.hudSpritesGroup = hudSpritesGroup
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))        
-        self.goldTextRect = self.goldText.get_frect(midtop = (800, 800))  
+        self.goldTextRect = self.goldText.get_frect(midtop = (Settings.WINDOW_SIZE - 150, Settings.WINDOW_SIZE - 150))  
         self.upgradeButton = Button((Settings.WINDOW_SIZE - TILE_SIZE*1.5,TILE_SIZE*1.5),UI_Assets.BUTTON_32x32, func=self.toggleSettings, icon=UI_Assets.ICON_UPGRADE, size=(64,64))
         self.upgradeMenu = UpgradesMenu(surface, (Settings.WINDOW_SIZE - 600) // 2, 100, self.player, gameState, size=(600, Settings.WINDOW_SIZE-200))
         self.hearts = []

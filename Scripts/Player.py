@@ -143,7 +143,6 @@ class Player(pygame.sprite.Sprite):
                 self.boostStrength += 10
                 upgradesLevel[5] += 1
         self.gold -= cost
-        print(f"Upgraded {type}")
             
                 
 class Heavy(pygame.sprite.Sprite):
