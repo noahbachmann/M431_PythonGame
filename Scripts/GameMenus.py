@@ -56,7 +56,7 @@ class UpgradesMenu(Menu):
         self.player = player
         self.upgrades = ["Upgrades", "atkSpeed", "atkDmg", "health", "heavyCd", "boostTank", "boostStrength"]
         self.upgradesLevel = [0,0,0,0,0,0]
-        self.upgradesMultiplier = [50,100,100,30,50,100]
+        self.upgradesMultiplier = [25,50,50,15,25,50]
         self.generatedButtons = False
         self.buttons.append(Button((self.rect.centerx - TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
         self.buttons.append(Button((self.rect.centerx + TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), text="Exit", func=self.quitGame))
@@ -84,7 +84,7 @@ class UpgradesMenu(Menu):
             if i == 1:
                 costText = font.render("Cost", False, (0,0,0))
             else:
-                costText = font.render(str(((self.upgradesLevel[i-2])+1)*self.upgradesMultiplier[i-2]), False, (0,0,0))
+                costText = font.render(str((self.upgradesLevel[i-2]*self.upgradesMultiplier[i-2])+(self.upgradesMultiplier[i-2]*2)), False, (0,0,0))
             costTextRect = costText.get_frect(center = (x,y))
             self.cameraSurface.blit(costText, costTextRect)
         self.generatedButtons = True
