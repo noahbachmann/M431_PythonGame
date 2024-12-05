@@ -13,6 +13,7 @@ class Spawner:
             #health, damage, gold, speed, player, image, groups, size:tuple = None
             "Brawler": {"class": BasicMelee, "weight": 50, "args": (2, 1, 3, 200, self.player,
             Brawler.BRAWLER_IDLE_1,{"idle":{"frames":[Brawler.BRAWLER_IDLE_1, Brawler.BRAWLER_IDLE_2, Brawler.BRAWLER_IDLE_3], "speed":8},
+                                    "attack":{"frames":[Brawler.BRAWLER_BOOSTATTACK_1, Brawler.BRAWLER_BOOSTATTACK_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":5}}, self.enemyGroups, (64, 64))},
             #health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
             "Arachnis": {"class": BasicShooter, "weight": 50, "args": (2, 1, 1, 150, 3.5, self.player,
@@ -29,8 +30,8 @@ class Spawner:
             } 
         self.miniBosses = {
             "Crypto": {
-                "class": MiniBoss, "args": (15, 1, 100, 180, 3, self.player, Crypto.CRYPTO_1,{"idle":{"frames":[Crypto.CRYPTO_1,Crypto.CRYPTO_2,Crypto.CRYPTO_3,Crypto.CRYPTO_4,Crypto.CRYPTO_5], "speed":8},
-                                "death":{"frames":Enemy_Explosion.animationArray, "speed":5}},self.enemyGroups, False, 300, (128, 128))},
+                "class": MiniBoss, "args": (15, 1, 100, 120, 3, self.player, Crypto.CRYPTO_1,{"idle":{"frames":[Crypto.CRYPTO_1,Crypto.CRYPTO_2,Crypto.CRYPTO_3,Crypto.CRYPTO_4,Crypto.CRYPTO_5], "speed":8},
+                                "death":{"frames":Enemy_Explosion.animationArray, "speed":5}},self.enemyGroups, False, 200, (128, 128))},
             }
         self.spawnPoints.extend([(x, -200) for x in range(-200, 1200, 100)])
         self.spawnPoints.extend([(x, 1200) for x in range(-200, 1200, 100)])

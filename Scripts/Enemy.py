@@ -96,6 +96,7 @@ class BasicMelee(Enemy):
                     math.sin(math.radians(self.angle)) 
                     ).normalize()
                 self.atkTimer.activate()
+                self.animationState = "attack"
             elif self.atkTimer.active:
                 self.atkTimer.update()
             else:
@@ -106,6 +107,8 @@ class BasicMelee(Enemy):
         if self.isAttacking:
             self.atkDistancePassed = 0
         self.isAttacking = not self.isAttacking
+        if not self.isAttacking:
+            self.animationState = "idle"
 
 class BasicShooter(Enemy):
     def __init__(self, pos:tuple, health, damage, gold, speed, atkSpeed, player, image, frames, groups, range=None, size:tuple = None):
@@ -164,4 +167,4 @@ class MiniBoss(DoubleShooter):
     def heavyShoot(self):
         offset = pygame.math.Vector2(math.cos(math.radians(self.angle)), math.sin(math.radians(self.angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        ExplosionShot(spawnPos,self.damage,450,1,self.angle,128,HEAVY_IMAGE, self.groups(),700, self.offset.copy(), (4,8))
+        ExplosionShot(spawnPos,self.damage,450,1,self.angle,128,HEAVY_IMAGE, self.groups(), 300, self.offset.copy(), (4,8))
