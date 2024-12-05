@@ -1,7 +1,7 @@
 import pygame
-from Enemy import *
-from Timer import Timer
-from AssetsManager import Enemy_Explosion, Dark_Force, Arachnis, Brawler, Apex, Crypto
+from Scripts.Enemy import *
+from Scripts.Timer import Timer
+from Scripts.AssetsManager import Enemy_Explosion, Dark_Force, Arachnis, Brawler, Apex, Crypto
 from random import *
 
 class Spawner:

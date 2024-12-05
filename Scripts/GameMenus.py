@@ -1,7 +1,7 @@
 import pygame
-from Button import *
-from AssetsManager import UI_Assets
-from Settings import *
+from Scripts.Button import *
+from Scripts.AssetsManager import UI_Assets
+from Scripts.Settings import *
 from tkinter import filedialog
 
 class Menu:

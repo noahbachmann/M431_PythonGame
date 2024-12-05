@@ -1,8 +1,8 @@
 import pygame
 import math
-from Shot import *
-from Timer import *
-from AssetsManager import LASER_IMAGE, HEAVY_IMAGE
+from Scripts.Shot import *
+from Scripts.Timer import *
+from Scripts.AssetsManager import LASER_IMAGE, HEAVY_IMAGE
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, health, damage, gold, speed, player, image, frames, groups, size:tuple = None):

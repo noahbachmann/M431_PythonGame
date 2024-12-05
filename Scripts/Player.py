@@ -1,9 +1,9 @@
 import pygame
 import math
-from Timer import *
-from AssetsManager import *
-from Shot import *
-from Settings import *
+from Scripts.Timer import *
+from Scripts.AssetsManager import *
+from Scripts.Shot import *
+from Scripts.Settings import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, camOffset:tuple, health, speed, boostStrength, boostAmount:float, attackGroups, collisionSprites, size:tuple = None):

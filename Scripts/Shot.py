@@ -1,7 +1,7 @@
 import pygame
 import math
-from Timer import *
-from AssetsManager import EXPLOSION_RADIUS
+from Scripts.Timer import *
+from Scripts.AssetsManager import EXPLOSION_RADIUS
 
 class Shot(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, damage, speed, hits, angle, image, groups, lifeDistance = 0, playerOffset:pygame.math.Vector2 = pygame.math.Vector2(0,0), size:tuple = None):
@@ -63,7 +63,7 @@ class ExplosionShot(Shot):
                 self.exploding = True
                 self.explosionPos = pygame.math.Vector2(self.rect.center)
         if self.exploding:
-            self.savedSize += dt * 200
+            self.savedSize += dt * 250
             self.currentSize = int(self.savedSize) + 4
             self.image = pygame.transform.scale(self.explosionImage, (self.currentSize, self.currentSize))
             self.rect = self.image.get_frect(center = (self.explosionPos.x, self.explosionPos.y))

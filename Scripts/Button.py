@@ -1,7 +1,7 @@
 import pygame
-from Timer import *
-import Settings
-from AssetsManager import font, UI_Assets
+from Scripts.Timer import *
+from Scripts.AssetsManager import font, UI_Assets
+import Scripts.Settings
 
 class Button(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, image = None, text:str = None, func= None, size:tuple = None, groups = None, icon = None):
@@ -9,7 +9,7 @@ class Button(pygame.sprite.Sprite):
             super().__init__(groups)
         self.func = func
         self.offset = pygame.display.get_window_size()
-        self.offset = (self.offset[0] // 2 - Settings.WINDOW_SIZE // 2, self.offset[1] // 2 - Settings.WINDOW_SIZE // 2)
+        self.offset = (self.offset[0] // 2 - Scripts.Settings.WINDOW_SIZE // 2, self.offset[1] // 2 - Scripts.Settings.WINDOW_SIZE // 2)
         if image:
             if size:
                 self.image = pygame.transform.scale(image, size)
