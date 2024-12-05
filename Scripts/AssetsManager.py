@@ -1,9 +1,15 @@
 import pygame
 import os
+import sys
 
 pygame.font.init()
 
-ASSETS_PATH = os.path.join(os.path.dirname(__file__),  '..', 'Assets')
+if getattr(sys, 'frozen', False):
+    BASE_PATH = sys._MEIPASS
+else:
+    BASE_PATH = os.path.dirname(__file__)
+
+ASSETS_PATH = os.path.join(BASE_PATH, 'Assets')
 
 BULLSEYE_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'bullseye.png'))
 SPACESHIP_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'spaceship.png'))
