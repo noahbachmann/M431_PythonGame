@@ -73,10 +73,13 @@ class Round:
                     enemy.hit(shot.damage)
         enemies = pygame.sprite.spritecollide(self.player, self.enemySprites, False)
         if enemies:
-            self.player.hit(enemies[0].damage)
-            for enemy in enemies:
-                if not enemy.isEnemy:
-                    enemy.hit()
+            if enemies.count == 1 and hasattr(enemies[0], 'collided') and enemies[0].collided:
+                pass
+            else:
+                self.player.hit(enemies[0].damage)
+                for enemy in enemies:
+                    if not enemy.isEnemy:
+                        enemy.hit()
 
     def drawToScreen(self):
         screenSize = self.screen.get_size()

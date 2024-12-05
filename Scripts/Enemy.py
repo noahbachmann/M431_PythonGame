@@ -2,7 +2,7 @@ import pygame
 import math
 from Shot import *
 from Timer import *
-from AssetsManager import LASER_IMAGE
+from AssetsManager import LASER_IMAGE, HEAVY_IMAGE
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, health, damage, gold, speed, player, image, frames, groups, size:tuple = None):
@@ -112,7 +112,7 @@ class BasicShooter(Enemy):
         super().__init__(pos, health, damage, gold, speed, player, image, frames, groups, size)
         self.range = range
         self.atkSpeed = atkSpeed
-        self.atkTimer = Timer(atkSpeed)
+        self.atkTimer = Timer(atkSpeed, True, True, self.shoot)
         self.isEnemy = True
     
     def update(self, dt):
@@ -120,9 +120,6 @@ class BasicShooter(Enemy):
         if self.animationState == "death":
             return
         self.angle = self.getAngle()
-        if not self.atkTimer.active:
-            self.shoot()
-            self.atkTimer.activate()
         if self.range:
             if self.directionToPlayer.length() > self.range:
                 self.rect.center += self.directionToPlayer.normalize() * self.speed * dt
@@ -158,5 +155,13 @@ class DoubleShooter(BasicShooter):
 class MiniBoss(DoubleShooter):
     def __init__(self, pos, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range=None, size: tuple = None):
         super().__init__(pos, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range, size)
+        self.heavyTimer = Timer(5, True, True, self.heavyShoot)
 
-    
+    def update(self,dt):
+        super().update(dt)
+        self.heavyTimer.update()
+
+    def heavyShoot(self):
+        offset = pygame.math.Vector2(math.cos(math.radians(self.angle)), math.sin(math.radians(self.angle))) * self.rect.height / 2
+        spawnPos = self.rect.center + offset
+        ExplosionShot(spawnPos,self.damage,450,1,self.angle,128,HEAVY_IMAGE, self.groups(),700, self.offset.copy(), (4,8))

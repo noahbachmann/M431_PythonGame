@@ -181,7 +181,7 @@ class Heavy(pygame.sprite.Sprite):
             self.rect = self.image.get_frect(center = (self.explosionPos.x, self.explosionPos.y))
         else:
             self.rect.center += self.direction * self.speed * dt
-        if self.currentSize > 128:
+        if self.currentSize > self.explosionSize:
             self.kill()
     
     def hit(self, enemy):

@@ -29,7 +29,7 @@ class Spawner:
             } 
         self.miniBosses = {
             "Crypto": {
-                "class": MiniBoss, "args": (30, 2, 100, 180, 3, self.player, Crypto.CRYPTO_1,{"idle":{"frames":[Crypto.CRYPTO_1,Crypto.CRYPTO_2,Crypto.CRYPTO_3,Crypto.CRYPTO_4,Crypto.CRYPTO_5], "speed":8},
+                "class": MiniBoss, "args": (15, 1, 100, 180, 3, self.player, Crypto.CRYPTO_1,{"idle":{"frames":[Crypto.CRYPTO_1,Crypto.CRYPTO_2,Crypto.CRYPTO_3,Crypto.CRYPTO_4,Crypto.CRYPTO_5], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":5}},self.enemyGroups, False, 300, (128, 128))},
             }
         self.spawnPoints.extend([(x, -200) for x in range(-200, 1200, 100)])
@@ -48,7 +48,7 @@ class Spawner:
             self.spawnMiniboss()
             self.isTrue = True
         self.spawnTimer.update()
-        #self.spawnMinibossTimer.update()
+        self.spawnMinibossTimer.update()
         self.enemyUpgradeTimer.update()
         
     def spawnEnemy(self):
@@ -76,4 +76,4 @@ class Spawner:
 
     def SetDifficulty(self):
         if self.difficulty == "normal":
-            self.spawnRate = 3
+            self.spawnRate = 4
