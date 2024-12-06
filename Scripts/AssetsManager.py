@@ -26,6 +26,9 @@ class UI_Assets:
     BUTTON_64x32 = pygame.image.load(os.path.join(ASSETS_PATH, 'button_64x32.png'))
     ICON_UPGRADE = pygame.image.load(os.path.join(ASSETS_PATH, 'icon_upgrade.png'))
     ICON_HOME = pygame.image.load(os.path.join(ASSETS_PATH, 'icon_home.png'))
+    ICON_PLAY = pygame.image.load(os.path.join(ASSETS_PATH, 'icon_play.png'))
+    ICON_SETTINGS = pygame.image.load(os.path.join(ASSETS_PATH, 'icon_settings.png'))
+    ICON_EXIT = pygame.image.load(os.path.join(ASSETS_PATH, 'icon_exit.png'))
 
 class Heart_Assets:
     HEART_EMPTY = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Heart_Empty.png'))

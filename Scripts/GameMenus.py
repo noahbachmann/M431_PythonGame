@@ -41,9 +41,9 @@ class Menu:
 class EndGameMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, gameState, enabled,  score):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery), text="Play Again", func=self.newGame))
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery), func=self.newGame, icon=UI_Assets.ICON_PLAY))
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + 96), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 192), text="Exit", func=self.quitGame))
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 192), func=self.quitGame, icon=UI_Assets.ICON_EXIT))
         self.texts.append((font.render(str(score), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 96)))
     
@@ -59,7 +59,7 @@ class UpgradesMenu(Menu):
         self.upgradesMultiplier = [25,50,50,15,25,50]
         self.generatedButtons = False
         self.buttons.append(Button((self.rect.centerx - TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
-        self.buttons.append(Button((self.rect.centerx + TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), text="Exit", func=self.quitGame))
+        self.buttons.append(Button((self.rect.centerx + TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.quitGame, icon=UI_Assets.ICON_EXIT))
 
     def general(self):
         upgrdHeight = self.rect.height - (self.rect.height//4) 
@@ -98,9 +98,9 @@ class UpgradesMenu(Menu):
 class MainMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, enabled, gameState):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery), text="Play", func=self.newGame))   
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 90), text="Settings", func=self.settings))   
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 180), text="Exit", func=self.quitGame))   
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery), func=self.newGame, icon=UI_Assets.ICON_PLAY))   
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 90), func=self.settings, icon=UI_Assets.ICON_SETTINGS))   
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 180), func=self.quitGame, icon=UI_Assets.ICON_EXIT))   
         self.texts.append((font.render(str("My Space Shooter"), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 90)))
 
