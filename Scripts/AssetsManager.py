@@ -7,7 +7,7 @@ pygame.font.init()
 if getattr(sys, 'frozen', False):
     BASE_PATH = sys._MEIPASS
 else:
-    BASE_PATH = os.path.dirname(__file__)
+    BASE_PATH = os.path.join(os.path.dirname(__file__), '..')
 
 ASSETS_PATH = os.path.join(BASE_PATH, 'Assets')
 

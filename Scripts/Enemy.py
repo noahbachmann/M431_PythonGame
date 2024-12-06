@@ -5,12 +5,13 @@ from Scripts.Timer import *
 from Scripts.AssetsManager import LASER_IMAGE, HEAVY_IMAGE
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, health, damage, gold, speed, player, image, frames, groups, size:tuple = None):
+    def __init__(self, pos:tuple, health, damage, gold, speed, player, image, frames, groups, rotationSpeed = 0, size:tuple = None):
         super().__init__(groups)
         self.health = health
         self.damage = damage
         self.gold = gold
         self.speed = speed
+        self.rotationSpeed = rotationSpeed
         self.player = player
         self.frames = frames
         self.frameIndex = 0
@@ -30,7 +31,19 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.animate(dt)
-        self.directionToPlayer = (pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center))
+        if self.rotationSpeed != 0:
+            targetAngle = self.getAngle()
+            angleDiff = (targetAngle - self.angle) % 360
+            if angleDiff > 180:
+                angleDiff -= 360
+            maxStep = self.rotationSpeed * dt
+            self.angle += max(-maxStep, min(maxStep, angleDiff))
+            self.angle %= 360
+            radians = math.radians(self.angle)
+            self.directionToPlayer = pygame.Vector2(math.cos(radians), math.sin(radians))
+        else:
+            self.angle = self.getAngle()
+            self.directionToPlayer = pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center)
         self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
         if self.animationState == "death" and int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.frames[self.animationState]) == 0:
             self.kill()
@@ -58,8 +71,8 @@ class Enemy(pygame.sprite.Sprite):
         return math.degrees(math.atan2(playerPos.y - self.rect.centery, playerPos.x - self.rect.centerx))
 
 class BasicMelee(Enemy):
-    def __init__(self, pos:tuple, health, damage, gold, speed, player, image, frames, groups, size:tuple = None):
-        super().__init__(pos, health, damage, gold, speed, player, image, frames, groups, size)  
+    def __init__(self, pos:tuple, health, damage, gold, speed, player, image, frames, groups, rotationSpeed, size:tuple = None):
+        super().__init__(pos, health, damage, gold, speed, player, image, frames, groups, rotationSpeed, size)  
         self.isEnemy = True
         self.isAttacking = False
         self.atkDistance = 180
@@ -69,19 +82,17 @@ class BasicMelee(Enemy):
         self.rechargeSpeed = 0.1
         
     def update(self, dt):
-        super().update(dt)
+        self.animate(dt)
+        self.directionToPlayer = (pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center))
+        self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
         if self.animationState == "death":
             return
         if self.isAttacking:
             if self.atkDistancePassed >= self.atkDistance * 1.5:
                 if not self.atkTimer.active:
-                    #self.angle = 0
                     self.atkTimer.activate()
                 else:
                     self.atkTimer.update()
-                #targetAngle = self.getAngle()
-                #self.angle += (targetAngle - self.angle) / 500 
-                #self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
                 self.rect.center += self.atkDirection * self.speed * self.rechargeSpeed * dt
                 if self.rechargeSpeed < 0.8:
                     self.rechargeSpeed += 0.04
@@ -102,6 +113,9 @@ class BasicMelee(Enemy):
             else:
                 self.angle = self.getAngle()
                 self.rect.center += self.directionToPlayer.normalize() * self.speed * dt
+            if self.animationState == "death" and int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.frames[self.animationState]) == 0:
+                self.kill()
+                del self
 
     def attack(self):
         if self.isAttacking:
@@ -111,8 +125,8 @@ class BasicMelee(Enemy):
             self.animationState = "idle"
 
 class BasicShooter(Enemy):
-    def __init__(self, pos:tuple, health, damage, gold, speed, atkSpeed, player, image, frames, groups, range=None, size:tuple = None):
-        super().__init__(pos, health, damage, gold, speed, player, image, frames, groups, size)
+    def __init__(self, pos:tuple, health, damage, gold, speed, atkSpeed, player, image, frames, groups, range=None, rotationSpeed = 0, size:tuple = None):
+        super().__init__(pos, health, damage, gold, speed, player, image, frames, groups, rotationSpeed, size)
         self.range = range
         self.atkSpeed = atkSpeed
         self.atkTimer = Timer(atkSpeed, True, True, self.shoot)
@@ -122,9 +136,8 @@ class BasicShooter(Enemy):
         super().update(dt)
         if self.animationState == "death":
             return
-        self.angle = self.getAngle()
         if self.range:
-            if self.directionToPlayer.length() > self.range:
+            if (pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center)).length() > self.range:
                 self.rect.center += self.directionToPlayer.normalize() * self.speed * dt
             else:
                 self.rect.center += self.directionToPlayer.normalize() * 0
@@ -136,8 +149,8 @@ class BasicShooter(Enemy):
         Shot(spawnPos,self.damage,450,1,self.angle,LASER_IMAGE, self.groups(),700, self.offset.copy(), (4,8))
         
 class DoubleShooter(BasicShooter):
-    def __init__(self, pos: tuple, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range=None, size: tuple = None):
-        super().__init__(pos, health, damage, gold, speed, atkSpeed, player, image, frames, groups, range, size)
+    def __init__(self, pos: tuple, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range=None, rotationSpeed = 0, size: tuple = None):
+        super().__init__(pos, health, damage, gold, speed, atkSpeed, player, image, frames, groups, range, rotationSpeed, size)
         self.swap = swap
         if self.swap:
             self.right = True
@@ -156,8 +169,8 @@ class DoubleShooter(BasicShooter):
             self.right = not self.right
 
 class MiniBoss(DoubleShooter):
-    def __init__(self, pos, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range=None, size: tuple = None):
-        super().__init__(pos, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range, size)
+    def __init__(self, pos, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range=None, rotationSpeed = 0, size: tuple = None):
+        super().__init__(pos, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range, rotationSpeed, size)
         self.heavyTimer = Timer(5, True, True, self.heavyShoot)
 
     def update(self,dt):
