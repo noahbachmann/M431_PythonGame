@@ -66,3 +66,4 @@ while not gameState['quit']:
 
 
 pygame.quit()
+sys.exit()

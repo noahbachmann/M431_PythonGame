@@ -76,8 +76,14 @@ class Spawner:
                 enemy["weight"] -= 2
             elif (key == "DarkForce" or key == "Apex") and enemy["weight"] < 20:
                 enemy["weight"] += 2 
-            if self.upgraded % 2 == 0:
-                enemy["args"][0] += 1
+            if self.upgraded != 0:
+                if self.upgraded % 2 == 0:
+                    enemy["args"][0] += 1
+                if self.upgraded % 3 == 0:
+                    if self.spawnRate > 1:
+                        self.spawnRate -= 0.5
+                    elif self.spawnRate > 0.5:
+                        self.spawnRate -= 0.1
         self.upgraded += 1    
 
     def SetDifficulty(self):
