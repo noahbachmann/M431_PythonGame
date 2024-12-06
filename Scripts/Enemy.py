@@ -45,11 +45,13 @@ class Enemy(pygame.sprite.Sprite):
             self.angle = self.getAngle()
             self.directionToPlayer = pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center)
         self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
-        if self.animationState == "death" and int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.frames[self.animationState]) == 0:
+        if self.animationState == "death" and int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.frames[self.animationState]["frames"]) == len(self.frames[self.animationState]["frames"]) - 1:
             self.kill()
             del self
         
     def hit(self, damage):
+        if self.animationState == "death":
+            return
         self.health -= damage
         if self.health <= 0:
             self.player.gold += self.gold
@@ -60,10 +62,10 @@ class Enemy(pygame.sprite.Sprite):
     def animate(self, dt):
         self.frameIndex += self.frames[self.animationState]["speed"]*dt
         if self.size:
-            self.image = pygame.transform.scale(self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState])], self.size)
+            self.image = pygame.transform.scale(self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState]["frames"])], self.size)
             self.savedImage = self.image
         else:
-            self.image = self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState])]
+            self.image = self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState]["frames"])]
             self.savedImage = self.image
     
     def getAngle(self):
@@ -83,10 +85,13 @@ class BasicMelee(Enemy):
         
     def update(self, dt):
         self.animate(dt)
+        if self.animationState == "death":
+            if int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.frames[self.animationState]["frames"]) == 0:
+                self.kill()
+                del self
+            return
         self.directionToPlayer = (pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center))
         self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
-        if self.animationState == "death":
-            return
         if self.isAttacking:
             if self.atkDistancePassed >= self.atkDistance * 1.5:
                 if not self.atkTimer.active:
@@ -113,9 +118,6 @@ class BasicMelee(Enemy):
             else:
                 self.angle = self.getAngle()
                 self.rect.center += self.directionToPlayer.normalize() * self.speed * dt
-            if self.animationState == "death" and int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.frames[self.animationState]) == 0:
-                self.kill()
-                del self
 
     def attack(self):
         if self.isAttacking:
