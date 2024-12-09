@@ -1,5 +1,4 @@
-import pygame
-from math import ceil
+import pygame, time
 import Scripts.Settings
 from Scripts.AssetsManager import font, UI_Assets, Heart_Assets, Energybar_Assets
 from Scripts.Button import *
@@ -40,6 +39,8 @@ class HUDController:
         self.draw(surface)
 
     def toggleSettings(self):
+        if self.pause:
+            time.sleep(0.3)
         self.pause = not self.pause
 
     def showHealth(self):

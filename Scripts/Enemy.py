@@ -2,7 +2,7 @@ import pygame
 import math
 from Scripts.Shot import *
 from Scripts.Timer import *
-from Scripts.AssetsManager import LASER_IMAGE, HEAVY_IMAGE
+from Scripts.AssetsManager import LASER_IMAGE, HEAVY_IMAGE, Audio
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, health, damage, gold, speed, player, image, frames, groups, rotationSpeed = 0, size:tuple = None):
@@ -102,6 +102,8 @@ class BasicMelee(Enemy):
                 if self.rechargeSpeed < 0.8:
                     self.rechargeSpeed += 0.04
             else:
+                if self.atkDistancePassed == 0:
+                    Audio.ENEMY_BOOST.play()
                 self.rect.center += self.atkDirection * self.speed * 5 * dt
                 self.atkDistancePassed += self.atkDirection.length() * self.speed * 5 * dt
         else:

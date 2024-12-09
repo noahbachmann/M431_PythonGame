@@ -96,5 +96,11 @@ class Audio:
     MINIBOSS_SPAWN.set_volume(0.4)
     GAME_END = pygame.mixer.Sound(os.path.join(AUDIO_PATH,'game_end.mp3'))
     GAME_END.set_volume(0.4)
+    EXPLOSION = pygame.mixer.Sound(os.path.join(AUDIO_PATH,'explosion.mp3'))
+    EXPLOSION.set_volume(0.5)
+    ENEMY_BOOST = pygame.mixer.Sound(os.path.join(AUDIO_PATH,'enemy_boost.wav'))
+    ENEMY_BOOST.set_volume(0.35)
+    BUTTON_PRESS = pygame.mixer.Sound(os.path.join(AUDIO_PATH,'button_press.mp3'))
+    BUTTON_PRESS.set_volume(0.4)
 
 font = pygame.font.Font(os.path.join(ASSETS_PATH, 'upheavtt.ttf'), 20)

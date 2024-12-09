@@ -1,6 +1,6 @@
 import pygame
 from Scripts.Timer import *
-from Scripts.AssetsManager import font, UI_Assets
+from Scripts.AssetsManager import font, UI_Assets, Audio
 import Scripts.Settings
 
 class Button(pygame.sprite.Sprite):
@@ -46,6 +46,7 @@ class Button(pygame.sprite.Sprite):
         if self.rect.collidepoint(mousePos):
             if pygame.mouse.get_pressed()[0] and not self.cdTimer.active:
                 self.func()
+                Audio.BUTTON_PRESS.play()
                 self.cdTimer.activate()
         
         if self.cdTimer.active:

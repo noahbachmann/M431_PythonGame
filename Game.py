@@ -16,6 +16,7 @@ gameState = {'gaming': "MainMenu", 'quit': False}
 
 while not gameState['quit']:
     if gameState['gaming'] == "Gaming":
+        time.sleep(0.3)
         round = Round(cameraSurface, screen, gameState)
         score = round.run()
         if score < 0:

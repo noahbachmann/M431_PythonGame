@@ -192,3 +192,4 @@ class Heavy(pygame.sprite.Sprite):
         if not self.exploding:
             self.exploding = True
             self.explosionPos = pygame.math.Vector2(self.rect.center)
+            Audio.EXPLOSION.play()
