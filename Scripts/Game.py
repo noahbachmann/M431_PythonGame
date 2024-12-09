@@ -4,7 +4,11 @@ import time
 import Settings
 from Round import *
 from GameMenus import *
+from DataManager import *
+import json
+
 pygame.init()
+loadData()
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 screenSize = screen.get_size()
 if screenSize[1] < Settings.WINDOW_SIZE:
@@ -14,15 +18,15 @@ offset = (screenSize[0] // 2 - Settings.WINDOW_SIZE // 2, screenSize[1] // 2 - S
 pygame.display.set_caption("My Space Shooter")
 gameState = {'gaming': "MainMenu", 'quit': False}
 
+
+
 while not gameState['quit']:
     if gameState['gaming'] == "Gaming":
         round = Round(cameraSurface, screen, gameState)
         score = round.run()
         if score < 0:
-            pygame.quit()
-            sys.exit()
-        endGameMenu = EndGameMenu(cameraSurface, 200, 200,(600,600), True, gameState, score)
             if gameState['quit']:
+                saveData()
                 pygame.quit()
                 sys.exit()
             else:
