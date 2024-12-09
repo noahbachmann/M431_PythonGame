@@ -122,7 +122,7 @@ class SettingsMenu(Menu):
 
     def cursorUpload(self,event=None):
         
-        cursorPath = filedialog.askopenfilename()
+        cursorPath = filedialog.askopenfilename(filetypes=[("Image files", "*.png;*.jpg;*.jpeg")])
         if cursorPath:
             clock = pygame.time.Clock()
             cursor_image = pygame.image.load(cursorPath).convert_alpha()
