@@ -66,7 +66,9 @@ class Round:
                 self.drawToScreen()
         
     def collisions(self):
-        for shot in self.playerShotSprites:       
+        for shot in self.playerShotSprites:
+            if shot.collided:
+                continue       
             enemies = pygame.sprite.spritecollide(shot, self.enemySprites, False)
             for enemy in enemies:
                 if enemy not in shot.collidedEnemies and enemy.isEnemy:
@@ -74,7 +76,7 @@ class Round:
                     enemy.hit(shot.damage)
         enemies = pygame.sprite.spritecollide(self.player, self.enemySprites, False)
         if enemies:
-            if enemies.count == 1 and hasattr(enemies[0], 'collided') and enemies[0].collided:
+            if enemies.count == 1 and (hasattr(enemies[0], 'collided') and enemies[0].collided):
                 pass
             else:
                 self.player.hit(enemies[0].damage)

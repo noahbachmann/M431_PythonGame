@@ -4,7 +4,7 @@ from Scripts.Timer import *
 from Scripts.AssetsManager import EXPLOSION_RADIUS, Audio
 
 class Shot(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, damage, speed, hits, angle, image, groups, lifeDistance = 0, playerOffset:pygame.math.Vector2 = pygame.math.Vector2(0,0), size:tuple = None):
+    def __init__(self, pos:tuple, damage, speed, hits, angle, image, groups, lifeDistance = 0, playerOffset:pygame.math.Vector2 = pygame.math.Vector2(0,0), size:tuple = None, hitAnimation = None):
         super().__init__(groups)
         self.isHeavy = False
         self.damage = damage
@@ -12,6 +12,10 @@ class Shot(pygame.sprite.Sprite):
         self.hits = hits
         self.lifeDistance = lifeDistance
         self.isEnemy = False
+        self.collided = False
+        self.animationState = "idle"
+        self.hitAnimation = hitAnimation
+        self.frameIndex = 0
         self.direction = pygame.math.Vector2(
             math.cos(math.radians(angle)), 
             math.sin(math.radians(angle))
@@ -30,19 +34,29 @@ class Shot(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
     
     def update(self, dt):
-        if self.lifeDistance != 0:
+        if self.collided:
+            self.animate(dt)
+            if self.frameIndex >= 4:
+                self.kill()
+        elif self.lifeDistance != 0:
             currentPosition = pygame.math.Vector2(self.rect.center)
             if (currentPosition - self.startPos).length() >= self.lifeDistance:
                 self.kill()
-        self.rect.center += self.direction * self.speed * dt
+        if not self.collided:
+            self.rect.center += self.direction * self.speed * dt
 
     def hit(self, enemy = None):
+        if self.collided:
+            return
         self.hits -= 1
         if enemy:
             self.collidedEnemies.add(enemy)
         if self.hits <= 0:
-            self.kill()
-            del self
+            self.collided = True
+
+    def animate(self, dt):
+        self.frameIndex += 8*dt
+        self.image = pygame.transform.scale(self.hitAnimation[int(self.frameIndex)], (16,16))
 
 class ExplosionShot(Shot):
     def __init__(self, pos, damage, speed, hits, angle, explosionSize, image, groups, lifeDistance=0, playerOffset = pygame.math.Vector2(0, 0), size = None):
