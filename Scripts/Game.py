@@ -24,21 +24,18 @@ while not gameState['quit']:
     if gameState['gaming'] == "Gaming":
         round = Round(cameraSurface, screen, gameState)
         score = round.run()
-
-        if score > DataManager.dataJson['highScore']:
-            DataManager.dataJson['highScore'] = score
-            DataManager.saveData()
-        while endGameMenu.enabled: 
-            if score < 0:
-             if gameState['quit']:
+        if score < 0:
+            if gameState['quit']:
                 DataManager.saveData()
                 pygame.quit()
                 sys.exit()
             else:
                 continue
         endGameMenu = EndGameMenu(cameraSurface, (Settings.WINDOW_SIZE - 600) // 2, 50,(600,600), gameState, True, score)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+        while endGameMenu.enabled: 
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    DataManager.saveData()
                     pygame.quit()
                     sys.exit()    
             screen.fill((0,0,0))
