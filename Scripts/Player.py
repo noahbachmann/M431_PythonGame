@@ -90,7 +90,8 @@ class Player(pygame.sprite.Sprite):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
         Shot(spawnPos,self.atkDamage,500,1,angle,LASER_BLUE_IMAGE, self.attackGroups, playerOffset=self.moveOffset.copy(), size=(4,8))
-    
+        Audio.LASER_HIGH.play()
+
     def heavy(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
@@ -100,7 +101,8 @@ class Player(pygame.sprite.Sprite):
         if self.damageTimer.active:
             return
         self.damageTimer.activate()
-        self.health -= damage           
+        self.health -= damage
+        Audio.PLAYER_DAMAGE.play()           
 
     def upgrade(self, type:str, upgradesLevel):
         cost = 0
@@ -143,6 +145,7 @@ class Player(pygame.sprite.Sprite):
                 self.boostStrength += 10
                 upgradesLevel[5] += 1
         self.gold -= cost
+        Audio.COIN_UP.play()
             
                 
 class Heavy(pygame.sprite.Sprite):

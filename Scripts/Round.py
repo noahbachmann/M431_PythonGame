@@ -57,6 +57,7 @@ class Round:
                 self.collisions()
                 if self.player.health <= 0:
                     self.running = False
+                    Audio.GAME_END.play()
                     return self.player.score          
                 self.enemySpawner.update()
                 self.allSprites.update(self.cameraSurface, dt, self.player.moveOffset)

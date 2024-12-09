@@ -1,7 +1,7 @@
 import pygame
 from Scripts.Enemy import *
 from Scripts.Timer import Timer
-from Scripts.AssetsManager import Enemy_Explosion, Dark_Force, Arachnis, Brawler, Apex, Crypto
+from Scripts.AssetsManager import Enemy_Explosion, Dark_Force, Arachnis, Brawler, Apex, Crypto, Audio
 from random import *
 
 class Spawner:
@@ -69,6 +69,7 @@ class Spawner:
     def spawnMiniboss(self):
         x = choice(list(self.miniBosses.values()))
         x["class"]((0, -200), *x["args"])
+        Audio.MINIBOSS_SPAWN.play()
 
     def upgradeEnemy(self):
         for key, enemy in self.enemies.items():
