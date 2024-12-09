@@ -4,7 +4,7 @@ from AssetsManager import UI_Assets
 from Settings import *
 from tkinter import filedialog
 import tkinter
-import AssetsManager
+from AssetsManager import *
 import DataManager
 
 
@@ -37,12 +37,11 @@ class Menu:
     def quitGame(self):
         self.enabled = False
         self.gameState['quit'] = True
-        DataManager.saveData()
-
+    
     def mainMenu(self):
         self.enabled = False
-        self.gameState['gaming'] = "MainMenu"
         DataManager.saveData()
+        self.gameState['gaming'] = "MainMenu"
 
 class EndGameMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, gameState, enabled,  score):
@@ -117,12 +116,12 @@ class SettingsMenu(Menu):
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.mainMenu))   
         self.buttons.append(Button((self.rect.centerx + 125, self.rect.centery - 50), text="upload", func=self.cursorUpload))   
-        self.cursor = AssetsManager.Crosshair.Crosshair1
+        self.cursor = Crosshair.Crosshair1
             
 
     def cursorUpload(self,event=None):
         
-        cursorPath = filedialog.askopenfilename(filetypes=[("Image files", "*.png;*.jpg;*.jpeg")])
+        cursorPath = filedialog.askopenfilename()
         if cursorPath:
             clock = pygame.time.Clock()
             cursor_image = pygame.image.load(cursorPath).convert_alpha()
@@ -130,6 +129,7 @@ class SettingsMenu(Menu):
             self.cursor = cursor_image
             hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
             pygame.mouse.set_cursor((hotspot[0], hotspot[1]), cursor_image)
+            DataManager.dataJson['customCrosshair'] = True
             DataManager.dataJson['crosshair'] = cursorPath
             DataManager.saveData()
 
@@ -138,6 +138,3 @@ class SettingsMenu(Menu):
         super().draw()
         self.cameraSurface.blit(self.cursor, (125, 125))
 
-
-
-  
