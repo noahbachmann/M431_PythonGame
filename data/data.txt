@@ -1,1 +1,4 @@
-{"crosshair": "C:/Users/Noel Merz/Downloads/Coolship.png"}
+{
+    "crosshair": "Empty",
+    "highScore": 0
+}

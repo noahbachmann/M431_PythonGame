@@ -4,11 +4,11 @@ import time
 import Settings
 from Round import *
 from GameMenus import *
-from DataManager import *
+import DataManager
 import json
 
 pygame.init()
-loadData()
+DataManager.loadData()
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 screenSize = screen.get_size()
 if screenSize[1] < Settings.WINDOW_SIZE:
@@ -24,17 +24,21 @@ while not gameState['quit']:
     if gameState['gaming'] == "Gaming":
         round = Round(cameraSurface, screen, gameState)
         score = round.run()
-        if score < 0:
-            if gameState['quit']:
-                saveData()
+
+        if score > DataManager.dataJson['highScore']:
+            DataManager.dataJson['highScore'] = score
+            DataManager.saveData()
+        while endGameMenu.enabled: 
+            if score < 0:
+             if gameState['quit']:
+                DataManager.saveData()
                 pygame.quit()
                 sys.exit()
             else:
                 continue
         endGameMenu = EndGameMenu(cameraSurface, (Settings.WINDOW_SIZE - 600) // 2, 50,(600,600), gameState, True, score)
-        while endGameMenu.enabled: 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()    
             screen.fill((0,0,0))

@@ -1,31 +1,34 @@
 import json
-from AssetsManager import *
+import os
+import AssetsManager
+
 dataPath = 'data/data.txt'
 
+
 dataJson = {
-    'crosshair': Crosshair.Crosshair1
+    'crosshair': "Placeholder",
+    'highScore': 0
 }
 
-
-
 def saveData():
-    with open('data/data.txt', 'w') as data_file:
-        json.dump(dataJson, data_file)
-    print(dataJson)
+    if not os.path.exists('data'):
+        os.makedirs('data')
 
+   
+    with open(dataPath, 'w') as data_file:
+        json.dump(dataJson, data_file, indent=4)  
+    print(f"Data saved: {dataJson}")
 
 def loadData():
-     with open('data/data.txt') as data_file:
-         data =json.load(data_file)
-         print(dataJson)
+    global dataJson  
+    try:
+        with open(dataPath, 'r') as data_file:
+            dataJson = json.load(data_file)  #
+            print("Data loaded: ", dataJson)
+    except FileNotFoundError:
+        print("No data file created yet, using defaults.")
+    except json.JSONDecodeError:
+        print("Error decoding JSON data. Using defaults.")
 
-
-
-
-try: 
-    with open('data/data.txt') as data_file:
-        data =json.load(data_file)
-        print(dataJson)
-
-except:
-    print("no data file created yet:/")
+loadData()
+saveData()  

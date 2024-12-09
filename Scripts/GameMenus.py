@@ -4,8 +4,8 @@ from AssetsManager import UI_Assets
 from Settings import *
 from tkinter import filedialog
 import tkinter
-from AssetsManager import *
-from DataManager import *
+import AssetsManager
+import DataManager
 
 
 class Menu:
@@ -37,10 +37,12 @@ class Menu:
     def quitGame(self):
         self.enabled = False
         self.gameState['quit'] = True
-    
+        DataManager.saveData()
+
     def mainMenu(self):
         self.enabled = False
         self.gameState['gaming'] = "MainMenu"
+        DataManager.saveData()
 
 class EndGameMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, gameState, enabled,  score):
@@ -115,7 +117,7 @@ class SettingsMenu(Menu):
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.mainMenu))   
         self.buttons.append(Button((self.rect.centerx + 125, self.rect.centery - 50), text="upload", func=self.cursorUpload))   
-        self.cursor = Crosshair.Crosshair1
+        self.cursor = AssetsManager.Crosshair.Crosshair1
             
 
     def cursorUpload(self,event=None):
@@ -128,8 +130,8 @@ class SettingsMenu(Menu):
             self.cursor = cursor_image
             hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
             pygame.mouse.set_cursor((hotspot[0], hotspot[1]), cursor_image)
-            dataJson['crosshair'] = cursorPath
-            saveData()
+            DataManager.dataJson['crosshair'] = cursorPath
+            DataManager.saveData()
 
     
     def draw(self):
