@@ -109,5 +109,9 @@ class Audio:
     ENEMY_BOOST.set_volume(0.35)
     BUTTON_PRESS = pygame.mixer.Sound(os.path.join(AUDIO_PATH,'button_press.mp3'))
     BUTTON_PRESS.set_volume(0.4)
+    
+class Crosshair:
+    Crosshair1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crosshair', 'Crosshair-1.png'))
+    Crosshair2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crosshair', 'Crosshair-2.png'))
 
 font = pygame.font.Font(os.path.join(ASSETS_PATH, 'upheavtt.ttf'), 20)

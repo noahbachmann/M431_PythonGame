@@ -1,8 +1,10 @@
 import pygame
 from Scripts.Button import *
-from Scripts.AssetsManager import UI_Assets
+from Scripts.AssetsManager import UI_Assets, Crosshair
 from Scripts.Settings import *
 from tkinter import filedialog
+import Scripts.DataManager
+
 
 class Menu:
     def __init__(self, surface, left, top, gameState, color = None, enabled = False, size:tuple = None):
@@ -36,6 +38,7 @@ class Menu:
     
     def mainMenu(self):
         self.enabled = False
+        Scripts.DataManager.saveData()
         self.gameState['gaming'] = "MainMenu"
 
 class EndGameMenu(Menu):
@@ -46,7 +49,7 @@ class EndGameMenu(Menu):
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + 192), func=self.quitGame, icon=UI_Assets.ICON_EXIT))
         self.texts.append((font.render(str(score), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 96)))
-    
+        
     def newGame(self):
         self.enabled = False
 
@@ -119,16 +122,25 @@ class SettingsMenu(Menu):
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), func=self.mainMenu, icon=UI_Assets.ICON_HOME))   
         self.buttons.append(Button((self.rect.centerx + 125, self.rect.centery - 50), text="upload", func=self.cursorUpload))   
+        self.cursor = Crosshair.Crosshair1
+            
 
-    def cursorUpload(event=None):
+    def cursorUpload(self,event=None):
         
         cursorPath = filedialog.askopenfilename()
-        clock = pygame.time.Clock()
-        cursor_image = pygame.image.load(cursorPath).convert_alpha()
-        cursor_image = pygame.transform.scale(cursor_image, (32, 32))
-        hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
-        pygame.mouse.set_cursor((hotspot[0], hotspot[1]), cursor_image)
+        if cursorPath:
+            clock = pygame.time.Clock()
+            cursor_image = pygame.image.load(cursorPath).convert_alpha()
+            cursor_image = pygame.transform.scale(cursor_image, (32, 32))
+            self.cursor = cursor_image
+            hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
+            pygame.mouse.set_cursor((hotspot[0], hotspot[1]), cursor_image)
+            Scripts.DataManager.dataJson['customCrosshair'] = True
+            Scripts.DataManager.dataJson['crosshair'] = cursorPath
+            Scripts.DataManager.saveData()
 
+    
+    def draw(self):
+        super().draw()
+        self.cameraSurface.blit(self.cursor, (125, 125))
 
-
-  

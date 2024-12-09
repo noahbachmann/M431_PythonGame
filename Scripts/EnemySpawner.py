@@ -87,6 +87,13 @@ class Spawner:
                         self.spawnRate -= 0.1
         self.upgraded += 1    
 
+    def upgradeEnemy(self):
+        for key, enemy in self.enemies.items():
+            if (key == "Brawler" or key == "Arachnis") and enemy["weight"] > 20:
+                enemy["weight"] -= 2
+            elif (key == "DarkForce" or key == "Apex") and enemy["weight"] < 20:
+                enemy["weight"] += 2     
+
     def SetDifficulty(self):
         if self.difficulty == "normal":
             self.spawnRate = 4
