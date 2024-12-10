@@ -115,7 +115,8 @@ class SettingsMenu(Menu):
         self.texts.append((font.render(str("Settings"), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.mainMenu))   
-        self.buttons.append(Button((self.rect.centerx + 125, self.rect.centery - 50), text="upload", func=self.cursorUpload))   
+        self.buttons.append(Button((self.rect.centerx + 125, self.rect.centery - -150), text="Upload", func=self.cursorUpload))  
+        self.buttons.append(Button((self.rect.centerx + 225, self.rect.centery - -150), text="Reset", func=self.cursorReset)) 
         self.cursor = Crosshair.Crosshair1
             
 
@@ -132,6 +133,14 @@ class SettingsMenu(Menu):
             DataManager.dataJson['customCrosshair'] = True
             DataManager.dataJson['crosshair'] = cursorPath
             DataManager.saveData()
+
+    def cursorReset(self, event=None):
+        DataManager.dataJson['customCrosshair'] = False
+        classicCrosshair = Crosshair.Crosshair1
+        cursor_image = pygame.transform.scale(classicCrosshair, (32, 32))
+        classicCrosshair = cursor_image
+        hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
+        pygame.mouse.set_cursor((hotspot[0], hotspot[1]), cursor_image) 
 
     
     def draw(self):
