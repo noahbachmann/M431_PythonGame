@@ -10,6 +10,7 @@ import DataManager
 
 class Menu:
     def __init__(self, surface, left, top, gameState, color = None, enabled = False, size:tuple = None):
+        DataManager.loadData()
         self.cameraSurface = surface
         self.left = left
         self.top = top
@@ -108,6 +109,7 @@ class MainMenu(Menu):
     def settings(self):
         self.enabled = False
         self.gameState['gaming'] = "Settings"
+        DataManager.loadData()
 
 class SettingsMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, enabled, gameState):
@@ -135,15 +137,28 @@ class SettingsMenu(Menu):
             DataManager.saveData()
 
     def cursorReset(self, event=None):
-        DataManager.dataJson['customCrosshair'] = False
         classicCrosshair = Crosshair.Crosshair1
         cursor_image = pygame.transform.scale(classicCrosshair, (32, 32))
         classicCrosshair = cursor_image
         hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
         pygame.mouse.set_cursor((hotspot[0], hotspot[1]), cursor_image) 
+        DataManager.dataJson['customCrosshair'] = False
+        DataManager.saveData()
+
+        
 
     
     def draw(self):
         super().draw()
-        self.cameraSurface.blit(self.cursor, (125, 125))
+        if DataManager.dataJson['customCrosshair'] == True:
+            self.cameraSurface.blit(UI_Assets.BUTTON_32x32, (0, 0))
+            crosshair_path = DataManager.dataJson['crosshair']
+            cursor_image = pygame.image.load(crosshair_path).convert_alpha()  
+            cursor_image = pygame.transform.scale(cursor_image, (32, 32))  
+            hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
+            self.cameraSurface.blit(cursor_image, (0,0))
+
+        else:
+            self.cameraSurface.blit(UI_Assets.BUTTON_32x32, (0, 0))
+            self.cameraSurface.blit(Crosshair.Crosshair1, (0,0))
 
