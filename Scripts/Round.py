@@ -67,7 +67,7 @@ class Round:
         
     def collisions(self):
         for shot in self.playerShotSprites:
-            if shot.collided:
+            if hasattr(shot, 'collided') and shot.collided:
                 continue       
             enemies = pygame.sprite.spritecollide(shot, self.enemySprites, False)
             for enemy in enemies:
