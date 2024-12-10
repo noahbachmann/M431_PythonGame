@@ -89,7 +89,7 @@ class Player(pygame.sprite.Sprite):
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Shot(spawnPos,self.atkDamage,500,1,angle,Player_Laser.PLAYER_LASER, self.attackGroups, playerOffset=self.moveOffset.copy(), size=(10,18),hitAnimation=Enemy_Explosion.animationArray)
+        Shot(spawnPos,self.atkDamage,500,1,angle,Player_Laser.PLAYER_LASER, self.attackGroups, playerOffset=self.moveOffset.copy(), size=(7,14),hitAnimation=Enemy_Explosion.animationArray)
         Audio.LASER_HIGH.play()
 
     def heavy(self, angle):

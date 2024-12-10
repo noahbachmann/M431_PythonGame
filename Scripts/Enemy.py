@@ -150,7 +150,7 @@ class BasicShooter(Enemy):
     def shoot(self):
         offset = pygame.math.Vector2(math.cos(math.radians(self.angle)), math.sin(math.radians(self.angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Shot(spawnPos,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER, self.groups(),700, self.offset.copy(), (10,18), Enemy_Explosion.animationArray)
+        Shot(spawnPos,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER, self.groups(),700, self.offset.copy(), (7,14), Enemy_Explosion.animationArray)
         
 class DoubleShooter(BasicShooter):
     def __init__(self, pos: tuple, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range=None, rotationSpeed = 0, size: tuple = None):
@@ -163,13 +163,13 @@ class DoubleShooter(BasicShooter):
         sideOffset = pygame.math.Vector2(math.cos(math.radians(self.angle + 90)), math.sin(math.radians(self.angle + 90))) * (self.rect.width / 3)
         offset = pygame.math.Vector2(math.cos(math.radians(self.angle)), math.sin(math.radians(self.angle))) * self.rect.height / 2
         if not self.swap:
-            Shot(self.rect.center + offset - sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER, self.groups(),700, self.offset.copy(), (10,18), Enemy_Explosion.animationArray)
-            Shot(self.rect.center + offset + sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER, self.groups(),700, self.offset.copy(), (10,18), Enemy_Explosion.animationArray)
+            Shot(self.rect.center + offset - sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER, self.groups(),700, self.offset.copy(), (7,14), Enemy_Explosion.animationArray)
+            Shot(self.rect.center + offset + sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER, self.groups(),700, self.offset.copy(), (7,14), Enemy_Explosion.animationArray)
         else:
             if self.right:
-                Shot(self.rect.center + offset + sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER, self.groups(),700, self.offset.copy(), (10,18), Enemy_Explosion.animationArray)
+                Shot(self.rect.center + offset + sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER, self.groups(),700, self.offset.copy(), (7,14), Enemy_Explosion.animationArray)
             else:
-                Shot(self.rect.center + offset - sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER, self.groups(),700, self.offset.copy(), (10,18), Enemy_Explosion.animationArray)
+                Shot(self.rect.center + offset - sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER, self.groups(),700, self.offset.copy(), (7,14), Enemy_Explosion.animationArray)
             self.right = not self.right
 
 class MiniBoss(DoubleShooter):
