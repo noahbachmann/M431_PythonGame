@@ -12,8 +12,6 @@ else:
 
 ASSETS_PATH = os.path.join(BASE_PATH, 'Assets')
 
-LASER_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'laser.png'))
-LASER_BLUE_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'laser_blue.png'))
 HEAVY_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'heavy.png'))
 STAR_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'star.png'))
 BORDER_BLOCK = pygame.image.load(os.path.join(ASSETS_PATH, 'meteor.png'))

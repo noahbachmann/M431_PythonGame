@@ -36,7 +36,7 @@ class Shot(pygame.sprite.Sprite):
     def update(self, dt):
         if self.collided:
             self.animate(dt)
-            if self.frameIndex >= 4:
+            if self.frameIndex > len(self.hitAnimation)-1:
                 self.kill()
         elif self.lifeDistance != 0:
             currentPosition = pygame.math.Vector2(self.rect.center)
