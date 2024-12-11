@@ -30,7 +30,7 @@ class Spawner:
             } 
         self.miniBosses = {
             "Crypto": {
-                "class": MiniBoss, "args": [15, 1, 100, 120, 3, self.player, Crypto.CRYPTO_1,{"idle":{"frames":[Crypto.CRYPTO_1,Crypto.CRYPTO_2,Crypto.CRYPTO_3,Crypto.CRYPTO_4,Crypto.CRYPTO_5], "speed":11},
+                "class": MiniBoss, "args": [15, 1, 75, 120, 3, self.player, Crypto.CRYPTO_1,{"idle":{"frames":[Crypto.CRYPTO_1,Crypto.CRYPTO_2,Crypto.CRYPTO_3,Crypto.CRYPTO_4,Crypto.CRYPTO_5], "speed":11},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":12}},self.enemyGroups, False, 200, 35,(128, 128)]},
             }
         self.spawnPoints.extend([(x, -200) for x in range(-200, 1200, 100)])
@@ -41,15 +41,11 @@ class Spawner:
         self.difficulty = difficulty
         self.SetDifficulty()
         self.spawnTimer = Timer(self.spawnRate, True, True, self.spawnEnemy)
-        self.spawnMinibossTimer = Timer(60*5,True, True, self.spawnMiniboss)
+        self.spawnMinibossTimer = Timer(60*2,True, True, self.spawnMiniboss)
         self.enemyUpgradeTimer = Timer(30, True, True, self.upgradeEnemy)
         self.upgraded = 0
-        self.isTrue = False
 
     def update(self):
-        if not self.isTrue:
-            self.spawnMiniboss()
-            self.isTrue = True
         self.spawnTimer.update()
         self.spawnMinibossTimer.update()
         self.enemyUpgradeTimer.update()
@@ -85,6 +81,9 @@ class Spawner:
                         self.spawnRate -= 0.5
                     elif self.spawnRate > 0.5:
                         self.spawnRate -= 0.1
+        for key, enemy in self.miniBosses:
+            if self.upgraded % 10:
+                enemy["args"][0] += 5
         self.upgraded += 1    
 
     def upgradeEnemy(self):
