@@ -91,7 +91,10 @@ class Enemy_Explosion:
     animationArray = [ENEMY_EXPLOSION_1,ENEMY_EXPLOSION_2,ENEMY_EXPLOSION_3,ENEMY_EXPLOSION_4,ENEMY_EXPLOSION_5,ENEMY_EXPLOSION_6,ENEMY_EXPLOSION_7,ENEMY_EXPLOSION_8,ENEMY_EXPLOSION_9]
 
 class Player_Laser:
-    PLAYER_LASER = pygame.image.load(os.path.join(ASSETS_PATH, 'Player Laser', 'Player_Laser.png'))
+    PLAYER_LASER_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Player Laser', 'Player_Laser_1.png'))
+    PLAYER_LASER_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Player Laser', 'Player_Laser_2.png'))
+    PLAYER_LASER_3 = pygame.image.load(os.path.join(ASSETS_PATH, 'Player Laser', 'Player_Laser_3.png'))
+    animationArray_player_laser = [PLAYER_LASER_1, PLAYER_LASER_2, PLAYER_LASER_3]
 
     LASER_EXPLOSION_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Player Laser', 'Laser_Explosion', 'Laser_Explosion_1.png'))
     LASER_EXPLOSION_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Player Laser', 'Laser_Explosion', 'Laser_Explosion_2.png'))
@@ -101,7 +104,10 @@ class Player_Laser:
     animationArray_laser_explosion = [LASER_EXPLOSION_1, LASER_EXPLOSION_2, LASER_EXPLOSION_3, LASER_EXPLOSION_4, LASER_EXPLOSION_5]
 
 class Enemy_Laser:
-    ENEMY_LASER = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Enemy_Laser.png'))
+    ENEMY_LASER_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Enemy_Laser_1.png'))
+    ENEMY_LASER_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Enemy_Laser_2.png'))
+    ENEMY_LASER_3 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Enemy_Laser_3.png'))
+    animationArray_enemy_laser = [ENEMY_LASER_1, ENEMY_LASER_2, ENEMY_LASER_3]
 
     LASER_EXPLOSION_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Laser Explosion', 'Laser_Explosion_1.png'))
     LASER_EXPLOSION_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Laser Explosion', 'Laser_Explosion_2.png'))
