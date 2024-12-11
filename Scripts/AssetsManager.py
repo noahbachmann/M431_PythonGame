@@ -12,19 +12,19 @@ else:
 
 ASSETS_PATH = os.path.join(BASE_PATH, 'Assets')
 
-HEAVY_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'heavy.png'))
-STAR_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'star.png'))
-BORDER_BLOCK = pygame.image.load(os.path.join(ASSETS_PATH, 'meteor.png'))
-EXPLOSION_RADIUS = pygame.image.load(os.path.join(ASSETS_PATH, 'explosionRadius.png'))
+HEAVY_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'heavy.png'))
+STAR_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'star.png'))
+BORDER_BLOCK = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'meteor.png'))
+EXPLOSION_RADIUS = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'explosionRadius.png'))
 
 class UI_Assets:
-    BUTTON_32x32 = pygame.image.load(os.path.join(ASSETS_PATH, 'button_32x32.png'))
-    BUTTON_64x32 = pygame.image.load(os.path.join(ASSETS_PATH, 'button_64x32.png'))
-    ICON_UPGRADE = pygame.image.load(os.path.join(ASSETS_PATH, 'icon_upgrade.png'))
-    ICON_HOME = pygame.image.load(os.path.join(ASSETS_PATH, 'icon_home.png'))
-    ICON_PLAY = pygame.image.load(os.path.join(ASSETS_PATH, 'icon_play.png'))
-    ICON_SETTINGS = pygame.image.load(os.path.join(ASSETS_PATH, 'icon_settings.png'))
-    ICON_EXIT = pygame.image.load(os.path.join(ASSETS_PATH, 'icon_exit.png'))
+    BUTTON_32x32 = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'button_32x32.png'))
+    BUTTON_64x32 = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'button_64x32.png'))
+    ICON_UPGRADE = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_upgrade.png'))
+    ICON_HOME = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_home.png'))
+    ICON_PLAY = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_play.png'))
+    ICON_SETTINGS = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_settings.png'))
+    ICON_EXIT = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_exit.png'))
 
 class Heart_Assets:
     HEART_EMPTY = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Heart_Empty.png'))
