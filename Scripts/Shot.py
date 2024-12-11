@@ -60,11 +60,11 @@ class Shot(pygame.sprite.Sprite):
             self.animationState = "exploding"
 
     def animate(self, dt):
-        self.frameIndex += 8*dt
+        self.frameIndex += 14*dt
         if self.animationState == "idle":
             self.image = self.idleAnimation[int(self.frameIndex) % len(self.idleAnimation)]
         else:
-            self.image = pygame.transform.scale(self.hitAnimation[int(self.frameIndex)], (16,16))
+            self.image = pygame.transform.scale(self.hitAnimation[int(self.frameIndex)], (26,26))
 
 class ExplosionShot(Shot):
     def __init__(self, pos, damage, speed, hits, angle, explosionSize, image, groups, lifeDistance=0, playerOffset = pygame.math.Vector2(0, 0), size = None):

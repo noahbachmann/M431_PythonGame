@@ -71,7 +71,7 @@ class Round:
                 continue       
             enemies = pygame.sprite.spritecollide(shot, self.enemySprites, False)
             for enemy in enemies:
-                if enemy not in shot.collidedEnemies and enemy.isEnemy:
+                if enemy not in shot.collidedEnemies and enemy.isEnemy and enemy.animationState is not "death":
                     shot.hit(enemy)
                     enemy.hit(shot.damage)
         enemies = pygame.sprite.spritecollide(self.player, self.enemySprites, False)

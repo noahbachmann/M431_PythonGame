@@ -34,7 +34,6 @@ if Scripts.DataManager.dataJson['customCrosshair'] == False:
         pygame.mouse.set_cursor((hotspot[0], hotspot[1]), cursor_image) 
 
 
-
 while not gameState['quit']:
     if gameState['gaming'] == "Gaming":
         time.sleep(0.3)

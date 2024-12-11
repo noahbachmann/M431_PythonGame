@@ -30,9 +30,9 @@ class Player(pygame.sprite.Sprite):
         self.gold = 0
         self.score = 0
         if size:
-            self.image = pygame.transform.scale(Sunset.SUNSET, size)
+            self.image = pygame.transform.scale(Sunset.SUNSET_IDLE_1, size)
         else:
-            self.image = Sunset.SUNSET
+            self.image = Sunset.SUNSET_IDLE_1
         self.savedImage = self.image
         self.rect = self.image.get_frect(center=pos)
 
@@ -89,7 +89,7 @@ class Player(pygame.sprite.Sprite):
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Shot(spawnPos,self.atkDamage,500,1,angle,Player_Laser.PLAYER_LASER, self.attackGroups, playerOffset=self.moveOffset.copy(), size=(7,14),hitAnimation=Enemy_Explosion.animationArray)
+        Shot(spawnPos,self.atkDamage,500,1,angle,Player_Laser.PLAYER_LASER, self.attackGroups, playerOffset=self.moveOffset.copy(), size=(7,14),hitAnimation=Player_Laser.animationArray_laser_explosion)
         Audio.LASER_HIGH.play()
 
     def heavy(self, angle):
