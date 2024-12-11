@@ -161,4 +161,3 @@ class SettingsMenu(Menu):
         else:
             self.cameraSurface.blit(UI_Assets.BUTTON_32x32, (0, 0))
             self.cameraSurface.blit(Crosshair.Crosshair1, (0,0))
-
