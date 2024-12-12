@@ -12,6 +12,11 @@ dataJson = {
     'crosshair': "Placeholder",
     'customCrosshair': False,
     'highScore': 0,
+    'Hotkey_Up': pygame.K_w,
+    'Hotkey_Down': pygame.K_s,
+    'Hotkey_Left': pygame.K_a,
+    'Hotkey_Right': pygame.K_d,
+    'Hotkey_Boost': pygame.K_LSHIFT,
     'Hotkey_close': pygame.K_e
 }
 

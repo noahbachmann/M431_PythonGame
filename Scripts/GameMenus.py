@@ -127,7 +127,12 @@ class SettingsMenu(Menu):
         self.buttons.append(Button((self.rect.centerx + 115, self.rect.centery - -150), text="Upload", func=self.cursorUpload))  
         self.buttons.append(Button((self.rect.centerx + 225, self.rect.centery - -150), text="Reset", func=self.cursorReset)) 
         self.cursor = Crosshair.Crosshair1
-            
+        self.KeybindList = ["Keybinds", "Up", "Down", "Left", "Right", "Boost", "Close Game"]
+        
+        self.buttons.append(Button((self.rect.centerx * .5, self.rect.midbottom[1] - TILE_SIZE * 8.5),text="Keybinds", func=self.mainMenu) )
+        self.buttons.append(Button((self.rect.centerx * 1, self.rect.midbottom[1] - TILE_SIZE * 8.5),text="Crosshair", func=self.mainMenu) )
+        self.buttons.append(Button((self.rect.centerx * 1.5, self.rect.midbottom[1] - TILE_SIZE * 8.5),text="Sounds", func=self.mainMenu) )
+
 
     def cursorUpload(self,event=None):
         
