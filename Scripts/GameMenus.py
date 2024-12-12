@@ -123,9 +123,8 @@ class SettingsMenu(Menu):
         self.texts.append((font.render(str("Settings"), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), func=self.mainMenu, icon=UI_Assets.ICON_HOME))   
-        self.buttons.append(Button((self.rect.centerx + 125, self.rect.centery - 50), text="upload", func=self.cursorUpload))   
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.mainMenu))   
-        self.buttons.append(Button((self.rect.centerx + 125, self.rect.centery - -150), text="Upload", func=self.cursorUpload))  
+        self.buttons.append(Button((self.rect.centerx + 115, self.rect.centery - -150), text="Upload", func=self.cursorUpload))  
         self.buttons.append(Button((self.rect.centerx + 225, self.rect.centery - -150), text="Reset", func=self.cursorReset)) 
         self.cursor = Crosshair.Crosshair1
             
@@ -157,13 +156,17 @@ class SettingsMenu(Menu):
     def draw(self):
         super().draw()
         if Scripts.DataManager.dataJson['customCrosshair'] == True:
-            self.cameraSurface.blit(UI_Assets.BUTTON_32x32, (0, 0))
+            crosshairPreviewBox = pygame.transform.scale(UI_Assets.BUTTON_32x32, (160, 160))
+            self.cameraSurface.blit(crosshairPreviewBox, (600, 300))
             crosshair_path = Scripts.DataManager.dataJson['crosshair']
             cursor_image = pygame.image.load(crosshair_path).convert_alpha()  
             cursor_image = pygame.transform.scale(cursor_image, (32, 32))  
             hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
-            self.cameraSurface.blit(cursor_image, (0,0))
+            cursorPreviewImage = pygame.transform.scale(cursor_image, (64, 64))
+            self.cameraSurface.blit(cursorPreviewImage, (625, 325))
 
         else:
-            self.cameraSurface.blit(UI_Assets.BUTTON_32x32, (0, 0))
-            self.cameraSurface.blit(Crosshair.Crosshair1, (0,0))
+            crosshairPreviewBox = pygame.transform.scale(UI_Assets.BUTTON_32x32, (160, 160))
+            ClassiccursorPreviewImage = pygame.transform.scale(Crosshair.Crosshair1, (64, 64))
+            self.cameraSurface.blit(crosshairPreviewBox, (600, 300))
+            self.cameraSurface.blit(ClassiccursorPreviewImage, (625, 325))
