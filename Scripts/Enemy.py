@@ -31,21 +31,22 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.animate(dt)
-        if self.rotationSpeed != 0:
-            targetAngle = self.getAngle()
-            angleDiff = (targetAngle - self.angle) % 360
-            if angleDiff > 180:
-                angleDiff -= 360
-            maxStep = self.rotationSpeed * dt
-            self.angle += max(-maxStep, min(maxStep, angleDiff))
-            self.angle %= 360
-            radians = math.radians(self.angle)
-            self.directionToPlayer = pygame.Vector2(math.cos(radians), math.sin(radians))
-        else:
-            self.angle = self.getAngle()
-            self.directionToPlayer = pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center)
-        self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
-        if self.animationState == "death" and int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.frames[self.animationState]["frames"]) == len(self.frames[self.animationState]["frames"]) - 1:
+        if not self.animationState == "death":
+            if self.rotationSpeed != 0:
+                targetAngle = self.getAngle()
+                angleDiff = (targetAngle - self.angle) % 360
+                if angleDiff > 180:
+                    angleDiff -= 360
+                maxStep = self.rotationSpeed * dt
+                self.angle += max(-maxStep, min(maxStep, angleDiff))
+                self.angle %= 360
+                radians = math.radians(self.angle)
+                self.directionToPlayer = pygame.Vector2(math.cos(radians), math.sin(radians))
+            else:
+                self.angle = self.getAngle()
+                self.directionToPlayer = pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center)
+            self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
+        elif int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.frames[self.animationState]["frames"]) == len(self.frames[self.animationState]["frames"]) - 1:
             self.kill()
             del self
         
@@ -150,7 +151,7 @@ class BasicShooter(Enemy):
     def shoot(self):
         offset = pygame.math.Vector2(math.cos(math.radians(self.angle)), math.sin(math.radians(self.angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Shot(spawnPos,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER_1, self.groups(),700, self.offset.copy(), (7,14))
+        Shot(spawnPos,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER_1, self.groups(),700, self.offset.copy(), (7,14), Enemy_Laser.animationArray_laser_explosion)
         
 class DoubleShooter(BasicShooter):
     def __init__(self, pos: tuple, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range=None, rotationSpeed = 0, size: tuple = None):
@@ -163,13 +164,13 @@ class DoubleShooter(BasicShooter):
         sideOffset = pygame.math.Vector2(math.cos(math.radians(self.angle + 90)), math.sin(math.radians(self.angle + 90))) * (self.rect.width / 3)
         offset = pygame.math.Vector2(math.cos(math.radians(self.angle)), math.sin(math.radians(self.angle))) * self.rect.height / 2
         if not self.swap:
-            Shot(self.rect.center + offset - sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER_1, self.groups(),700, self.offset.copy(), (7,14))
-            Shot(self.rect.center + offset + sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER_1, self.groups(),700, self.offset.copy(), (7,14))
+            Shot(self.rect.center + offset - sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER_1, self.groups(),700, self.offset.copy(), (7,14), Enemy_Laser.animationArray_laser_explosion)
+            Shot(self.rect.center + offset + sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER_1, self.groups(),700, self.offset.copy(), (7,14), Enemy_Laser.animationArray_laser_explosion)
         else:
             if self.right:
-                Shot(self.rect.center + offset + sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER_1, self.groups(),700, self.offset.copy(), (7,14))
+                Shot(self.rect.center + offset + sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER_1, self.groups(),700, self.offset.copy(), (7,14), Enemy_Laser.animationArray_laser_explosion)
             else:
-                Shot(self.rect.center + offset - sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER_1, self.groups(),700, self.offset.copy(), (7,14))
+                Shot(self.rect.center + offset - sideOffset,self.damage,450,1,self.angle,Enemy_Laser.ENEMY_LASER_1, self.groups(),700, self.offset.copy(), (7,14), Enemy_Laser.animationArray_laser_explosion)
             self.right = not self.right
 
 class MiniBoss(DoubleShooter):
