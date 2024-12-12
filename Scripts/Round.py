@@ -2,12 +2,12 @@ import pygame
 import sys
 import time
 from random import randint
-import Settings
-from Player import *
-from HUDController import *
-from EnemySpawner import *
-from AssetsManager import *
-from Groups import AllSprites
+import Scripts.Settings
+from Scripts.Player import *
+from Scripts.HUDController import *
+from Scripts.EnemySpawner import *
+from Scripts.AssetsManager import *
+from Scripts.Groups import AllSprites
 
 class Round:
     def __init__(self, surface, screen, gameState):
@@ -15,7 +15,7 @@ class Round:
         self.cameraSurface = surface
         self.gameState = gameState
         screenSize = screen.get_size()
-        self.offset = (screenSize[0] // 2 - Settings.WINDOW_SIZE // 2, screenSize[1] // 2 - Settings.WINDOW_SIZE // 2)
+        self.offset = (screenSize[0] // 2 - Scripts.Settings.WINDOW_SIZE // 2, screenSize[1] // 2 - Scripts.Settings.WINDOW_SIZE // 2)
         self.clock = pygame.time.Clock()
         self.allSprites = AllSprites()
         self.hudSprites = pygame.sprite.Group()
@@ -24,7 +24,7 @@ class Round:
         self.collisionSprites = pygame.sprite.Group()
         self.border = []
         self.stars = []
-        self.player = Player((Settings.WINDOW_SIZE // 2, Settings.WINDOW_SIZE // 2), self.offset, 6, 220, 150, 3, (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64))
+        self.player = Player((Scripts.Settings.WINDOW_SIZE // 2, Scripts.Settings.WINDOW_SIZE // 2), self.offset, 6, 200, 120, 2, (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64))
         self.hudController = HUDController(self.cameraSurface, self.player, gameState, self.allSprites)
         self.enemySpawner = Spawner("normal", self.player, (self.allSprites, self.enemySprites))
         self.running = True
@@ -57,6 +57,7 @@ class Round:
                 self.collisions()
                 if self.player.health <= 0:
                     self.running = False
+                    Audio.GAME_END.play()
                     return self.player.score          
                 self.enemySpawner.update()
                 self.allSprites.update(self.cameraSurface, dt, self.player.moveOffset)
@@ -65,22 +66,26 @@ class Round:
                 self.drawToScreen()
         
     def collisions(self):
-        for shot in self.playerShotSprites:       
+        for shot in self.playerShotSprites:
+            if hasattr(shot, 'collided') and shot.collided:
+                continue       
             enemies = pygame.sprite.spritecollide(shot, self.enemySprites, False)
             for enemy in enemies:
-                if enemy not in shot.collidedEnemies and enemy.isEnemy:
+                if enemy not in shot.collidedEnemies and enemy.isEnemy and enemy.animationState is not "death":
                     shot.hit(enemy)
                     enemy.hit(shot.damage)
         enemies = pygame.sprite.spritecollide(self.player, self.enemySprites, False)
         if enemies:
-            self.player.hit(enemies[0].damage)
-            for enemy in enemies:
-                if not enemy.isEnemy:
-                    enemy.hit()
+            if enemies.count == 1 and (hasattr(enemies[0], 'collided') and enemies[0].collided):
+                pass
+            else:
+                self.player.hit(enemies[0].damage)
+                for enemy in enemies:
+                    if not enemy.isEnemy:
+                        enemy.hit()
 
     def drawToScreen(self):
         screenSize = self.screen.get_size()
-        self.screen.fill((0,0,0))
         self.screen.blit(self.cameraSurface, self.cameraSurface.get_frect(center = (screenSize[0]//2,screenSize[1]//2)))
         pygame.display.update()
 

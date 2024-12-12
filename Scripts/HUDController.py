@@ -1,10 +1,9 @@
-import pygame
-from math import ceil
-import Settings
-from AssetsManager import font, UI_Assets, Heart_Assets, Energybar_Assets
-from Button import *
-from GameMenus import *
-from Player import *
+import pygame, time
+import Scripts.Settings
+from Scripts.AssetsManager import font, UI_Assets, Heart_Assets, Energybar_Assets
+from Scripts.Button import *
+from Scripts.GameMenus import *
+from Scripts.Player import *
 
 class HUDController:
     def __init__(self, surface, player:Player, gameState, hudSpritesGroup):
@@ -13,11 +12,11 @@ class HUDController:
         self.pause = False
         self.hudSpritesGroup = hudSpritesGroup
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))        
-        self.goldTextRect = self.goldText.get_frect(midtop = (800, 800))  
-        self.upgradeButton = Button((900,100),UI_Assets.BUTTON_32x32, "Upgrades", self.toggleSettings, (64,64))
-        self.upgradeMenu = UpgradesMenu(surface, (Settings.WINDOW_SIZE - 600) // 2, 50, self.player, gameState)
+        self.goldTextRect = self.goldText.get_frect(midtop = (Scripts.Settings.WINDOW_SIZE - 150, Scripts.Settings.WINDOW_SIZE - 150))  
+        self.upgradeButton = Button((Scripts.Settings.WINDOW_SIZE - TILE_SIZE*1.5,TILE_SIZE*1.5),UI_Assets.BUTTON_32x32, func=self.toggleSettings, icon=UI_Assets.ICON_UPGRADE, size=(64,64))
+        self.upgradeMenu = UpgradesMenu(surface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, 100, self.player, gameState, size=(600, Scripts.Settings.WINDOW_SIZE-200))
         self.hearts = []
-        self.energyBar = EnergyBar((Settings.WINDOW_SIZE/2 - 64, 32), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR_BACK, (128,32))
+        self.energyBar = EnergyBar((Scripts.Settings.WINDOW_SIZE/2 - 64, 32), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR_BACK, (128,32))
         self.showHealth()
     
     def draw(self, surface):
@@ -40,6 +39,8 @@ class HUDController:
         self.draw(surface)
 
     def toggleSettings(self):
+        if self.pause:
+            time.sleep(0.3)
         self.pause = not self.pause
 
     def showHealth(self):
@@ -48,7 +49,7 @@ class HUDController:
         maxHealth = self.player.maxHealth // 2
         for i in range(maxHealth):
             self.hearts.append(Heart((x,y),Heart_Assets.HEART_FULL, (32,32)))
-            x += 64
+            x += 48
         if self.player.maxHealth % 2 != 0:
             self.hearts.append(Heart((x,y),Heart_Assets.HALFHEART_FULL, (32,32)))
         
@@ -66,9 +67,9 @@ class HUDController:
         y = 32
         if self.player.maxHealth / 2 > len(self.hearts):
             if self.player.maxHealth == self.player.health:
-                self.hearts.append(Heart((x+(64*len(self.hearts)),y),Heart_Assets.HALFHEART_FULL, (32,32)))
+                self.hearts.append(Heart((x+(48*len(self.hearts)),y),Heart_Assets.HALFHEART_FULL, (32,32)))
             else:
-                self.hearts.append(Heart((x+(64*len(self.hearts)),y),Heart_Assets.HALFHEART_EMPTY, (32,32)))
+                self.hearts.append(Heart((x+(48*len(self.hearts)),y),Heart_Assets.HALFHEART_EMPTY, (32,32)))
         if self.player.health != self.playerHealth:
             if self.player.health % 2 == 0:
                 self.hearts[(self.player.health // 2)-1].newImage(Heart_Assets.HEART_FULL)

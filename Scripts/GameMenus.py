@@ -1,11 +1,9 @@
 import pygame
-from Button import *
-from AssetsManager import UI_Assets
-from Settings import *
+from Scripts.Button import *
+from Scripts.AssetsManager import UI_Assets, Crosshair
+from Scripts.Settings import *
 from tkinter import filedialog
-import tkinter
-from AssetsManager import *
-import DataManager
+import Scripts.DataManager
 
 
 class Menu:
@@ -41,16 +39,15 @@ class Menu:
     
     def mainMenu(self):
         self.enabled = False
-        DataManager.saveData()
+        Scripts.DataManager.saveData()
         self.gameState['gaming'] = "MainMenu"
 
 class EndGameMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, gameState, enabled,  score):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
-        self.gameState = gameState
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery), text="Play Again", func=self.newGame))
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 96), text="Main Menu", func=self.mainMenu))
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 192), text="Exit", func=self.quitGame))
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery), func=self.newGame, icon=UI_Assets.ICON_PLAY))
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 96), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 192), func=self.quitGame, icon=UI_Assets.ICON_EXIT))
         self.texts.append((font.render(str(score), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 96)))
         
@@ -61,34 +58,43 @@ class UpgradesMenu(Menu):
     def __init__(self, surface, left, top, player, gameState, color = None, size:tuple = None):
         super().__init__(surface,left,top, gameState, color,size=size)
         self.player = player
-        self.gameState = gameState
-        self.left = left
-        self.top = top
-        self.upgrades = ["atkSpeed", "atkDmg", "health", "heavyCd", "boostTank", "boostStrength"]
+        self.upgrades = ["Upgrades", "atkSpeed", "atkDmg", "health", "heavyCd", "boostTank", "boostStrength"]
         self.upgradesLevel = [0,0,0,0,0,0]
+        self.upgradesMultiplier = [25,50,50,15,25,50]
         self.generatedButtons = False
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + self.rect.height), text="Main Menu", func=self.mainMenu))
-        self.buttons.append(Button((self.rect.centerx + 128, self.rect.centery + self.rect.height), text="Exit", func=self.quitGame))
+        self.buttons.append(Button((self.rect.centerx - TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
+        self.buttons.append(Button((self.rect.centerx + TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.quitGame, icon=UI_Assets.ICON_EXIT))
 
     def general(self):
-        rect = pygame.FRect(self.left, self.top, 600, 900)
-        pygame.draw.rect(self.cameraSurface, (240,240,240), rect, 0, 0)
-        for i in range(1,7):
-            x = rect.left + (rect.width / 3)
-            y = rect.top + (rect.height /12) * (i*2 - 1) 
+        upgrdHeight = self.rect.height - (self.rect.height//4) 
+        upgrdWidth = self.rect.width - TILE_SIZE*2   
+        for i in range(1,8):
+            x = self.rect.left + TILE_SIZE
+            y = self.rect.top + (upgrdHeight /14) * (i*2 - 1)
             upgradeText = font.render(self.upgrades[i-1], False, (0,0,0))
-            upgradeTextRect = upgradeText.get_frect(center = (x,y))
+            upgradeTextRect = upgradeText.get_frect(midleft = (x,y))
             self.cameraSurface.blit(upgradeText, upgradeTextRect)
-            x += (rect.width / 3)*1.25
-            levelText = font.render(str(self.upgradesLevel[i-1]), False, (0,0,0))
+            x += upgrdWidth / 2 + (TILE_SIZE /2)
+            if i == 1:
+                levelText = font.render("Lvl.", False, (0,0,0))
+            else:
+                levelText = font.render(str(self.upgradesLevel[i-2]), False, (0,0,0))
             levelTextRect = levelText.get_frect(center = (x,y))
             self.cameraSurface.blit(levelText, levelTextRect)
-            x += (rect.width / 3)*0.5
-            if not self.generatedButtons:
+            x += (upgrdWidth / 2)*(1/3)
+            if not self.generatedButtons and i > 1:
                 self.buttons.append(Button((x,y),UI_Assets.BUTTON_32x32,"+", lambda j=i: self.player.upgrade(self.upgrades[j-1], self.upgradesLevel)))
+            x += (upgrdWidth / 2)*(1/3)
+            if i == 1:
+                costText = font.render("Cost", False, (0,0,0))
+            else:
+                costText = font.render(str((self.upgradesLevel[i-2]*self.upgradesMultiplier[i-2])+(self.upgradesMultiplier[i-2]*2)), False, (0,0,0))
+            costTextRect = costText.get_frect(center = (x,y))
+            self.cameraSurface.blit(costText, costTextRect)
         self.generatedButtons = True
 
     def draw(self, surface):
+        pygame.draw.rect(self.cameraSurface, (240,240,240), self.rect, 0, 0)
         self.general()
         for button in self.buttons:
             button.update(surface)
@@ -96,9 +102,9 @@ class UpgradesMenu(Menu):
 class MainMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, enabled, gameState):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery), text="Play", func=self.newGame))   
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 90), text="Settings", func=self.settings))   
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 180), text="Exit", func=self.quitGame))   
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery), func=self.newGame, icon=UI_Assets.ICON_PLAY))   
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 90), func=self.settings, icon=UI_Assets.ICON_SETTINGS))   
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 180), func=self.quitGame, icon=UI_Assets.ICON_EXIT))   
         self.texts.append((font.render(str("My Space Shooter"), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 90)))
 
@@ -116,6 +122,8 @@ class SettingsMenu(Menu):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
         self.texts.append((font.render(str("Settings"), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
+        self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), func=self.mainMenu, icon=UI_Assets.ICON_HOME))   
+        self.buttons.append(Button((self.rect.centerx + 125, self.rect.centery - 50), text="upload", func=self.cursorUpload))   
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.mainMenu))   
         self.buttons.append(Button((self.rect.centerx + 125, self.rect.centery - -150), text="Upload", func=self.cursorUpload))  
         self.buttons.append(Button((self.rect.centerx + 225, self.rect.centery - -150), text="Reset", func=self.cursorReset)) 
@@ -132,20 +140,9 @@ class SettingsMenu(Menu):
             self.cursor = cursor_image
             hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
             pygame.mouse.set_cursor((hotspot[0], hotspot[1]), cursor_image)
-            DataManager.dataJson['customCrosshair'] = True
-            DataManager.dataJson['crosshair'] = cursorPath
-            DataManager.saveData()
-
-    def cursorReset(self, event=None):
-        classicCrosshair = Crosshair.Crosshair1
-        cursor_image = pygame.transform.scale(classicCrosshair, (32, 32))
-        classicCrosshair = cursor_image
-        hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
-        pygame.mouse.set_cursor((hotspot[0], hotspot[1]), cursor_image) 
-        DataManager.dataJson['customCrosshair'] = False
-        DataManager.saveData()
-
-        
+            Scripts.DataManager.dataJson['customCrosshair'] = True
+            Scripts.DataManager.dataJson['crosshair'] = cursorPath
+            Scripts.DataManager.saveData()
 
     
     def draw(self):

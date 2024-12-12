@@ -1,7 +1,7 @@
 import pygame
-from Timer import *
-import Settings
-from AssetsManager import font, UI_Assets
+from Scripts.Timer import *
+from Scripts.AssetsManager import font, UI_Assets, Audio
+import Scripts.Settings
 
 class Button(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, image = None, text:str = None, func= None, size:tuple = None, groups = None, icon = None):
@@ -9,7 +9,7 @@ class Button(pygame.sprite.Sprite):
             super().__init__(groups)
         self.func = func
         self.offset = pygame.display.get_window_size()
-        self.offset = (self.offset[0] // 2 - Settings.WINDOW_SIZE // 2, self.offset[1] // 2 - Settings.WINDOW_SIZE // 2)
+        self.offset = (self.offset[0] // 2 - Scripts.Settings.WINDOW_SIZE // 2, self.offset[1] // 2 - Scripts.Settings.WINDOW_SIZE // 2)
         if image:
             if size:
                 self.image = pygame.transform.scale(image, size)
@@ -21,10 +21,7 @@ class Button(pygame.sprite.Sprite):
             else:
                 self.image = pygame.transform.scale(UI_Assets.BUTTON_32x32, (64,64))
         if icon:
-            if size:
-                self.icon = pygame.transform.scale(icon, size)
-            else:
-                self.icon = pygame.transform.scale(icon, (64,64))
+            self.icon = pygame.transform.scale(icon, (48, 48))
             self.iconRect = self.icon.get_frect(center = pos)
         else:
             self.icon = None
@@ -49,6 +46,7 @@ class Button(pygame.sprite.Sprite):
         if self.rect.collidepoint(mousePos):
             if pygame.mouse.get_pressed()[0] and not self.cdTimer.active:
                 self.func()
+                Audio.BUTTON_PRESS.play()
                 self.cdTimer.activate()
         
         if self.cdTimer.active:
