@@ -8,6 +8,7 @@ from Scripts.HUDController import *
 from Scripts.EnemySpawner import *
 from Scripts.AssetsManager import *
 from Scripts.Groups import AllSprites
+import Scripts.Hotkey
 
 class Round:
     def __init__(self, surface, screen, gameState):
@@ -42,6 +43,9 @@ class Round:
                         if event.key == pygame.K_ESCAPE:
                             self.hudController.pause = not self.hudController.pause
                             continue
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_e:
+                        Scripts.Hotkey.Hotkeys.closeGame()
             
             dt = self.clock.tick() / 1000
 
