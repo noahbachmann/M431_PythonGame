@@ -1,5 +1,6 @@
 import json
 import os
+import pygame
 
 localAppData = os.getenv('LOCALAPPDATA')
 desktop_path = os.path.join(os.path.expanduser('~'), 'Desktop')
@@ -10,7 +11,13 @@ dataPath = os.path.join(game_folder, 'data.json')
 dataJson = {
     'crosshair': "Placeholder",
     'customCrosshair': False,
-    'highScore': 0
+    "top5Highscores": [0, 0, 0, 0, 0],
+    'Hotkey_Up': pygame.K_w,
+    'Hotkey_Down': pygame.K_s,
+    'Hotkey_Left': pygame.K_a,
+    'Hotkey_Right': pygame.K_d,
+    'Hotkey_Boost': pygame.K_LSHIFT,
+    'Hotkey_close': pygame.K_e
 }
 
 def saveData():

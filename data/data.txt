@@ -1,4 +1,0 @@
-{
-    "crosshair": "C:/Users/Noel Merz/Downloads/New Project (4).png",
-    "highScore": 0
-}
