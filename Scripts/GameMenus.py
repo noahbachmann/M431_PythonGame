@@ -1,4 +1,5 @@
 import pygame
+import Scripts.AssetsManager
 from Scripts.Button import *
 from Scripts.AssetsManager import UI_Assets, Crosshair
 from Scripts.Settings import *
@@ -14,6 +15,8 @@ class Menu:
         self.top = top
         self.gameState = gameState
         self.buttons = []
+        self.generalButtons = []
+        self.controlsButtons = []
         self.texts = []
         self.enabled = enabled
         if color:
@@ -99,6 +102,7 @@ class UpgradesMenu(Menu):
         for button in self.buttons:
             button.update(surface)
 
+
 class MainMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, enabled, gameState):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
@@ -124,14 +128,20 @@ class SettingsMenu(Menu):
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), func=self.mainMenu, icon=UI_Assets.ICON_HOME))   
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.mainMenu))   
-        self.buttons.append(Button((self.rect.centerx + 115, self.rect.centery - -150), text="Upload", func=self.cursorUpload))  
-        self.buttons.append(Button((self.rect.centerx + 225, self.rect.centery - -150), text="Reset", func=self.cursorReset)) 
         self.cursor = Crosshair.Crosshair1
+        self.currentTab = "Keybinds"
         self.KeybindList = ["Keybinds", "Up", "Down", "Left", "Right", "Boost", "Close Game"]
-        
-        self.buttons.append(Button((self.rect.centerx * .5, self.rect.midbottom[1] - TILE_SIZE * 8.5),text="Keybinds", func=self.mainMenu) )
-        self.buttons.append(Button((self.rect.centerx * 1, self.rect.midbottom[1] - TILE_SIZE * 8.5),text="Crosshair", func=self.mainMenu) )
-        self.buttons.append(Button((self.rect.centerx * 1.5, self.rect.midbottom[1] - TILE_SIZE * 8.5),text="Sounds", func=self.mainMenu) )
+        self.buttons.append(Button((self.rect.centerx * .75, self.rect.midbottom[1] - TILE_SIZE * 8.5),text="General", func=self.setTabGeneral, image=Scripts.AssetsManager.UI_Assets.BUTTON_64x32, size=(128,64))  )
+        self.buttons.append(Button((self.rect.centerx * 1.25, self.rect.midbottom[1] - TILE_SIZE * 8.5),text="Controls", func=self.setTabKeyControls, image=Scripts.AssetsManager.UI_Assets.BUTTON_64x32, size=(128,64))) 
+
+
+
+    def setTabKeyControls(self):
+        self.currentTab = "Controls"
+
+    def setTabGeneral(self):
+        self.currentTab = "General"
+
 
 
     def cursorUpload(self,event=None):
@@ -157,21 +167,38 @@ class SettingsMenu(Menu):
         Scripts.DataManager.dataJson['customCrosshair'] = False
         Scripts.DataManager.saveData()
 
+
+
     
     def draw(self):
         super().draw()
-        if Scripts.DataManager.dataJson['customCrosshair'] == True:
-            crosshairPreviewBox = pygame.transform.scale(UI_Assets.BUTTON_32x32, (160, 160))
-            self.cameraSurface.blit(crosshairPreviewBox, (600, 300))
-            crosshair_path = Scripts.DataManager.dataJson['crosshair']
-            cursor_image = pygame.image.load(crosshair_path).convert_alpha()  
-            cursor_image = pygame.transform.scale(cursor_image, (32, 32))  
-            hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
-            cursorPreviewImage = pygame.transform.scale(cursor_image, (64, 64))
-            self.cameraSurface.blit(cursorPreviewImage, (625, 325))
 
-        else:
+        if self.currentTab == "General":
             crosshairPreviewBox = pygame.transform.scale(UI_Assets.BUTTON_32x32, (160, 160))
-            ClassiccursorPreviewImage = pygame.transform.scale(Crosshair.Crosshair1, (64, 64))
-            self.cameraSurface.blit(crosshairPreviewBox, (600, 300))
-            self.cameraSurface.blit(ClassiccursorPreviewImage, (625, 325))
+            self.cameraSurface.blit(crosshairPreviewBox, (self.rect.centerx * 1.105, self.rect.midbottom[1] - TILE_SIZE * 7))
+            self.generalButtons.append(Button((self.rect.centerx * 1.25, self.rect.midbottom[1] - TILE_SIZE * 3.85),text="Upload", func=self.cursorUpload, image=Scripts.AssetsManager.UI_Assets.BUTTON_64x32,  size=(128,64)))
+            self.generalButtons.append(Button((self.rect.centerx * 1.25, self.rect.midbottom[1] - TILE_SIZE * 2.7),text="Reset", func=self.cursorReset, image=Scripts.AssetsManager.UI_Assets.BUTTON_64x32,  size=(128,64))) 
+            if Scripts.DataManager.dataJson['customCrosshair'] == True:
+                crosshair_path = Scripts.DataManager.dataJson['crosshair']
+                cursor_image = pygame.image.load(crosshair_path).convert_alpha()  
+                cursor_image = pygame.transform.scale(cursor_image, (64, 64))  
+                cursorPreviewImage = pygame.transform.scale(cursor_image, (64, 64))
+                hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
+                self.cameraSurface.blit(cursorPreviewImage, (self.rect.centerx * 1.2, self.rect.midbottom[1] - TILE_SIZE * 6.2))
+
+                for buttonGeneral in self.generalButtons:
+                    buttonGeneral.update(self.cameraSurface)
+
+            else:
+                ClassiccursorPreviewImage = pygame.transform.scale(Scripts.AssetsManager.Crosshair.Crosshair1, (64, 64))
+                self.cameraSurface.blit(ClassiccursorPreviewImage, (self.rect.centerx * 1.2, self.rect.midbottom[1] - TILE_SIZE * 6.2))
+                for buttonGeneral in self.generalButtons:
+                    buttonGeneral.update(self.cameraSurface)
+        
+        elif self.currentTab == "Controls":
+            
+            pass
+
+
+
+
