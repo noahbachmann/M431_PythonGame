@@ -21,9 +21,7 @@
 
 <img src="https://i.ibb.co/C60qLmk/Screenshot-2024-12-13-113941.png" alt="Screenshot" width="400px" />
 
-<h2 style="text-align: center;> 📑 Aufgaben </h2>
-
-## 📑 Aufgaben
+# 📑 Aufgaben
 
 - **noahbachmann**
 
