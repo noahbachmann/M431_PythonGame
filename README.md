@@ -8,12 +8,13 @@
 </p>
 <h1>  </h1>
 
+<p align="center">
 <div style="text-align: center;">
     <a href="https://github.com/noahbachmann/M431_PythonGame/releases">
         <img src="https://i.ibb.co/RTKqJYL/button-64x32.png" alt="Button" width="96" height="48" />
     </a>
 </div>
-
+</p>
 </div>
 
 <h3>🕹️Preview</h3>
@@ -45,7 +46,7 @@
 <table style="margin: 0 auto;">
     <tr>
         <td align="center">
-            <a href="https://github.com/noqx">
+            <a href="https://github.com/noqxdev">
                 <img src="https://avatars.githubusercontent.com/u/123118803?v=4" width="100px;" alt="noqx Profile Picture" /><br>
                 <sub><b>noqx</b></sub>
             </a>
