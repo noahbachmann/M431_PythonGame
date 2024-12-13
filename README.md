@@ -9,12 +9,11 @@
 <h1>  </h1>
 
 <p align="center">
-<div style="text-align: center;">
     <a href="https://github.com/noahbachmann/M431_PythonGame/releases">
         <img src="https://i.ibb.co/MhQRgf3/button-64x32-Kopie2.png" alt="Button" width="96" height="48" />
     </a>
-</div>
 </p>
+
 </div>
 
 <h3>🕹️Preview</h3>
