@@ -23,6 +23,29 @@
 
 <h2 style="text-align: center;> 📑 Aufgaben </h2>
 
+## 📑 Aufgaben
+
+- **noahbachmann**
+  - Erstellung Projekt und Standardeinstellung
+  - Erstellung Spieler-Logik
+  - Erstellung Gegner-Logik und Kampfsystem
+  - Erstellung Kamerasystem
+  - Erstellung Audiosystem
+
+- **noqxdev**
+  - Erstellung von Menu-UI mit Logik
+  - Erstellung von Spieleinstellungslogik
+  - Erstellung von dem Datenspeicherungssystem
+  - Hotkeys Einstellungen
+
+- **D3dZone**
+  - Erstellung von Spieler-Sprites
+  - Erstellung von Gegner-Sprites
+  - Erstellung von Map-Sprites
+  - Erstellung Explosions-Sprite
+  - Erstellung erstes Design PowerPoint
+
+
 <h2 id="routes" style="text-align: center;">📍 Downloads</h2>
 
 <table style="margin: 0 auto; text-align: center;">
