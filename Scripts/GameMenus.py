@@ -129,7 +129,7 @@ class SettingsMenu(Menu):
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), func=self.mainMenu, icon=UI_Assets.ICON_HOME))   
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.mainMenu))   
         self.cursor = Crosshair.Crosshair1
-        self.currentTab = "Keybinds"
+        self.currentTab = "General"
         self.KeybindList = ["Keybinds", "Up", "Down", "Left", "Right", "Boost", "Close Game"]
         self.buttons.append(Button((self.rect.centerx * .75, self.rect.midbottom[1] - TILE_SIZE * 8.5),text="General", func=self.setTabGeneral, image=Scripts.AssetsManager.UI_Assets.BUTTON_64x32, size=(128,64))  )
         self.buttons.append(Button((self.rect.centerx * 1.25, self.rect.midbottom[1] - TILE_SIZE * 8.5),text="Controls", func=self.setTabKeyControls, image=Scripts.AssetsManager.UI_Assets.BUTTON_64x32, size=(128,64))) 

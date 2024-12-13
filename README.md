@@ -25,6 +25,7 @@
 # 📑 Aufgaben
 
 - **noahbachmann**
+
   - Erstellung Projekt und Standardeinstellung
   - Erstellung Spieler-Logik
   - Erstellung Gegner-Logik und Kampfsystem
@@ -32,6 +33,7 @@
   - Erstellung Audiosystem
 
 - **noqxdev**
+
   - Erstellung von Menu-UI mit Logik
   - Erstellung von Spieleinstellungslogik
   - Erstellung von dem Datenspeicherungssystem
@@ -43,7 +45,6 @@
   - Erstellung von Map-Sprites
   - Erstellung Explosions-Sprite
   - Erstellung erstes Design PowerPoint
-
 
 <h2 id="routes" style="text-align: center;">📍 Downloads</h2>
 
