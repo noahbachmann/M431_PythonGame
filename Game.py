@@ -39,9 +39,17 @@ while not gameState['quit']:
         time.sleep(0.3)
         round = Round(cameraSurface, screen, gameState)
         score = round.run()
-        if score > Scripts.DataManager.dataJson['highScore']:
-            Scripts.DataManager.dataJson['highScore'] = score
-            Scripts.DataManager.saveData()
+        
+        for i in range(5):
+            if score > Scripts.DataManager.dataJson["top5Highscores"][i]:
+                Scripts.DataManager.dataJson["top5Highscores"].insert(i, score) 
+                break 
+        
+        if len(Scripts.DataManager.dataJson["top5Highscores"]) > 5:
+            Scripts.DataManager.dataJson["top5Highscores"].pop()  
+        
+        Scripts.DataManager.saveData()
+        print("https://ibb.co/2nBNBzs")
 
         if score < 0:
             if gameState['quit']:
