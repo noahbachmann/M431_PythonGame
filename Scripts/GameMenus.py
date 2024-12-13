@@ -2,10 +2,11 @@ import pygame
 import Scripts.AssetsManager
 from Scripts.Button import *
 from Scripts.AssetsManager import UI_Assets, Crosshair
+import Scripts.Hotkey
 from Scripts.Settings import *
 from tkinter import filedialog
 import Scripts.DataManager
-
+import sys
 
 class Menu:
     def __init__(self, surface, left, top, gameState, color = None, enabled = False, size:tuple = None):
@@ -186,22 +187,42 @@ class SettingsMenu(Menu):
                 hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
                 self.cameraSurface.blit(cursorPreviewImage, (self.rect.centerx * 1.2, self.rect.midbottom[1] - TILE_SIZE * 6.2))
 
-                for buttonGeneral in self.generalButtons:
-                    buttonGeneral.update(self.cameraSurface)
+
 
             else:
                 ClassiccursorPreviewImage = pygame.transform.scale(Scripts.AssetsManager.Crosshair.Crosshair1, (64, 64))
                 self.cameraSurface.blit(ClassiccursorPreviewImage, (self.rect.centerx * 1.2, self.rect.midbottom[1] - TILE_SIZE * 6.2))
                 for buttonGeneral in self.generalButtons:
                     buttonGeneral.update(self.cameraSurface)
-        
-            self.buttons.append(Button((self.rect.centerx + 50, self.rect.centery - -150), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_close']), func=self.cursorReset))
-            self.buttons.append(Button((self.rect.centerx * .75, self.rect.midbottom[1] - TILE_SIZE * 1.5),text="Up", func=self.mainMenu))
 
-            
+            for buttonGeneral in self.generalButtons:
+                buttonGeneral.update(self.cameraSurface)
+
+
         elif self.currentTab == "Controls":
             print("")
+                    
+
+
+
+            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 6.7), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Up'])))
+            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 5.6), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Down'])))
+            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 4.5), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Left'])))
+            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 3.4), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Right'])))
+            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 2.3), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Boost'])))
+            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 1.2), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_close'])))
+            
+            self.texts.append((font.render(str("Hotkey_Up"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 6.8)))
+            self.texts.append((font.render(str("Hotkey_Down"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 5.8)))
+            self.texts.append((font.render(str("Hotkey_Left"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 4.7)))
+            self.texts.append((font.render(str("Hotkey_Right"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 3.6)))
+            self.texts.append((font.render(str("Hotkey_Boost"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 2.4)))
+            self.texts.append((font.render(str("Hotkey_close"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 1.2)))
+            
+            for controlsButtons in self.controlsButtons:
+                controlsButtons.update(self.cameraSurface)
             pass
+
 
 
 
