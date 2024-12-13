@@ -11,7 +11,7 @@
 <p align="center">
 <div style="text-align: center;">
     <a href="https://github.com/noahbachmann/M431_PythonGame/releases">
-        <img src="https://i.ibb.co/RTKqJYL/button-64x32.png" alt="Button" width="96" height="48" />
+        <img src="https://i.ibb.co/MhQRgf3/button-64x32-Kopie2.png" alt="Button" width="96" height="48" />
     </a>
 </div>
 </p>
@@ -20,6 +20,8 @@
 <h3>🕹️Preview</h3>
 <p>video or gif here</p>
 <img src="https://i.ibb.co/C60qLmk/Screenshot-2024-12-13-113941.png" alt="Screenshot" width="400px" />
+
+<h2> 📑 Aufgaben
 
 <h2 id="routes" style="text-align: center;">📍 Downloads</h2>
 
