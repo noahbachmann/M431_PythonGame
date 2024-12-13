@@ -15,12 +15,37 @@
 </p>
 
 </div>
+<p align="center">
+    <h3 style="text-align: center;">🕹️Preview</h3>
+</p>
 
-<h3>🕹️Preview</h3>
-<p>video or gif here</p>
 <img src="https://i.ibb.co/C60qLmk/Screenshot-2024-12-13-113941.png" alt="Screenshot" width="400px" />
 
-<h2> 📑 Aufgaben
+<h2 style="text-align: center;> 📑 Aufgaben </h2>
+
+## 📑 Aufgaben
+
+- **noahbachmann**
+
+  - Erstellung Projekt und Standardeinstellung
+  - Erstellung Spieler-Logik
+  - Erstellung Gegner-Logik und Kampfsystem
+  - Erstellung Kamerasystem
+  - Erstellung Audiosystem
+
+- **noqxdev**
+
+  - Erstellung von Menu-UI mit Logik
+  - Erstellung von Spieleinstellungslogik
+  - Erstellung von dem Datenspeicherungssystem
+  - Hotkeys Einstellungen
+
+- **D3dZone**
+  - Erstellung von Spieler-Sprites
+  - Erstellung von Gegner-Sprites
+  - Erstellung von Map-Sprites
+  - Erstellung Explosions-Sprite
+  - Erstellung erstes Design PowerPoint
 
 <h2 id="routes" style="text-align: center;">📍 Downloads</h2>
 
