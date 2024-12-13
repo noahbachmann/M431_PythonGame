@@ -52,7 +52,7 @@
     <thead>
         <tr>
             <th>Type</th>
-            <th>Link</th>
+            <th>Link/Command</th>
         </tr>
     </thead>
     <tbody>
