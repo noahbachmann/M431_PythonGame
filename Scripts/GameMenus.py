@@ -195,8 +195,8 @@ class SettingsMenu(Menu):
                 for buttonGeneral in self.generalButtons:
                     buttonGeneral.update(self.cameraSurface)
         
-        #self.buttons.append(Button((self.rect.centerx + 50, self.rect.centery - -150), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_close']), func=self.cursorReset))
-        #self.buttons.append(Button((self.rect.centerx * .75, self.rect.midbottom[1] - TILE_SIZE * 1.5),text="Up", func=self.mainMenu))
+            self.buttons.append(Button((self.rect.centerx + 50, self.rect.centery - -150), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_close']), func=self.cursorReset))
+            self.buttons.append(Button((self.rect.centerx * .75, self.rect.midbottom[1] - TILE_SIZE * 1.5),text="Up", func=self.mainMenu))
 
             
         elif self.currentTab == "Controls":

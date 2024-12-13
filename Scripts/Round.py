@@ -68,7 +68,7 @@ class Round:
                 self.hudController.update(self.cameraSurface)
                 self.drawToScreen()
                 if self.gameState['gaming'] != "Gaming" or self.gameState['quit']:
-                    Round.saveScore()
+                    Round.saveScore(self)
                     return -1
                 continue
         
