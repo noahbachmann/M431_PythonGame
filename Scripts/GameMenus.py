@@ -1,7 +1,7 @@
 import pygame
 import Scripts.AssetsManager
 from Scripts.Button import *
-from Scripts.AssetsManager import UI_Assets, Crosshair
+from Scripts.AssetsManager import UI_Assets, Crosshair, karmaticArcadeFont
 import Scripts.Hotkey
 from Scripts.Settings import *
 from tkinter import filedialog
@@ -111,7 +111,7 @@ class MainMenu(Menu):
         self.buttons.append(Button((self.rect.centerx, self.rect.centery), func=self.newGame, icon=UI_Assets.ICON_PLAY))   
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + 90), func=self.settings, icon=UI_Assets.ICON_SETTINGS))   
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + 180), func=self.quitGame, icon=UI_Assets.ICON_EXIT))   
-        self.texts.append((font.render(str("My Space Shooter"), False, (0,0,0)), None))
+        self.texts.append((karmaticArcadeFont.render(str("Space Shooter"), False, (0,0,0)),))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 90)))
 
     def newGame(self):
