@@ -60,6 +60,7 @@ class Round:
                             self.hudController.pause = not self.hudController.pause
                             continue
                         elif event.key == Scripts.DataManager.dataJson['Hotkey_close']:
+                            Scripts.DataManager.saveData()
                             Scripts.Hotkey.Hotkeys.closeGame()
             
             dt = self.clock.tick() / 1000
