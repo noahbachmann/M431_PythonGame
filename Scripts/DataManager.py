@@ -46,5 +46,17 @@ def loadData():
     except json.JSONDecodeError:
         print("Error decoding JSON data. Using defaults.")
 
+
+def resetHotkeys():
+    dataJson['Hotkey_Up'] = pygame.K_w
+    dataJson['Hotkey_Down'] = pygame.K_s
+    dataJson['Hotkey_Left'] = pygame.K_a
+    dataJson['Hotkey_Right'] = pygame.K_d
+    dataJson['Hotkey_Boost'] = pygame.K_LSHIFT
+    dataJson['Hotkey_close'] = pygame.K_e
+    saveData()
+
+
+
 loadData()
 saveData()
