@@ -220,7 +220,7 @@ class SettingsMenu(Menu):
             self.keybindTexts.append((font.render(str("Hotkey_close"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 1.2)))
             
             self.keybindTexts.append((font.render(str("Reset Hotkey's"), False, (0,0,0)), (self.rect.centerx * 0.95, self.rect.midbottom[1] - TILE_SIZE * 1.2)))
-            self.controlsButtons.append(Button((self.rect.centerx * 1.35, self.rect.midbottom[1] - TILE_SIZE * 1.2),func=Scripts.DataManager.resetHotkeys , icon=UI_Assets.ICON_TRASH))
+            self.controlsButtons.append(Button((self.rect.centerx * 1.35, self.rect.midbottom[1] - TILE_SIZE * 1.2),func=Scripts.DataManager.resetHotkeys , icon=UI_Assets.ICON_RESET))
             for controlsButtons in self.controlsButtons:
                 controlsButtons.update(self.cameraSurface)
             pass
