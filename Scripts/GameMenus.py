@@ -205,13 +205,12 @@ class SettingsMenu(Menu):
                     
 
 
-
-            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 6.7), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Up'])))
-            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 5.6), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Down'])))
-            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 4.5), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Left'])))
-            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 3.4), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Right'])))
-            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 2.3), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Boost'])))
-            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 1.2), text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_close'])))
+            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 6.7),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Up , text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Up'])))
+            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 5.6),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Down , text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Down'])))
+            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 4.5),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Left , text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Left'])))
+            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 3.4),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Right , text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Right'])))
+            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 2.3),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Boost , text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Boost'])))
+            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 1.2),func=Scripts.Hotkey.Hotkeys.change_Hotkey_close , text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_close'])))
             
             self.keybindTexts.append((font.render(str("Hotkey_Up"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 6.8)))
             self.keybindTexts.append((font.render(str("Hotkey_Down"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 5.8)))
