@@ -26,7 +26,9 @@ class Round:
         self.collisionSprites = pygame.sprite.Group()
         self.border = []
         self.stars = []
-        self.player = Player((Scripts.Settings.WINDOW_SIZE // 2, Scripts.Settings.WINDOW_SIZE // 2), self.offset, 6, 200, 120, 2, (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64))
+        self.player = Player((Scripts.Settings.WINDOW_SIZE // 2, Scripts.Settings.WINDOW_SIZE // 2), self.offset, 6, 200, 120, 2,
+                            (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64),
+                            {"idle":{"frames": Sunset.animationArray_idle, "speed": 8}, "boosting":{"frames": Sunset.animationArray_boost, "speed": 8}})
         self.hudController = HUDController(self.cameraSurface, self.player, gameState, self.allSprites)
         self.enemySpawner = Spawner("normal", self.player, (self.allSprites, self.enemySprites))
         self.running = True

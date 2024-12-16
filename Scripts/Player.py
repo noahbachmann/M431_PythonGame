@@ -6,7 +6,7 @@ from Scripts.Shot import *
 from Scripts.Settings import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, camOffset:tuple, health, speed, boostStrength, boostAmount:float, attackGroups, collisionSprites, size:tuple = None):
+    def __init__(self, pos:tuple, camOffset:tuple, health, speed, boostStrength, boostAmount:float, attackGroups, collisionSprites, size:tuple = None, animationFrames = None):
         super().__init__()
         self.camOffset = camOffset
         self.moveOffset = pygame.math.Vector2(0,0)
@@ -29,8 +29,12 @@ class Player(pygame.sprite.Sprite):
         self.heavyCdTimer = Timer(self.heavyCd)
         self.gold = 0
         self.score = 0
+        self.frames = animationFrames
+        self.frameIndex = 0
+        self.animationState = "idle"
         if size:
             self.image = pygame.transform.scale(Sunset.SUNSET_IDLE_1, size)
+            self.size = size
         else:
             self.image = Sunset.SUNSET_IDLE_1
         self.savedImage = self.image
@@ -40,6 +44,7 @@ class Player(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
 
     def update(self, surface, dt): 
+        self.animate(dt)
         mousePos = pygame.mouse.get_pos()
         mousePos = (mousePos[0] - self.camOffset[0], mousePos[1] - self.camOffset[1])
         mouse = pygame.mouse.get_pressed()
@@ -62,6 +67,11 @@ class Player(pygame.sprite.Sprite):
         if self.boostAmount <= 0:
             self.boosting = False
             self.speed = self.normalSpeed
+        if self.boosting:
+            if self.animationState != "boosting":
+                self.animationState = "boosting"
+        elif self.animationState == "boosting":
+            self.animationState = "idle"
         self.direction.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
         self.direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
         angle = math.degrees(math.atan2(mousePos[1] - self.rect.centery, mousePos[0] - self.rect.centerx))
@@ -103,6 +113,15 @@ class Player(pygame.sprite.Sprite):
         self.damageTimer.activate()
         self.health -= damage
         Audio.PLAYER_DAMAGE.play()           
+
+    def animate(self, dt):
+        self.frameIndex += self.frames[self.animationState]["speed"]*dt
+        if self.size:
+            self.image = pygame.transform.scale(self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState]["frames"])], self.size)
+            self.savedImage = self.image
+        else:
+            self.image = self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState]["frames"])]
+            self.savedImage = self.image
 
     def upgrade(self, type:str, upgradesLevel):
         cost = 0
