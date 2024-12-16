@@ -19,7 +19,7 @@
     <h3 style="text-align: center;">🕹️Preview</h3>
 </p>
 
-<img src="https://i.ibb.co/C60qLmk/Screenshot-2024-12-13-113941.png" alt="Screenshot" width="400px" />
+<img src="https://i.ibb.co/F0GRN7X/Game-Preview.gif" alt="Screenshot" width="400px" />
 
 ### 📑 Aufgaben
 
