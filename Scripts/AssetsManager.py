@@ -64,8 +64,16 @@ class Dark_Force:
     DARK_FORCE_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Dark Force', 'Dark_Force_1.png'))
     DARK_FORCE_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Dark Force', 'Dark_Force_2.png'))
 
-# class Moculus:
-#   WIP
+class Moculus:
+    MOCULUS_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Moculus', 'Moculus_1.png'))
+    MOCULUS_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Moculus', 'Moculus_2.png'))
+    animationArray = [MOCULUS_1, MOCULUS_2]
+
+class Jinx:
+    JINX_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Jinx', 'Jinx_1.png'))
+    JINX_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Jinx', 'Jinx_2.png'))
+    animationArray = [JINX_1, JINX_2]
+
     
 class Sunset:
     SUNSET_IDLE_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Sunset', 'Sunset Idle', 'Sunset_Idle_1.png'))
@@ -114,6 +122,9 @@ class Enemy_Laser:
     LASER_EXPLOSION_4 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Laser Explosion', 'Laser_Explosion_4.png'))
     LASER_EXPLOSION_5 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Laser Explosion', 'Laser_Explosion_5.png'))
     animationArray_laser_explosion = [LASER_EXPLOSION_1, LASER_EXPLOSION_2, LASER_EXPLOSION_3, LASER_EXPLOSION_4, LASER_EXPLOSION_5]
+
+# class Heavy_Attack:
+#     WIP
 
 AUDIO_PATH = os.path.join(ASSETS_PATH, '_Audio')
 
