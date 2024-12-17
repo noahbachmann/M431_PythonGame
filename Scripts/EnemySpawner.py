@@ -1,7 +1,7 @@
 import pygame
 from Scripts.Enemy import *
 from Scripts.Timer import Timer
-from Scripts.AssetsManager import Enemy_Explosion, Dark_Force, Arachnis, Brawler, Apex, Crypto, Audio
+from Scripts.AssetsManager import Enemy_Explosion, Dark_Force, Arachnis, Brawler, Apex, Crypto,Moculus, Jinx, Audio
 from random import *
 
 class Spawner:
@@ -11,22 +11,31 @@ class Spawner:
         self.spawnPoints = []
         self.enemies = {
             #health, damage, gold, speed, player, image, groups, size:tuple = None
-            "Brawler": {"class": BasicMelee, "weight": 50, "args": [2, 1, 3, 200, self.player,
+            "Brawler": {"class": BasicMelee, "weight": 35, "args": [2, 1, 3, 220, self.player,
             Brawler.BRAWLER_IDLE_1,{"idle":{"frames":[Brawler.BRAWLER_IDLE_1, Brawler.BRAWLER_IDLE_2, Brawler.BRAWLER_IDLE_3], "speed":8},
                                     "attack":{"frames":[Brawler.BRAWLER_BOOSTATTACK_1, Brawler.BRAWLER_BOOSTATTACK_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}}, self.enemyGroups,45,(64, 64)]},
             #health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
-            "Arachnis": {"class": BasicShooter, "weight": 50, "args": [2, 1, 1, 150, 3.5, self.player,
+            "Arachnis": {"class": BasicShooter, "weight": 35, "args": [2, 1, 1, 150, 3.5, self.player,
             Arachnis.ARACHNIS_1,{"idle":{"frames":[Arachnis.ARACHNIS_1,Arachnis.ARACHNIS_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 400,0,(64, 64)]}, 
             #health, damage, gold, speed, atkSpeed, player, image, groups, swap, range=None, size:tuple = None
-            "DarkForce": {"class": DoubleShooter, "weight": 0, "args": [2, 1, 2, 150, 4, self.player,
+            "DarkForce": {"class": DoubleShooter, "weight": 10, "args": [2, 1, 2, 150, 4, self.player,
             Dark_Force.DARK_FORCE_1,{"idle":{"frames":[Dark_Force.DARK_FORCE_1,Dark_Force.DARK_FORCE_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, False, 400,0,(64, 64)]},
               #health, damage, gold, speed, atkSpeed, player, image, groups, swap, range=None, size:tuple = None
             "Apex": {"class": DoubleShooter, "weight": 0, "args": [2, 1, 2, 150, 2, self.player,
             Apex.APEX_IDLE_1,{"idle":{"frames":[Apex.APEX_IDLE_1,Apex.APEX_IDLE_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, True, 400,0,(64, 64)]},
+                                #health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
+            "Jinx": {"class": BasicShooter, "weight": 15, "args": [2, 1, 1, 150, 3, self.player,
+            Jinx.JINX_1,{"idle":{"frames":[Jinx.animationArray], "speed":8},
+                                "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 400,0,(64, 64)]}, 
+            #health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
+            "Moculus": {"class": BasicShooter, "weight": 0, "args": [2, 1, 1, 180, 5, self.player,
+            Moculus.MOCULUS_1,{"idle":{"frames":[Moculus.animationArray], "speed":8},
+                                "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 400,0,(64, 64)]}, 
+           
             } 
         self.miniBosses = {
             "Crypto": {
@@ -69,9 +78,9 @@ class Spawner:
 
     def upgradeEnemy(self):
         for key, enemy in self.enemies.items():
-            if (key == "Brawler" or key == "Arachnis") and enemy["weight"] > 20:
+            if (key == "Brawler" or key == "Arachnis") and enemy["weight"] > 15:
                 enemy["weight"] -= 2
-            elif (key == "DarkForce" or key == "Apex") and enemy["weight"] < 20:
+            elif (key == "DarkForce" or key == "Apex" or key == "Jinx" or key == "Moculus") and enemy["weight"] < 20:
                 enemy["weight"] += 2 
             if self.upgraded != 0:
                 if self.upgraded % 2 == 0:
@@ -81,17 +90,10 @@ class Spawner:
                         self.spawnRate -= 0.5
                     elif self.spawnRate > 0.5:
                         self.spawnRate -= 0.1
-        for key, enemy in self.miniBosses:
-            if self.upgraded % 10:
-                enemy["args"][0] += 5
-        self.upgraded += 1    
-
-    def upgradeEnemy(self):
-        for key, enemy in self.enemies.items():
-            if (key == "Brawler" or key == "Arachnis") and enemy["weight"] > 20:
-                enemy["weight"] -= 2
-            elif (key == "DarkForce" or key == "Apex") and enemy["weight"] < 20:
-                enemy["weight"] += 2     
+        if self.upgraded % 10:
+            for key, enemy in self.miniBosses.items():
+                    enemy["args"][0] += 5
+        self.upgraded += 1      
 
     def SetDifficulty(self):
         if self.difficulty == "normal":
