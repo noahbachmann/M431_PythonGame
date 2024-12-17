@@ -20,7 +20,7 @@ class Spawner:
             Arachnis.ARACHNIS_1,{"idle":{"frames":[Arachnis.ARACHNIS_1,Arachnis.ARACHNIS_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 400,0,(64, 64)]}, 
             #health, damage, gold, speed, atkSpeed, player, image, groups, swap, range=None, size:tuple = None
-            "DarkForce": {"class": DoubleShooter, "weight": 10, "args": [2, 1, 2, 150, 4, self.player,
+            "DarkForce": {"class": DoubleShooter, "weight": 15, "args": [2, 1, 2, 150, 4, self.player,
             Dark_Force.DARK_FORCE_1,{"idle":{"frames":[Dark_Force.DARK_FORCE_1,Dark_Force.DARK_FORCE_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, False, 400,0,(64, 64)]},
               #health, damage, gold, speed, atkSpeed, player, image, groups, swap, range=None, size:tuple = None
@@ -78,9 +78,9 @@ class Spawner:
 
     def upgradeEnemy(self):
         for key, enemy in self.enemies.items():
-            if (key == "Brawler" or key == "Arachnis") and enemy["weight"] > 15:
+            if (key == "Brawler" or key == "Arachnis") and enemy["weight"] > 16:
                 enemy["weight"] -= 2
-            elif (key == "DarkForce" or key == "Apex" or key == "Jinx" or key == "Moculus") and enemy["weight"] < 20:
+            elif (key == "DarkForce" or key == "Apex" or key == "Jinx" or key == "Moculus") and enemy["weight"] < 17:
                 enemy["weight"] += 2 
             if self.upgraded != 0:
                 if self.upgraded % 2 == 0:
