@@ -29,11 +29,11 @@ class Spawner:
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, True, 400,0,(64, 64)]},
                                 #health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
             "Jinx": {"class": BasicShooter, "weight": 15, "args": [2, 1, 1, 150, 3, self.player,
-            Jinx.JINX_1,{"idle":{"frames":[Jinx.animationArray], "speed":8},
+            Jinx.JINX_1,{"idle":{"frames":Jinx.animationArray, "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 400,0,(64, 64)]}, 
             #health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
             "Moculus": {"class": BasicShooter, "weight": 0, "args": [2, 1, 1, 180, 5, self.player,
-            Moculus.MOCULUS_1,{"idle":{"frames":[Moculus.animationArray], "speed":8},
+            Moculus.MOCULUS_1,{"idle":{"frames":Moculus.animationArray, "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 400,0,(64, 64)]}, 
            
             } 
