@@ -25,6 +25,8 @@ class UI_Assets:
     ICON_PLAY = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_play.png'))
     ICON_SETTINGS = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_settings.png'))
     ICON_EXIT = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_exit.png'))
+    ICON_TRASH = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_trash.png'))
+    ICON_RESET = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_reset.png'))
 
 class Heart_Assets:
     HEART_EMPTY = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Heart_Empty.png'))
@@ -151,3 +153,4 @@ class Crosshair:
     Crosshair2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crosshair', 'Crosshair-2.png'))
 
 font = pygame.font.Font(os.path.join(ASSETS_PATH, 'upheavtt.ttf'), 20)
+karmaticArcadeFont = pygame.font.Font(os.path.join(ASSETS_PATH, 'KarmaticArcade.ttf'), 20)

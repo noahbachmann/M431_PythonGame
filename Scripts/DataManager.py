@@ -17,7 +17,7 @@ dataJson = {
     'Hotkey_Left': pygame.K_a,
     'Hotkey_Right': pygame.K_d,
     'Hotkey_Boost': pygame.K_LSHIFT,
-    'Hotkey_close': pygame.K_e
+    'Hotkey_close': pygame.K_j
 }
 
 def saveData():
@@ -45,6 +45,18 @@ def loadData():
         print(f"No data file found at {dataPath}, using defaults.")
     except json.JSONDecodeError:
         print("Error decoding JSON data. Using defaults.")
+
+
+def resetHotkeys():
+    dataJson['Hotkey_Up'] = pygame.K_w
+    dataJson['Hotkey_Down'] = pygame.K_s
+    dataJson['Hotkey_Left'] = pygame.K_a
+    dataJson['Hotkey_Right'] = pygame.K_d
+    dataJson['Hotkey_Boost'] = pygame.K_LSHIFT
+    dataJson['Hotkey_close'] = pygame.K_j
+    saveData()
+
+
 
 loadData()
 saveData()

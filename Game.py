@@ -48,7 +48,7 @@ while not gameState['quit']:
             Scripts.DataManager.dataJson["top5Highscores"].pop()  
         
         Scripts.DataManager.saveData()
-        print("https://ibb.co/2nBNBzs")
+        print("Highscore Updated: https://ibb.co/2nBNBzs")
 
         if score < 0:
             if gameState['quit']:
@@ -74,6 +74,7 @@ while not gameState['quit']:
         while MainMenuGame.enabled:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    Scripts.DataManager.saveData()
                     pygame.quit()
                     sys.exit()
                     continue 
@@ -89,6 +90,7 @@ while not gameState['quit']:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:   
                     gameState['quit'] = True
+                    Scripts.DataManager.saveData()
                     pygame.quit()
                     sys.exit()
                     continue 
@@ -98,6 +100,6 @@ while not gameState['quit']:
             screen.blit(cameraSurface, cameraSurface.get_frect(center = (screenSize[0]//2, screenSize[1]//2)))
             pygame.display.update() 
 
-
+Scripts.DataManager.saveData()
 pygame.quit()
 sys.exit()

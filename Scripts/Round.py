@@ -32,7 +32,21 @@ class Round:
         self.hudController = HUDController(self.cameraSurface, self.player, gameState, self.allSprites)
         self.enemySpawner = Spawner("normal", self.player, (self.allSprites, self.enemySprites))
         self.running = True
-
+    
+    def saveScore(self):
+        
+        for i in range(5):
+            if self.player.score > Scripts.DataManager.dataJson["top5Highscores"][i]:
+                Scripts.DataManager.dataJson["top5Highscores"].insert(i, self.player.score) 
+                break 
+        
+        if len(Scripts.DataManager.dataJson["top5Highscores"]) > 5:
+            Scripts.DataManager.dataJson["top5Highscores"].pop()  
+        
+        Scripts.DataManager.saveData()
+        print("Highscore Updated: https://ibb.co/2nBNBzs")
+    
+    
     def run(self):
         self.createBackground()
         self.createBorder()
@@ -41,14 +55,15 @@ class Round:
                 if event.type == pygame.QUIT:
                     self.running = False
                     self.gameState['quit'] = True
+                    Round.saveScore()
                     return -1
                 if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
                             self.hudController.pause = not self.hudController.pause
                             continue
-                if event.type == pygame.KEYDOWN:
-                    if event.key == Scripts.DataManager.dataJson['Hotkey_close']:
-                        Scripts.Hotkey.Hotkeys.closeGame()
+                        elif event.key == Scripts.DataManager.dataJson['Hotkey_close']:
+                            Scripts.DataManager.saveData()
+                            Scripts.Hotkey.Hotkeys.closeGame()
             
             dt = self.clock.tick() / 1000
 
@@ -56,6 +71,7 @@ class Round:
                 self.hudController.update(self.cameraSurface)
                 self.drawToScreen()
                 if self.gameState['gaming'] != "Gaming" or self.gameState['quit']:
+                    Round.saveScore(self)
                     return -1
                 continue
         

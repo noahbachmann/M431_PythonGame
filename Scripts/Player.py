@@ -4,6 +4,7 @@ from Scripts.Timer import *
 from Scripts.AssetsManager import *
 from Scripts.Shot import *
 from Scripts.Settings import *
+import Scripts.DataManager
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, camOffset:tuple, health, speed, boostStrength, boostAmount:float, attackGroups, collisionSprites, size:tuple = None, animationFrames = None):
@@ -49,7 +50,7 @@ class Player(pygame.sprite.Sprite):
         mousePos = (mousePos[0] - self.camOffset[0], mousePos[1] - self.camOffset[1])
         mouse = pygame.mouse.get_pressed()
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LSHIFT]:
+        if keys[Scripts.DataManager.dataJson['Hotkey_Boost']]:
             if not self.boosting and self.boostAmount > 0:
                 self.boosting = True
         elif self.boosting:
@@ -72,8 +73,8 @@ class Player(pygame.sprite.Sprite):
                 self.animationState = "boosting"
         elif self.animationState == "boosting":
             self.animationState = "idle"
-        self.direction.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
-        self.direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+        self.direction.x = int(keys[Scripts.DataManager.dataJson['Hotkey_Right']]) - int(keys[Scripts.DataManager.dataJson['Hotkey_Left']])
+        self.direction.y = int(keys[Scripts.DataManager.dataJson['Hotkey_Down']]) - int(keys[Scripts.DataManager.dataJson['Hotkey_Up']])
         angle = math.degrees(math.atan2(mousePos[1] - self.rect.centery, mousePos[0] - self.rect.centerx))
         self.image = pygame.transform.rotate(self.savedImage, -angle-90)
         if self.direction.length() > 0:
