@@ -22,7 +22,7 @@ class Menu:
         if color:
             self.color = color
         else:
-            self.color = (240,240,240)
+            self.color = (102, 153, 255)
         if size:
             self.size = size
             self.rect = pygame.FRect(self.left, self.top, size[0], size[1])
@@ -67,7 +67,9 @@ class UpgradesMenu(Menu):
         self.generatedButtons = False
         self.buttons.append(Button((self.rect.centerx - TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
         self.buttons.append(Button((self.rect.centerx + TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.quitGame, icon=UI_Assets.ICON_EXIT))
-
+        self.texts.append((font.render(str(self.player.gold), False, (0,0,0)), None))
+        self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.bottomright[0] - 64, self.rect.bottomright[1] - 64)))
+    
     def general(self):
         upgrdHeight = self.rect.height - (self.rect.height//4) 
         upgrdWidth = self.rect.width - TILE_SIZE*2   
@@ -97,10 +99,13 @@ class UpgradesMenu(Menu):
         self.generatedButtons = True
 
     def draw(self, surface):
-        pygame.draw.rect(self.cameraSurface, (240,240,240), self.rect, 0, 0)
+        pygame.draw.rect(self.cameraSurface, self.color, self.rect, 0, 0)
         self.general()
         for button in self.buttons:
             button.update(surface)
+        self.texts[0] = (font.render(str(self.player.gold), False, (0,0,0)), self.texts[0][1])
+        for text, textRect in self.texts:
+            self.cameraSurface.blit(text, textRect)
 
 
 class MainMenu(Menu):
