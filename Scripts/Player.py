@@ -127,38 +127,38 @@ class Player(pygame.sprite.Sprite):
         cost = 0
         match type:
             case "atkSpeed":
-                cost = ((upgradesLevel[0]*25) + 50)
+                cost = ((upgradesLevel[0]*20) + 40)
                 if cost > self.gold or upgradesLevel[0] >= 10:
                     return
                 self.atkSpeed += 5
                 upgradesLevel[0] += 1
             case "atkDmg":
-                cost = ((upgradesLevel[1]*50)+100)
+                cost = ((upgradesLevel[1]*40) + 80)
                 if cost > self.gold or upgradesLevel[1] >= 10:
                     return
                 self.atkDamage += 1
                 upgradesLevel[1] += 1
             case "health":
-                cost = ((upgradesLevel[2]*50)+100)
+                cost = ((upgradesLevel[2]*40) + 80)
                 if cost > self.gold or upgradesLevel[2] >= 10:
                     return
                 self.maxHealth += 1
                 self.health += 1
                 upgradesLevel[2] += 1
             case "heavyCd":
-                cost = ((upgradesLevel[3]*15)+30)
+                cost = ((upgradesLevel[3]*15) + 30)
                 if cost > self.gold or upgradesLevel[3] >= 10:
                     return
                 self.heavyCd -= 0.5
                 upgradesLevel[3] += 1
             case "boostTank":
-                cost = ((upgradesLevel[4]*25)+50)
+                cost = ((upgradesLevel[4]*20) + 40)
                 if cost > self.gold or upgradesLevel[4] >= 10:
                     return
                 self.boostTank += 0.5
                 upgradesLevel[4] += 1
             case "boostStrength":
-                cost = ((upgradesLevel[5]*50)+100)
+                cost = ((upgradesLevel[5]*40) + 80)
                 if cost > self.gold or upgradesLevel[5] >= 10:
                     return
                 self.boostStrength += 10

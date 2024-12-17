@@ -7,7 +7,6 @@ import sys
 import time
 import Scripts.DataManager
 import Scripts.AssetsManager
-import json
 
 pygame.init()
 Scripts.DataManager.loadData()

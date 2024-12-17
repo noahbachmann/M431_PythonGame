@@ -22,19 +22,19 @@ class Spawner:
             #health, damage, gold, speed, atkSpeed, player, image, groups, swap, range=None, size:tuple = None
             "DarkForce": {"class": DoubleShooter, "weight": 15, "args": [2, 1, 2, 150, 4, self.player,
             Dark_Force.DARK_FORCE_1,{"idle":{"frames":[Dark_Force.DARK_FORCE_1,Dark_Force.DARK_FORCE_2], "speed":8},
-                                "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, False, 400,0,(64, 64)]},
+                                "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, False, 430,0,(64, 64)]},
               #health, damage, gold, speed, atkSpeed, player, image, groups, swap, range=None, size:tuple = None
             "Apex": {"class": DoubleShooter, "weight": 0, "args": [2, 1, 2, 150, 2, self.player,
             Apex.APEX_IDLE_1,{"idle":{"frames":[Apex.APEX_IDLE_1,Apex.APEX_IDLE_2], "speed":8},
-                                "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, True, 400,0,(64, 64)]},
+                                "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, True, 420,0,(64, 64)]},
                                 #health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
-            "Jinx": {"class": BasicShooter, "weight": 15, "args": [2, 1, 1, 150, 3, self.player,
+            "Jinx": {"class": BasicShooter, "weight": 5, "args": [2, 1, 2, 150, 3, self.player,
             Jinx.JINX_1,{"idle":{"frames":Jinx.animationArray, "speed":8},
-                                "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 400,0,(64, 64)]}, 
+                                "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 450,0,(64, 64)]}, 
             #health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
-            "Moculus": {"class": BasicShooter, "weight": 0, "args": [2, 1, 1, 180, 5, self.player,
+            "Moculus": {"class": BasicShooter, "weight": 10, "args": [2, 1, 2, 180, 1.5, self.player,
             Moculus.MOCULUS_1,{"idle":{"frames":Moculus.animationArray, "speed":8},
-                                "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 400,0,(64, 64)]}, 
+                                "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 380,0,(64, 64)]}, 
            
             } 
         self.miniBosses = {
@@ -53,6 +53,7 @@ class Spawner:
         self.spawnMinibossTimer = Timer(60*2,True, True, self.spawnMiniboss)
         self.enemyUpgradeTimer = Timer(30, True, True, self.upgradeEnemy)
         self.upgraded = 0
+        self.spawns = 2
 
     def update(self):
         self.spawnTimer.update()
@@ -60,16 +61,17 @@ class Spawner:
         self.enemyUpgradeTimer.update()
         
     def spawnEnemy(self):
-        rollNum = randint(1,100)
-        currentWeight = 0
-        for key, enemy in self.enemies.items():
-            currentWeight += enemy["weight"]
-            if rollNum < currentWeight:
-                enemy["class"](
-                    choice(self.spawnPoints),  
-                    *enemy["args"]
-                )
-                break
+        for x in range(self.spawns):
+            rollNum = randint(1,100)
+            currentWeight = 0
+            for key, enemy in self.enemies.items():
+                currentWeight += enemy["weight"]
+                if rollNum < currentWeight:
+                    enemy["class"](
+                        choice(self.spawnPoints),  
+                        *enemy["args"]
+                    )
+                    break
     
     def spawnMiniboss(self):
         x = choice(list(self.miniBosses.values()))
@@ -90,6 +92,9 @@ class Spawner:
                         self.spawnRate -= 0.5
                     elif self.spawnRate > 0.5:
                         self.spawnRate -= 0.1
+                    else:
+                        self.spawns += 1
+
         if self.upgraded % 10:
             for key, enemy in self.miniBosses.items():
                     enemy["args"][0] += 5

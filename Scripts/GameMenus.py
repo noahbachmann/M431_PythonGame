@@ -63,7 +63,7 @@ class UpgradesMenu(Menu):
         self.player = player
         self.upgrades = ["Upgrades", "atkSpeed", "atkDmg", "health", "heavyCd", "boostTank", "boostStrength"]
         self.upgradesLevel = [0,0,0,0,0,0]
-        self.upgradesMultiplier = [25,50,50,15,25,50]
+        self.upgradesMultiplier = [20,40,40,15,20,40]
         self.generatedButtons = False
         self.buttons.append(Button((self.rect.centerx - TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
         self.buttons.append(Button((self.rect.centerx + TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.quitGame, icon=UI_Assets.ICON_EXIT))
