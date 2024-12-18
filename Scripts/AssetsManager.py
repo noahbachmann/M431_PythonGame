@@ -16,6 +16,7 @@ HEAVY_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'heavy.png'))
 STAR_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'star.png'))
 BORDER_BLOCK = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'meteor.png'))
 EXPLOSION_RADIUS = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'explosionRadius.png'))
+BACKGROUND_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH,'Other','background_muster.png'))
 
 class UI_Assets:
     BUTTON_32x32 = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'button_32x32.png'))
