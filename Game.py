@@ -77,7 +77,6 @@ while not gameState['quit']:
                     Scripts.DataManager.saveData()
                     pygame.quit()
                     sys.exit()
-                    continue 
             screen.fill((0,0,0))
             cameraSurface.fill((7, 0, 25))
             MainMenuGame.draw()

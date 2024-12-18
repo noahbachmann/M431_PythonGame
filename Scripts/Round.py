@@ -1,6 +1,4 @@
 import pygame
-import sys
-import time
 from random import randint
 import Scripts.Settings
 from Scripts.Player import *

@@ -6,7 +6,6 @@ import Scripts.Hotkey
 from Scripts.Settings import *
 from tkinter import filedialog
 import Scripts.DataManager
-import sys
 
 class Menu:
     def __init__(self, surface, left, top, gameState, color = None, enabled = False, size:tuple = None):
@@ -46,6 +45,7 @@ class Menu:
         self.enabled = False
         Scripts.DataManager.saveData()
         self.gameState['gaming'] = "MainMenu"
+        print(self.gameState['gaming'])
 
 class EndGameMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, gameState, enabled,  score):
@@ -60,15 +60,17 @@ class EndGameMenu(Menu):
         self.enabled = False
 
 class UpgradesMenu(Menu):
-    def __init__(self, surface, left, top, player, gameState, color = None, size:tuple = None):
+    def __init__(self, surface, left, top, player, gameState, hudController, color = None, size:tuple = None):
         super().__init__(surface,left,top, gameState, color,size=size)
         self.player = player
         self.upgrades = ["Upgrades", "atkSpeed", "atkDmg", "health", "heavyCd", "boostTank", "boostStrength"]
         self.upgradesLevel = [0,0,0,0,0,0]
         self.upgradesMultiplier = [20,40,40,15,20,40]
         self.generatedButtons = False
-        self.buttons.append(Button((self.rect.centerx - TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
-        self.buttons.append(Button((self.rect.centerx + TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.quitGame, icon=UI_Assets.ICON_EXIT))
+        self.hudController = hudController
+        self.buttons.append(Button((self.rect.centerx - TILE_SIZE*1.5, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.endPause, icon=UI_Assets.ICON_PLAY))
+        self.buttons.append(Button((self.rect.centerx, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.mainMenu, icon=UI_Assets.ICON_HOME))
+        self.buttons.append(Button((self.rect.centerx + TILE_SIZE*1.5, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.quitGame, icon=UI_Assets.ICON_EXIT))
         self.texts.append((font.render(str(self.player.gold), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.bottomright[0] - 64, self.rect.bottomright[1] - 64)))
     
@@ -108,6 +110,9 @@ class UpgradesMenu(Menu):
         self.texts[0] = (font.render(str(self.player.gold), False, (0,0,0)), self.texts[0][1])
         for text, textRect in self.texts:
             self.cameraSurface.blit(text, textRect)
+
+    def endPause(self):
+        self.hudController.pause = False
 
 
 class MainMenu(Menu):
