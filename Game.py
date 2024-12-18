@@ -60,7 +60,7 @@ while not gameState['quit']:
                 endGame()
             else:
                 continue
-        endGameMenu = EndGameMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, 50,(600,600), gameState, True, score)
+        endGameMenu = EndGameMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, (Scripts.Settings.WINDOW_SIZE - 600) // 2,(600,600), gameState, True, score)
         while endGameMenu.enabled: 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -70,7 +70,7 @@ while not gameState['quit']:
             drawFunction()
 
     elif gameState['gaming'] == "MainMenu":
-        MainMenuGame = MainMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 650) // 2, 50,(650,650), True, gameState)
+        MainMenuGame = MainMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 650) // 2, (Scripts.Settings.WINDOW_SIZE - 600) // 2,(650,650), True, gameState)
         while MainMenuGame.enabled:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -81,7 +81,7 @@ while not gameState['quit']:
             drawFunction()
             
     elif gameState['gaming'] == "Settings":
-        SettingsMenuGame = SettingsMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 650) // 2,  50,(650,650), True, gameState)
+        SettingsMenuGame = SettingsMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 650) // 2,  (Scripts.Settings.WINDOW_SIZE - 600) // 2,(650,650), True, gameState)
         while SettingsMenuGame.enabled:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:   
