@@ -1,6 +1,6 @@
 import pygame, time
 import Scripts.Settings
-from Scripts.AssetsManager import font, UI_Assets, Heart_Assets, Energybar_Assets
+from Scripts.AssetsManager import font,karmaticArcadeFont, UI_Assets, Heart_Assets, Energybar_Assets
 from Scripts.Button import *
 from Scripts.GameMenus import *
 from Scripts.Player import *
@@ -11,6 +11,8 @@ class HUDController:
         self.playerHealth = self.player.health
         self.pause = False
         self.hudSpritesGroup = hudSpritesGroup
+        self.scoreText = karmaticArcadeFont.render(str(self.player.score), False, (240,240,240))
+        self.scoreTextRect = self.scoreText.get_frect(midtop = (Scripts.Settings.WINDOW_SIZE - 150, Scripts.Settings.WINDOW_SIZE - 200))
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))        
         self.goldTextRect = self.goldText.get_frect(midtop = (Scripts.Settings.WINDOW_SIZE - 150, Scripts.Settings.WINDOW_SIZE - 150))  
         self.upgradeButton = Button((Scripts.Settings.WINDOW_SIZE - TILE_SIZE*1.5,TILE_SIZE*1.5),UI_Assets.BUTTON_32x32, func=self.toggleSettings, icon=UI_Assets.ICON_UPGRADE, size=(64,64))
@@ -22,6 +24,7 @@ class HUDController:
     def draw(self, surface):
         self.upgradeButton.draw(surface)
         self.energyBar.draw(surface)
+        surface.blit(self.scoreText, self.scoreTextRect)
         surface.blit(self.goldText, self.goldTextRect)
         for heart in self.hearts:
             heart.draw(surface)
