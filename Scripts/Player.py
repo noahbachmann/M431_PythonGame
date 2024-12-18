@@ -33,6 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.frames = animationFrames
         self.frameIndex = 0
         self.animationState = "idle"
+        self.hitHighscore = False
         if size:
             self.image = pygame.transform.scale(Sunset.SUNSET_IDLE_1, size)
             self.size = size
@@ -50,12 +51,15 @@ class Player(pygame.sprite.Sprite):
         mousePos = (mousePos[0] - self.camOffset[0], mousePos[1] - self.camOffset[1])
         mouse = pygame.mouse.get_pressed()
         keys = pygame.key.get_pressed()
-        if keys[Scripts.DataManager.dataJson['Hotkey_Boost']]:
+        boostKeys = pygame.key.get_just_pressed()
+        if boostKeys[Scripts.DataManager.dataJson['Hotkey_Boost']]:
             if not self.boosting and self.boostAmount > 0:
                 self.boosting = True
-        elif self.boosting:
+                Audio.BOOST.play(-1)
+        elif self.boosting and not keys[Scripts.DataManager.dataJson['Hotkey_Boost']]:
             self.boosting = False
             self.speed = self.normalSpeed
+            Audio.BOOST.stop()
         if self.boosting:
             self.boostAmount -= dt
             if self.speed == self.normalSpeed and self.boostAmount > 0:
@@ -68,6 +72,7 @@ class Player(pygame.sprite.Sprite):
         if self.boostAmount <= 0:
             self.boosting = False
             self.speed = self.normalSpeed
+            Audio.BOOST.stop()
         if self.boosting:
             if self.animationState != "boosting":
                 self.animationState = "boosting"
@@ -91,7 +96,10 @@ class Player(pygame.sprite.Sprite):
             self.atkTimer.activate()
         if (mouse[2] or keys[pygame.K_f]) and not self.heavyCdTimer.active:
             self.heavy(angle)
-            self.heavyCdTimer.activate()       
+            self.heavyCdTimer.activate() 
+        if self.score > Scripts.DataManager.dataJson["top5Highscores"][0] > 1000 and not self.hitHighscore:
+            Audio.UNREAL.play()      
+            self.hitHighscore = True
         self.atkTimer.update()
         self.heavyCdTimer.update()
         self.damageTimer.update()

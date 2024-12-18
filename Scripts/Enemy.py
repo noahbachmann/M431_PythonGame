@@ -59,6 +59,7 @@ class Enemy(pygame.sprite.Sprite):
             self.player.score += self.gold*50
             self.animationState = "death"
             self.frameIndex = 0
+            Audio.ENEMY_DEATH.play()
     
     def animate(self, dt):
         self.frameIndex += self.frames[self.animationState]["speed"]*dt

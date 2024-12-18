@@ -23,24 +23,18 @@ dataJson = {
 def saveData():
     if not os.path.exists(game_folder):
         os.makedirs(game_folder)
-        print(f"Folder created at: {game_folder}")
     
     if not os.path.exists(img_folder):
         os.makedirs(img_folder)
-        print(f"Image folder created at: {img_folder}")
 
     with open(dataPath, 'w') as data_file:
         json.dump(dataJson, data_file, indent=4)  
-    print(f"Data saved to: {dataPath}")
-    print(f"Data: {dataJson}")
 
 def loadData():
     global dataJson  
     try:
         with open(dataPath, 'r') as data_file:
             dataJson = json.load(data_file)  
-            print(f"Data loaded from: {dataPath}")
-            print(f"Data: {dataJson}")
     except FileNotFoundError:
         print(f"No data file found at {dataPath}, using defaults.")
     except json.JSONDecodeError:
