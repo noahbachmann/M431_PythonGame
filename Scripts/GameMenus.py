@@ -15,10 +15,7 @@ class Menu:
         self.top = top
         self.gameState = gameState
         self.buttons = []
-        self.generalButtons = []
-        self.controlsButtons = []
         self.texts = []
-        self.keybindTexts = []
         self.enabled = enabled
         if color:
             self.color = color
@@ -136,6 +133,9 @@ class MainMenu(Menu):
 class SettingsMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, enabled, gameState):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
+        self.generalButtons = []
+        self.controlsButtons = []
+        self.keybindTexts = []
         self.texts.append((font.render(str("Settings"), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), func=self.mainMenu, icon=UI_Assets.ICON_HOME))   
@@ -145,8 +145,23 @@ class SettingsMenu(Menu):
         self.KeybindList = ["Keybinds", "Up", "Down", "Left", "Right", "Boost", "Close Game"]
         self.buttons.append(Button((self.rect.centerx * .75, self.rect.midbottom[1] - TILE_SIZE * 8.5),text="General", func=self.setTabGeneral, image=Scripts.AssetsManager.UI_Assets.BUTTON_64x32, size=(128,64))  )
         self.buttons.append(Button((self.rect.centerx * 1.25, self.rect.midbottom[1] - TILE_SIZE * 8.5),text="Controls", func=self.setTabKeyControls, image=Scripts.AssetsManager.UI_Assets.BUTTON_64x32, size=(128,64))) 
+        self.generalButtons.append(Button((self.rect.centerx * 1.25, self.rect.midbottom[1] - TILE_SIZE * 3.85),text="Upload", func=self.cursorUpload, image=Scripts.AssetsManager.UI_Assets.BUTTON_64x32,  size=(128,64)))
+        self.generalButtons.append(Button((self.rect.centerx * 1.25, self.rect.midbottom[1] - TILE_SIZE * 2.7),text="Reset", func=self.cursorReset, image=Scripts.AssetsManager.UI_Assets.BUTTON_64x32,  size=(128,64))) 
+        self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 6.7),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Up , text='Up', keyText=True))
+        self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 5.6),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Down , text='Down', keyText=True))
+        self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 4.5),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Left , text='Left', keyText=True))
+        self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 3.4),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Right , text='Right', keyText=True))
+        self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 2.3),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Boost , text='Boost', keyText=True))
+        self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 1.2),func=Scripts.Hotkey.Hotkeys.change_Hotkey_close , text='close', keyText=True))
+        self.controlsButtons.append(Button((self.rect.centerx * 1.35, self.rect.midbottom[1] - TILE_SIZE * 1.2),func=Scripts.DataManager.resetHotkeys , icon=UI_Assets.ICON_RESET))
 
-
+        self.keybindTexts.append((font.render(str("Hotkey_Up"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 6.8)))
+        self.keybindTexts.append((font.render(str("Hotkey_Down"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 5.8)))
+        self.keybindTexts.append((font.render(str("Hotkey_Left"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 4.7)))
+        self.keybindTexts.append((font.render(str("Hotkey_Right"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 3.6)))
+        self.keybindTexts.append((font.render(str("Hotkey_Boost"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 2.4)))
+        self.keybindTexts.append((font.render(str("Hotkey_close"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 1.2)))           
+        self.keybindTexts.append((font.render(str("Reset Hotkey's"), False, (0,0,0)), (self.rect.centerx * 0.95, self.rect.midbottom[1] - TILE_SIZE * 1.2)))
 
     def setTabKeyControls(self):
         self.currentTab = "Controls"
@@ -154,13 +169,9 @@ class SettingsMenu(Menu):
     def setTabGeneral(self):
         self.currentTab = "General"
 
-
-
-    def cursorUpload(self,event=None):
-        
+    def cursorUpload(self,event=None):     
         cursorPath = filedialog.askopenfilename(filetypes=[("Image Files", "*.png *.jpg *.jpeg *.gif")])
         if cursorPath:
-            clock = pygame.time.Clock()
             cursor_image = pygame.image.load(cursorPath).convert_alpha()
             cursor_image = pygame.transform.scale(cursor_image, (32, 32))
             self.cursor = cursor_image
@@ -178,9 +189,6 @@ class SettingsMenu(Menu):
         pygame.mouse.set_cursor((hotspot[0], hotspot[1]), cursor_image) 
         Scripts.DataManager.dataJson['customCrosshair'] = False
         Scripts.DataManager.saveData()
-
-
-
     
     def draw(self):
         super().draw()
@@ -188,58 +196,19 @@ class SettingsMenu(Menu):
         if self.currentTab == "General":
             crosshairPreviewBox = pygame.transform.scale(UI_Assets.BUTTON_32x32, (160, 160))
             self.cameraSurface.blit(crosshairPreviewBox, (self.rect.centerx * 1.105, self.rect.midbottom[1] - TILE_SIZE * 7))
-            self.generalButtons.append(Button((self.rect.centerx * 1.25, self.rect.midbottom[1] - TILE_SIZE * 3.85),text="Upload", func=self.cursorUpload, image=Scripts.AssetsManager.UI_Assets.BUTTON_64x32,  size=(128,64)))
-            self.generalButtons.append(Button((self.rect.centerx * 1.25, self.rect.midbottom[1] - TILE_SIZE * 2.7),text="Reset", func=self.cursorReset, image=Scripts.AssetsManager.UI_Assets.BUTTON_64x32,  size=(128,64))) 
             if Scripts.DataManager.dataJson['customCrosshair'] == True:
                 crosshair_path = Scripts.DataManager.dataJson['crosshair']
-                cursor_image = pygame.image.load(crosshair_path).convert_alpha()  
-                cursor_image = pygame.transform.scale(cursor_image, (64, 64))  
-                cursorPreviewImage = pygame.transform.scale(cursor_image, (64, 64))
-                hotspot = (cursor_image.get_width() // 2, cursor_image.get_height() // 2)
-                self.cameraSurface.blit(cursorPreviewImage, (self.rect.centerx * 1.2, self.rect.midbottom[1] - TILE_SIZE * 6.2))
-
-
-
+                cursor_image = pygame.transform.scale(pygame.image.load(crosshair_path).convert_alpha() , (64, 64))  
+                self.cameraSurface.blit(cursor_image, (self.rect.centerx * 1.2, self.rect.midbottom[1] - TILE_SIZE * 6.2))
             else:
                 ClassiccursorPreviewImage = pygame.transform.scale(Scripts.AssetsManager.Crosshair.Crosshair1, (64, 64))
                 self.cameraSurface.blit(ClassiccursorPreviewImage, (self.rect.centerx * 1.2, self.rect.midbottom[1] - TILE_SIZE * 6.2))
-                for buttonGeneral in self.generalButtons:
-                    buttonGeneral.update(self.cameraSurface)
-
             for buttonGeneral in self.generalButtons:
                 buttonGeneral.update(self.cameraSurface)
 
-
         elif self.currentTab == "Controls":
-            print("")
-                    
-
-
-            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 6.7),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Up , text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Up'])))
-            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 5.6),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Down , text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Down'])))
-            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 4.5),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Left , text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Left'])))
-            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 3.4),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Right , text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Right'])))
-            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 2.3),func=Scripts.Hotkey.Hotkeys.change_Hotkey_Boost , text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Boost'])))
-            self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 1.2),func=Scripts.Hotkey.Hotkeys.change_Hotkey_close , text=pygame.key.name(Scripts.DataManager.dataJson['Hotkey_close'])))
-            
-            self.keybindTexts.append((font.render(str("Hotkey_Up"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 6.8)))
-            self.keybindTexts.append((font.render(str("Hotkey_Down"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 5.8)))
-            self.keybindTexts.append((font.render(str("Hotkey_Left"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 4.7)))
-            self.keybindTexts.append((font.render(str("Hotkey_Right"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 3.6)))
-            self.keybindTexts.append((font.render(str("Hotkey_Boost"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 2.4)))
-            self.keybindTexts.append((font.render(str("Hotkey_close"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 1.2)))
-            
-            self.keybindTexts.append((font.render(str("Reset Hotkey's"), False, (0,0,0)), (self.rect.centerx * 0.95, self.rect.midbottom[1] - TILE_SIZE * 1.2)))
-            self.controlsButtons.append(Button((self.rect.centerx * 1.35, self.rect.midbottom[1] - TILE_SIZE * 1.2),func=Scripts.DataManager.resetHotkeys , icon=UI_Assets.ICON_RESET))
             for controlsButtons in self.controlsButtons:
                 controlsButtons.update(self.cameraSurface)
-            pass
                 
             for kbTextes, position in self.keybindTexts:
                 self.cameraSurface.blit(kbTextes, position)
-
-
-
-
-
-
