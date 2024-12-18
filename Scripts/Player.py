@@ -106,7 +106,7 @@ class Player(pygame.sprite.Sprite):
     def heavy(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Heavy(spawnPos,2,200,angle,128,HEAVY_IMAGE, EXPLOSION_RADIUS, self.attackGroups, self.moveOffset.copy(), (8,8))
+        Heavy(spawnPos,2,200,angle,128,Heavy_Attack.HEAVY_ATTACK_LASER, Heavy_Attack.HEAVY_ATTACK_3, self.attackGroups, self.moveOffset.copy(), (8,8))
 
     def hit(self, damage):
         if self.damageTimer.active:
