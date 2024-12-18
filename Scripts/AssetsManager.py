@@ -30,11 +30,15 @@ class UI_Assets:
     ICON_RESET = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_reset.png'))
 
 class Heart_Assets:
-    HEART_EMPTY = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Heart_Empty.png'))
-    HEART_HALFFULL = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Heart_HalfFull.png'))
-    HEART_FULL = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Heart_Full.png'))
-    HALFHEART_EMPTY = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'HalfHeart_Empty.png'))
-    HALFHEART_FULL = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'HalfHeart_Full.png'))
+    HEART_EMPTY = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Empty_Heart.png'))
+    HEART_HALFFULL = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Half_Heart.png'))
+    HEART_FULL = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Full_Heart.png'))
+    HALFHEART_EMPTY = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Halfcontainer_Empty.png'))
+    HALFHEART_FULL = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Halfcontainer_Full.png'))
+    HEALTHBAR = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Healthbar.png'))
+
+class Healthbar:
+    HEALTHBAR = pygame.image.load(os.path.join(ASSETS_PATH, 'Heartbar', 'Healthbar.png'))
 
 class Energybar_Assets:
     ENERGYBAR_ENERGY = pygame.image.load(os.path.join(ASSETS_PATH, 'Energybar', 'Energybar_Energy.png'))
@@ -126,8 +130,19 @@ class Enemy_Laser:
     LASER_EXPLOSION_5 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Laser Explosion', 'Laser_Explosion_5.png'))
     animationArray_laser_explosion = [LASER_EXPLOSION_1, LASER_EXPLOSION_2, LASER_EXPLOSION_3, LASER_EXPLOSION_4, LASER_EXPLOSION_5]
 
-# class Heavy_Attack:
-#     WIP
+class Heavy_Attack:
+    HEAVY_ATTACK_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_1.png'))
+    HEAVY_ATTACK_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_2.png'))
+    HEAVY_ATTACK_3 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_3.png'))
+    HEAVY_ATTACK_4 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_4.png'))
+    HEAVY_ATTACK_5 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_5.png'))
+    HEAVY_ATTACK_6 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_6.png'))
+    HEAVY_ATTACK_7 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_7.png'))
+    HEAVY_ATTACK_8 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_8.png'))
+    animationArray_heavy_attack = [HEAVY_ATTACK_1, HEAVY_ATTACK_2, HEAVY_ATTACK_3, HEAVY_ATTACK_4, HEAVY_ATTACK_5, HEAVY_ATTACK_6, HEAVY_ATTACK_7, HEAVY_ATTACK_8]
+
+    HEAVY_ATTACK_LASER = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_Laser.png'))
+
 
 AUDIO_PATH = os.path.join(ASSETS_PATH, '_Audio')
 
