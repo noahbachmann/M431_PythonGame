@@ -244,3 +244,23 @@ class SettingsMenu(Menu):
             if self.keyChange:
                 self.cameraSurface.blit(self.keyModal, self.keyModalRect)
             
+
+class StatsMenu(Menu):
+    def __init__(self, surface, left, top, size: tuple, enabled, gameState):
+        super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
+        self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.mainMenu))  
+        self.top5Highscores = Scripts.DataManager.dataJson['top5Highscores']
+        
+        self.font = Scripts.AssetsManager.font
+
+    def draw(self):
+        super().draw()
+        
+        statsText = self.font.render("Stats", True, (0, 0, 0))  
+        text_rect = statsText.get_rect(center=(self.rect.centerx, self.rect.top + 50))  
+        self.cameraSurface.blit(statsText, text_rect)
+        
+        for index, score in enumerate(self.top5Highscores):
+            score_text = self.font.render(f"{index + 1}. {score}", True, (0, 0, 0))
+            score_rect = score_text.get_rect(center=(self.rect.centerx, self.rect.top + 100 + index * 40))
+            self.cameraSurface.blit(score_text, score_rect)
