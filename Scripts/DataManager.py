@@ -20,7 +20,14 @@ dataJson = {
     'Hotkey_close': pygame.K_j
 }
 
-def saveData():
+def saveData(score = None):
+    if score:
+        for i in range(5):
+            if score > dataJson["top5Highscores"][i]:
+                dataJson["top5Highscores"].insert(i, score) 
+                dataJson["top5Highscores"].pop()
+                break       
+
     if not os.path.exists(game_folder):
         os.makedirs(game_folder)
     
