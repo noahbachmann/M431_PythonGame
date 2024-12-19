@@ -142,7 +142,6 @@ class SettingsMenu(Menu):
         self.texts.append((font.render(str("Settings"), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), func=self.mainMenu, icon=UI_Assets.ICON_HOME))   
-        self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.mainMenu))   
         self.cursor = Crosshair.Crosshair1
         self.currentTab = "General"
         self.KeybindList = ["Keybinds", "Up", "Down", "Left", "Right", "Boost", "Close Game"]
@@ -196,7 +195,6 @@ class SettingsMenu(Menu):
     def change_Hotkey(self, key):
         self.keyChange = True
         self.keyToChange = key
-
 
     def draw(self):
         super().draw()
