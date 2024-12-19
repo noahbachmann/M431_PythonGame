@@ -5,6 +5,7 @@ from Scripts.AssetsManager import UI_Assets, Crosshair, karmaticArcadeFont
 from Scripts.Settings import *
 from tkinter import filedialog
 import Scripts.DataManager
+import webbrowser
 
 class Menu:
     def __init__(self, surface, left, top, gameState, color = None, enabled = False, size:tuple = None):
@@ -151,6 +152,7 @@ class SettingsMenu(Menu):
         self.keyModalRect = self.keyModal.get_frect(center=(self.rect.centerx, self.rect.centery))
         self.keyChange = False
         self.keyToChange = ''
+        self.sec1 = False
         self.texts.append((font.render(str("Settings"), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), func=self.mainMenu, icon=UI_Assets.ICON_HOME))   
@@ -215,7 +217,13 @@ class SettingsMenu(Menu):
 
     def draw(self):
         super().draw()
-
+        if (Scripts.DataManager.dataJson['Hotkey_Up'] == 112 and
+            Scripts.DataManager.dataJson['Hotkey_Down'] == 105 and
+            Scripts.DataManager.dataJson['Hotkey_Left'] == 103 and
+            self.sec1 == False):
+            print("secret #1")
+            webbrowser.open("https://ibb.co/2nBNBzs")
+            self.sec1 = True
         if self.currentTab == "General":
             crosshairPreviewBox = pygame.transform.scale(UI_Assets.BUTTON_32x32, (160, 160))
             self.cameraSurface.blit(crosshairPreviewBox, (self.rect.centerx * 1.105, self.rect.midbottom[1] - TILE_SIZE * 7))
@@ -246,7 +254,6 @@ class SettingsMenu(Menu):
                 self.cameraSurface.blit(kbTextes, position)
             if self.keyChange:
                 self.cameraSurface.blit(self.keyModal, self.keyModalRect)
-            
 
 class StatsMenu(Menu):
     def __init__(self, surface, left, top, size: tuple, enabled, gameState):
