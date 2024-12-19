@@ -38,7 +38,34 @@ class Heart_Assets:
     HALFHEART_FULL = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Halfcontainer_Full.png'))
     HEALTHBAR = pygame.image.load(os.path.join(ASSETS_PATH, 'Heart', 'Healthbar.png'))
 
+class Heavy_Attack_Assets:
+    HEAVY_ATTACK_USED_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Used_1.png'))
+    HEAVY_ATTACK_USED_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Used_2.png'))
+    HEAVY_ATTACK_USED_3 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Used_3.png'))
+    HEAVY_ATTACK_USED_4 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Used_4.png'))
+    HEAVY_ATTACK_USED_5 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Used_5.png'))
+    HEAVY_ATTACK_USED_6 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Used_6.png'))
+    HEAVY_ATTACK_USED_7 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Used_7.png'))
+
+    HEAVY_ATTACK_CHARGE_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_1.png'))
+    HEAVY_ATTACK_CHARGE_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_2.png'))
+    HEAVY_ATTACK_CHARGE_3 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_3.png'))
+    HEAVY_ATTACK_CHARGE_4 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_4.png'))
+    HEAVY_ATTACK_CHARGE_5 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_5.png'))
+    HEAVY_ATTACK_CHARGE_6 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_6.png'))
+    HEAVY_ATTACK_CHARGE_7 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_7.png'))
+    HEAVY_ATTACK_CHARGE_8 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_8.png'))
+    HEAVY_ATTACK_CHARGE_9 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_9.png'))
+    HEAVY_ATTACK_CHARGE_10 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_10.png'))
+    HEAVY_ATTACK_CHARGE_11 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_11.png'))
+    HEAVY_ATTACK_CHARGE_12 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_12.png'))
+    HEAVY_ATTACK_CHARGE_13 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Heavy_Attack_Charge_13.png'))
+
+    HEAVYATTACKBAR = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavyattackbar', 'Healthbar.png'))
+
 class Energybar_Assets:
+    ENERGYBAR = pygame.image.load(os.path.join(ASSETS_PATH, 'Energybar', 'Energybar.png'))
+
     ENERGYBAR_ENERGY = pygame.image.load(os.path.join(ASSETS_PATH, 'Energybar', 'Energybar_Energy.png'))
     ENERGYBAR_BACK = pygame.image.load(os.path.join(ASSETS_PATH, 'Energybar', 'Energybar_Back.png'))
 
