@@ -23,6 +23,8 @@ class Player(pygame.sprite.Sprite):
         self.attackGroups = attackGroups
         self.collisionSprites = collisionSprites
         self.damageTimer = Timer(0.5)
+        self.damagingTimer = Timer(0.1, True, False, self.damaging)
+        self.damageCount = 0
         self.atkSpeed = 0.5
         self.atkDamage = 1
         self.atkTimer = Timer(self.atkSpeed)
@@ -47,6 +49,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, surface, dt): 
         self.animate(dt)
+        self.damagingTimer.update()
         mousePos = pygame.mouse.get_pos()
         mousePos = (mousePos[0] - self.camOffset[0], mousePos[1] - self.camOffset[1])
         mouse = pygame.mouse.get_pressed()
@@ -120,10 +123,26 @@ class Player(pygame.sprite.Sprite):
         if self.damageTimer.active:
             return
         self.damageTimer.activate()
+        self.damagingTimer.activate()
         self.health -= damage
         Audio.PLAYER_DAMAGE.play()           
 
+    def damaging(self):
+        self.damageCount += 1
+        if not self.damageTimer.active:
+            self.damageCount = 0
+            self.damagingTimer.deactivate()
+            return
+        if self.damageCount % 2 == 0:
+            self.image = pygame.transform.scale(self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState]["frames"])], self.size)
+            self.savedImage = self.image
+        else:
+            self.image = pygame.transform.scale(Sunset.SUNSET_INVIS, self.size) 
+            self.savedImage = self.image        
+
     def animate(self, dt):
+        if self.damageTimer.active:
+            return
         self.frameIndex += self.frames[self.animationState]["speed"]*dt
         if self.size:
             self.image = pygame.transform.scale(self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState]["frames"])], self.size)

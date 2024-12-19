@@ -90,6 +90,8 @@ class Sunset:
     SUNSET_BOOST_3 = pygame.image.load(os.path.join(ASSETS_PATH, 'Sunset', 'Sunset Boost', 'Sunset_Boost_3.png'))
     SUNSET_BOOST_4 = pygame.image.load(os.path.join(ASSETS_PATH, 'Sunset', 'Sunset Boost', 'Sunset_Boost_4.png'))
     animationArray_boost = [SUNSET_BOOST_1, SUNSET_BOOST_2, SUNSET_BOOST_3, SUNSET_BOOST_4]
+    
+    SUNSET_INVIS = pygame.image.load(os.path.join(ASSETS_PATH, 'Sunset', 'Sunset_Invisible.png'))
 
 class Enemy_Explosion:
     ENEMY_EXPLOSION_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Explosion', 'Enemy_Explosion_1.png'))
