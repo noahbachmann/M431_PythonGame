@@ -44,7 +44,15 @@ while not gameState['quit']:
         round = Round(cameraSurface, screen, gameState)
         score = round.run()
         
-        Scripts.DataManager.saveData(score)
+        for i in range(5):
+            if score > Scripts.DataManager.dataJson["top5Highscores"][i]:
+                Scripts.DataManager.dataJson["top5Highscores"].insert(i, score) 
+                break 
+        
+        if len(Scripts.DataManager.dataJson["top5Highscores"]) > 5:
+            Scripts.DataManager.dataJson["top5Highscores"].pop()  
+        
+        Scripts.DataManager.saveData()
         print("Highscore Updated: https://ibb.co/2nBNBzs")
 
         if score < 0:

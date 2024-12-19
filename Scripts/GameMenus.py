@@ -114,15 +114,27 @@ class UpgradesMenu(Menu):
 class MainMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, enabled, gameState):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery), func=self.newGame, icon=UI_Assets.ICON_PLAY))   
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 90), func=self.settings, icon=UI_Assets.ICON_SETTINGS))   
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 180), func=self.quitGame, icon=UI_Assets.ICON_EXIT))   
+        self.buttons.append(Button((self.rect.centerx - self.rect.centerx * 0.32, self.rect.centery), func=self.newGame, icon=UI_Assets.ICON_PLAY)) 
+        self.buttons.append(Button((self.rect.centerx - self.rect.centerx * 0.32, self.rect.centery + 90), func=self.settings, icon=UI_Assets.ICON_SETTINGS))   
+        self.buttons.append(Button((self.rect.centerx - self.rect.centerx * 0.32, self.rect.centery + 180), func=self.stats, icon=UI_Assets.ICON_TROPHIE))
+        self.buttons.append(Button((self.rect.centerx - self.rect.centerx * 0.32, self.rect.centery + 270), func=self.quitGame, icon=UI_Assets.ICON_EXIT))   
         self.texts.append((karmaticArcadeFont.render(str("Space Shooter"), False, (0,0,0)),))
+        self.texts.append((karmaticArcadeFont.render(str("Play"), False, (0,0,0)),))
+        self.texts.append((karmaticArcadeFont.render(str("Settings"), False, (0,0,0)),))
+        self.texts.append((karmaticArcadeFont.render(str("Stats"), False, (0,0,0)),))
+        self.texts.append((karmaticArcadeFont.render(str("Exit"), False, (0,0,0)),))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 90)))
-
+        self.texts[1] = (self.texts[1][0], self.texts[1][0].get_frect(center=(self.rect.centerx * 0.89, self.rect.centery)))
+        self.texts[2] = (self.texts[2][0], self.texts[2][0].get_frect(center=(self.rect.centerx, self.rect.centery + 90)))
+        self.texts[3] = (self.texts[3][0], self.texts[3][0].get_frect(center=(self.rect.centerx * 0.92, self.rect.centery + 180)))
+        self.texts[4] = (self.texts[4][0], self.texts[4][0].get_frect(center=(self.rect.centerx *0.87, self.rect.centery + 270)))
     def newGame(self):
         self.enabled = False
         self.gameState['gaming'] = "Gaming"
+
+    def stats(self):
+        self.enabled = False
+        self.gameState['gaming'] = "Stats"
 
     def settings(self):
         self.enabled = False

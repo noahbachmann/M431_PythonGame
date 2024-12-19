@@ -28,6 +28,7 @@ class UI_Assets:
     ICON_EXIT = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_exit.png'))
     ICON_TRASH = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_trash.png'))
     ICON_RESET = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_reset.png'))
+    ICON_TROPHIE = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_trophie.png'))
     HOTKEY_POPUP = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'hotkey_popup.png'))
 
 class Heart_Assets:
@@ -173,4 +174,4 @@ class Crosshair:
     Crosshair2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crosshair', 'Crosshair-2.png'))
 
 font = pygame.font.Font(os.path.join(ASSETS_PATH, 'upheavtt.ttf'), 20)
-karmaticArcadeFont = pygame.font.Font(os.path.join(ASSETS_PATH, 'KarmaticArcade.ttf'), 20)
+karmaticArcadeFont = pygame.font.Font(os.path.join(ASSETS_PATH, 'KarmaticArcade.ttf'), 40)
