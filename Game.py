@@ -45,7 +45,6 @@ while not gameState['quit']:
         score = round.run()
         
         Scripts.DataManager.saveData(score)
-        print("Highscore Updated: https://ibb.co/2nBNBzs")
 
         if score < 0:
             if gameState['quit']:

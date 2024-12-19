@@ -4,6 +4,7 @@ from Scripts.AssetsManager import font,karmaticArcadeFont, UI_Assets, Heart_Asse
 from Scripts.Button import *
 from Scripts.GameMenus import *
 from Scripts.Player import *
+import Scripts.Settings
 
 class HUDController:
     def __init__(self, surface, player:Player, gameState, hudSpritesGroup):
@@ -18,7 +19,7 @@ class HUDController:
         self.hearts = []
         self.heartBar = pygame.transform.scale(Heart_Assets.HEALTHBAR, (196, 66))
         self.heartBarRect = self.heartBar.get_frect(topleft = (16, 16))
-        self.energyBar = EnergyBar((Scripts.Settings.WINDOW_SIZE/2 - 64, Scripts.Settings.WINDOW_SIZE - 16), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR, (128,32))
+        self.energyBar = EnergyBar((Scripts.Settings.WINDOW_SIZE/2, 16), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR, (128,32), (80,8))
         self.heavyBar = pygame.transform.scale(Heavy_Attack_Assets.HEAVYATTACKBAR, (128,64))
         self.heavyBarRect = self.heavyBar.get_frect(bottomright = (Scripts.Settings.WINDOW_SIZE - 16, Scripts.Settings.WINDOW_SIZE - 16))
         self.heavyAnimation = HeavyBar((Scripts.Settings.WINDOW_SIZE - 16, Scripts.Settings.WINDOW_SIZE - 16), Heavy_Attack_Assets.HEAVY_ATTACK_CHARGE_13, self.player, Heavy_Attack_Assets.heavyAttackChargeArray, Heavy_Attack_Assets.heavyAttackUsedArray, (128,64))
@@ -106,23 +107,25 @@ class Heart(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
 
 class EnergyBar(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, player, barImage, image, size:tuple = None):
+    def __init__(self, pos:tuple, player, barImage, image, size:tuple = None, barSize:tuple =None):
         super().__init__()
         self.player = player
         if size:
             self.image = pygame.transform.scale(image, size)
-            self.barImage = pygame.transform.scale(barImage, size)
+            self.barImage = pygame.transform.scale(barImage, barSize)
             self.size = size
+            self.barSize = barSize
         else:
             self.image = image
             self.barImage = barImage
-        self.rect = self.image.get_frect(midleft=pos)
+        self.rect = self.image.get_frect(center = pos)
+        self.barRect = self.barImage.get_frect(center = (pos[0], pos[1]+2))
 
     def draw(self, surface):
         energyPercentage = self.player.boostAmount / self.player.boostTank
-        barWidth = self.size[0] * energyPercentage
+        barWidth = self.barSize[0] * energyPercentage
         surface.blit(self.image, self.rect)
-        surface.blit(self.barImage, self.rect, (0,0,barWidth,self.size[0]))
+        surface.blit(self.barImage, self.barRect, (0,0,barWidth,self.barSize[0]))
 
 class HeavyBar(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, image, player, rechargeArray, triggerArray, size):
