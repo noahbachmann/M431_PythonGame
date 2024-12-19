@@ -17,7 +17,9 @@ dataJson = {
     'Hotkey_Left': pygame.K_a,
     'Hotkey_Right': pygame.K_d,
     'Hotkey_Boost': pygame.K_LSHIFT,
-    'Hotkey_close': pygame.K_j
+    'Hotkey_close': pygame.K_j,
+    'Hotkey_Attack': pygame.K_SPACE,
+    'Hotkey_HeavyAttack': pygame.K_f
 }
 
 def saveData(score = None):
@@ -55,6 +57,9 @@ def resetHotkeys():
     dataJson['Hotkey_Right'] = pygame.K_d
     dataJson['Hotkey_Boost'] = pygame.K_LSHIFT
     dataJson['Hotkey_close'] = pygame.K_j
+    dataJson['Hotkey_Attack'] = pygame.K_SPACE
+    dataJson['Hotkey_HeavyAttack'] = pygame.K_f
+    
     saveData()
 
 

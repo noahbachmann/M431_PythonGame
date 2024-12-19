@@ -57,6 +57,10 @@ class Button(pygame.sprite.Sprite):
                     textInfo = font.render(pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Boost']), False, (0,0,0))
                 elif self.text == 'close':
                     textInfo = font.render(pygame.key.name(Scripts.DataManager.dataJson['Hotkey_close']), False, (0,0,0))
+                elif self.text == 'Attack':
+                    textInfo = font.render(pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Attack']), False, (0,0,0))
+                elif self.text == 'HeavyAttack':
+                    textInfo = font.render(pygame.key.name(Scripts.DataManager.dataJson['Hotkey_HeavyAttack']), False, (0,0,0))
                 self.textRect = textInfo.get_frect(center = self.pos)
                 surface.blit(textInfo, self.textRect)
             else:
