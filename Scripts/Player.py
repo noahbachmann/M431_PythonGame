@@ -36,6 +36,7 @@ class Player(pygame.sprite.Sprite):
         self.frameIndex = 0
         self.animationState = "idle"
         self.hitHighscore = False
+        self.heavyState = "charged"
         if size:
             self.image = pygame.transform.scale(Sunset.SUNSET_IDLE_1, size)
             self.size = size
@@ -97,9 +98,12 @@ class Player(pygame.sprite.Sprite):
         if (mouse[0] or keys[pygame.K_SPACE]) and not self.atkTimer.active:
             self.shoot(angle)  
             self.atkTimer.activate()
-        if (mouse[2] or keys[pygame.K_f]) and not self.heavyCdTimer.active:
-            self.heavy(angle)
-            self.heavyCdTimer.activate() 
+        if not self.heavyCdTimer.active:
+            if self.heavyState != "charged":
+                self.heavyState = "charged"
+            if (mouse[2] or keys[pygame.K_f]):
+                self.heavy(angle)
+                self.heavyCdTimer.activate() 
         if self.score > Scripts.DataManager.dataJson["top5Highscores"][0] > 1000 and not self.hitHighscore:
             Audio.UNREAL.play()      
             self.hitHighscore = True
@@ -118,6 +122,7 @@ class Player(pygame.sprite.Sprite):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
         Heavy(spawnPos,2,200,angle,128,Heavy_Attack.HEAVY_ATTACK_LASER, Heavy_Attack.HEAVY_ATTACK_3, self.attackGroups, self.moveOffset.copy(), (8,8))
+        self.heavyState = "recharging"
 
     def hit(self, damage):
         if self.damageTimer.active:

@@ -52,7 +52,7 @@ class Round:
             dt = self.clock.tick() / 1000
 
             if self.hudController.pause:
-                self.hudController.update(self.cameraSurface)
+                self.hudController.update(self.cameraSurface, dt)
                 self.drawToScreen()
                 if self.gameState['gaming'] != "Gaming" or self.gameState['quit']:
                     return -1
@@ -68,7 +68,7 @@ class Round:
                 self.enemySpawner.update()
                 self.allSprites.update(self.cameraSurface, dt, self.player.moveOffset)
                 self.player.update(self.cameraSurface, dt)
-                self.hudController.update(self.cameraSurface)
+                self.hudController.update(self.cameraSurface,dt)
                 self.drawToScreen()
         
     def collisions(self):

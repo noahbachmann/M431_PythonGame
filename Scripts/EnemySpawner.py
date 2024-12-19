@@ -85,9 +85,10 @@ class Spawner:
             elif (key == "DarkForce" or key == "Apex" or key == "Jinx" or key == "Moculus") and enemy["weight"] < 17:
                 enemy["weight"] += 2 
             if self.upgraded != 0:
-                if self.upgraded % 2 == 0:
-                    enemy["args"][0] += 1
                 if self.upgraded % 3 == 0:
+                    enemy["args"][0] += 1
+                    enemy["args"][1] += 1
+                if self.upgraded % 4 == 0:
                     if self.spawnRate > 1:
                         self.spawnRate -= 0.5
                     elif self.spawnRate > 0.5:
