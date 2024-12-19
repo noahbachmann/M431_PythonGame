@@ -65,9 +65,7 @@ class Heavy_Attack_Assets:
 
 class Energybar_Assets:
     ENERGYBAR = pygame.image.load(os.path.join(ASSETS_PATH, 'Energybar', 'Energybar.png'))
-
-    ENERGYBAR_ENERGY = pygame.image.load(os.path.join(ASSETS_PATH, 'Energybar', 'Energybar_Energy.png'))
-    ENERGYBAR_BACK = pygame.image.load(os.path.join(ASSETS_PATH, 'Energybar', 'Energybar_Back.png'))
+    ENERGYBAR_BAR = pygame.image.load(os.path.join(ASSETS_PATH, 'Energybar', 'Energybar_Bar.png'))
 
 class Apex:
     APEX_IDLE_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Apex', 'Apex_Idle_1.png'))
