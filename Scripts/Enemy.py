@@ -2,7 +2,7 @@ import pygame
 import math
 from Scripts.Shot import *
 from Scripts.Timer import *
-from Scripts.AssetsManager import Enemy_Laser, HEAVY_IMAGE, Audio, Enemy_Explosion
+from Scripts.AssetsManager import Enemy_Laser, Audio, Enemy_Explosion
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, health, damage, gold, speed, player, image, frames, groups, rotationSpeed = 0, size:tuple = None):

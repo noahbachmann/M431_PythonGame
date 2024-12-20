@@ -31,6 +31,27 @@ class Round:
         self.running = True
     
     def run(self):
+        x = {"state": True}
+        def turnX():
+                x["state"] = False
+        if Scripts.DataManager.dataJson["top5Highscores"][0] == 0:
+            tutorial = TUTORIAL
+            tutorialRect = tutorial.get_frect(center = (Scripts.Settings.WINDOW_SIZE // 2, Scripts.Settings.WINDOW_SIZE // 2))
+            tutorialButton = Button((Scripts.Settings.WINDOW_SIZE - 128, Scripts.Settings.WINDOW_SIZE - 128), func=turnX,  text= "X", size=(64,64))
+            self.cameraSurface.fill((7, 0, 25))
+            self.cameraSurface.blit(tutorial, tutorialRect)
+            tutorialButton.update(self.cameraSurface)
+            self.drawToScreen()
+            while x["state"]:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.running = False
+                        self.gameState['quit'] = True
+                        return -1
+                self.cameraSurface.blit(tutorial, tutorialRect)
+                tutorialButton.update(self.cameraSurface)
+                self.drawToScreen()
+                continue
         self.createBackground()
         self.createBorder()
         while self.running:
@@ -77,7 +98,7 @@ class Round:
                 continue       
             enemies = pygame.sprite.spritecollide(shot, self.enemySprites, False)
             for enemy in enemies:
-                if enemy not in shot.collidedEnemies and enemy.isEnemy and enemy.animationState is not "death":
+                if enemy not in shot.collidedEnemies and enemy.isEnemy and enemy.animationState != "death":
                     shot.hit(enemy)
                     enemy.hit(shot.damage)
         enemies = pygame.sprite.spritecollide(self.player, self.enemySprites, False)

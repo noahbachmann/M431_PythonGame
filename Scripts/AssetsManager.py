@@ -12,7 +12,7 @@ else:
 
 ASSETS_PATH = os.path.join(BASE_PATH, 'Assets')
 
-HEAVY_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'heavy.png'))
+TUTORIAL = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'Tutorial.png'))
 STAR_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'star.png'))
 BORDER_BLOCK = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'meteor.png'))
 EXPLOSION_RADIUS = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'explosionRadius.png'))
