@@ -8,7 +8,7 @@
 <h1>  </h1>
 
 <p align="center">
-    <a href="https://github.com/noahbachmann/M431_PythonGame/releases/download/Beta/Game.exe">
+    <a href="https://github.com/noahbachmann/M431_PythonGame/releases/download/Real/Game.exe">
         <img src="https://i.ibb.co/MhQRgf3/button-64x32-Kopie2.png" alt="Button" width="96" height="48" />
     </a>
 </p>
