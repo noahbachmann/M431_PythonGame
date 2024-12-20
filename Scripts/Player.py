@@ -95,7 +95,7 @@ class Player(pygame.sprite.Sprite):
         if -halfSize <= check.y <= halfSize:
             self.moveOffset.y = check.y
         self.rect = self.image.get_frect(center=self.rect.center)
-        if (mouse[0] or keys[pygame.K_SPACE]) and not self.atkTimer.active:
+        if (mouse[0] or keys[Scripts.DataManager.dataJson['Hotkey_Attack']]) and not self.atkTimer.active:
             self.shoot(angle)  
             self.atkTimer.activate()
         if not self.heavyCdTimer.active:

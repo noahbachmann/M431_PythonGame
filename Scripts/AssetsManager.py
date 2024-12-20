@@ -28,6 +28,7 @@ class UI_Assets:
     ICON_EXIT = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_exit.png'))
     ICON_TRASH = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_trash.png'))
     ICON_RESET = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_reset.png'))
+    ICON_TROPHIE = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'icon_trophie.png'))
     HOTKEY_POPUP = pygame.image.load(os.path.join(ASSETS_PATH,'Other', 'hotkey_popup.png'))
 
 class Heart_Assets:

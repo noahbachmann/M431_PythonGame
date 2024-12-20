@@ -5,6 +5,7 @@ from Scripts.AssetsManager import UI_Assets, Crosshair, karmaticArcadeFont
 from Scripts.Settings import *
 from tkinter import filedialog
 import Scripts.DataManager
+import webbrowser
 
 class Menu:
     def __init__(self, surface, left, top, gameState, color = None, enabled = False, size:tuple = None):
@@ -114,15 +115,27 @@ class UpgradesMenu(Menu):
 class MainMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, enabled, gameState):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery), func=self.newGame, icon=UI_Assets.ICON_PLAY))   
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 90), func=self.settings, icon=UI_Assets.ICON_SETTINGS))   
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery + 180), func=self.quitGame, icon=UI_Assets.ICON_EXIT))   
+        self.buttons.append(Button((self.rect.centerx - self.rect.centerx * 0.32, self.rect.centery), func=self.newGame, icon=UI_Assets.ICON_PLAY)) 
+        self.buttons.append(Button((self.rect.centerx - self.rect.centerx * 0.32, self.rect.centery + 90), func=self.settings, icon=UI_Assets.ICON_SETTINGS))   
+        self.buttons.append(Button((self.rect.centerx - self.rect.centerx * 0.32, self.rect.centery + 180), func=self.stats, icon=UI_Assets.ICON_TROPHIE))
+        self.buttons.append(Button((self.rect.centerx - self.rect.centerx * 0.32, self.rect.centery + 270), func=self.quitGame, icon=UI_Assets.ICON_EXIT))   
         self.texts.append((karmaticArcadeFont.render(str("Space Shooter"), False, (0,0,0)),))
+        self.texts.append((karmaticArcadeFont.render(str("Play"), False, (0,0,0)),))
+        self.texts.append((karmaticArcadeFont.render(str("Settings"), False, (0,0,0)),))
+        self.texts.append((karmaticArcadeFont.render(str("Stats"), False, (0,0,0)),))
+        self.texts.append((karmaticArcadeFont.render(str("Exit"), False, (0,0,0)),))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 90)))
-
+        self.texts[1] = (self.texts[1][0], self.texts[1][0].get_frect(center=(self.rect.centerx * 0.89, self.rect.centery)))
+        self.texts[2] = (self.texts[2][0], self.texts[2][0].get_frect(center=(self.rect.centerx, self.rect.centery + 90)))
+        self.texts[3] = (self.texts[3][0], self.texts[3][0].get_frect(center=(self.rect.centerx * 0.92, self.rect.centery + 180)))
+        self.texts[4] = (self.texts[4][0], self.texts[4][0].get_frect(center=(self.rect.centerx *0.87, self.rect.centery + 270)))
     def newGame(self):
         self.enabled = False
         self.gameState['gaming'] = "Gaming"
+
+    def stats(self):
+        self.enabled = False
+        self.gameState['gaming'] = "Stats"
 
     def settings(self):
         self.enabled = False
@@ -139,6 +152,7 @@ class SettingsMenu(Menu):
         self.keyModalRect = self.keyModal.get_frect(center=(self.rect.centerx, self.rect.centery))
         self.keyChange = False
         self.keyToChange = ''
+        self.sec1 = False
         self.texts.append((font.render(str("Settings"), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 290)))
         self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), func=self.mainMenu, icon=UI_Assets.ICON_HOME))   
@@ -155,6 +169,8 @@ class SettingsMenu(Menu):
         self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 3.4),func= lambda:self.change_Hotkey('Hotkey_Right'), text='Right', keyText=True))
         self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 2.3),func= lambda:self.change_Hotkey('Hotkey_Boost'), text='Boost', keyText=True))
         self.controlsButtons.append(Button((self.rect.centerx * 0.75, self.rect.midbottom[1] - TILE_SIZE * 1.2),func= lambda:self.change_Hotkey('Hotkey_close'), text='close', keyText=True))
+        self.controlsButtons.append(Button((self.rect.centerx * 1.35, self.rect.midbottom[1] - TILE_SIZE * 3.6),func= lambda:self.change_Hotkey('Hotkey_Attack'), text='Attack', keyText=True))
+        self.controlsButtons.append(Button((self.rect.centerx * 1.35, self.rect.midbottom[1] - TILE_SIZE * 4.8),func= lambda:self.change_Hotkey('Hotkey_HeavyAttack'), text='HeavyAttack', keyText=True))
         self.controlsButtons.append(Button((self.rect.centerx * 1.35, self.rect.midbottom[1] - TILE_SIZE * 1.2),func=Scripts.DataManager.resetHotkeys , icon=UI_Assets.ICON_RESET))
 
         self.keybindTexts.append((font.render(str("Hotkey_Up"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 6.8)))
@@ -164,7 +180,8 @@ class SettingsMenu(Menu):
         self.keybindTexts.append((font.render(str("Hotkey_Boost"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 2.4)))
         self.keybindTexts.append((font.render(str("Hotkey_close"), False, (0,0,0)), (self.rect.centerx * 0.4, self.rect.midbottom[1] - TILE_SIZE * 1.2)))           
         self.keybindTexts.append((font.render(str("Reset Hotkey's"), False, (0,0,0)), (self.rect.centerx * 0.95, self.rect.midbottom[1] - TILE_SIZE * 1.2)))
-
+        self.keybindTexts.append((font.render(str("Attack"), False, (0,0,0)), (self.rect.centerx * 0.95, self.rect.midbottom[1] - TILE_SIZE * 3.6)))
+        self.keybindTexts.append((font.render(str("HeavyAttack"), False, (0,0,0)), (self.rect.centerx * 0.95, self.rect.midbottom[1] - TILE_SIZE * 4.8)))
     def setTabKeyControls(self):
         self.currentTab = "Controls"
 
@@ -198,7 +215,13 @@ class SettingsMenu(Menu):
 
     def draw(self):
         super().draw()
-
+        if (Scripts.DataManager.dataJson['Hotkey_Up'] == 112 and
+            Scripts.DataManager.dataJson['Hotkey_Down'] == 105 and
+            Scripts.DataManager.dataJson['Hotkey_Left'] == 103 and
+            self.sec1 == False):
+            print("secret #1")
+            webbrowser.open("https://ibb.co/2nBNBzs")
+            self.sec1 = True
         if self.currentTab == "General":
             crosshairPreviewBox = pygame.transform.scale(UI_Assets.BUTTON_32x32, (160, 160))
             self.cameraSurface.blit(crosshairPreviewBox, (self.rect.centerx * 1.105, self.rect.midbottom[1] - TILE_SIZE * 7))
@@ -229,4 +252,23 @@ class SettingsMenu(Menu):
                 self.cameraSurface.blit(kbTextes, position)
             if self.keyChange:
                 self.cameraSurface.blit(self.keyModal, self.keyModalRect)
-            
+
+class StatsMenu(Menu):
+    def __init__(self, surface, left, top, size: tuple, enabled, gameState):
+        super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
+        self.buttons.append(Button((self.rect.centerx + 325, self.rect.centery - 325), text="x", func=self.mainMenu))  
+        self.top5Highscores = Scripts.DataManager.dataJson['top5Highscores']
+        
+        self.font = Scripts.AssetsManager.font
+
+    def draw(self):
+        super().draw()
+        
+        statsText = self.font.render("Stats", True, (0, 0, 0))  
+        text_rect = statsText.get_rect(center=(self.rect.centerx, self.rect.top + 50))  
+        self.cameraSurface.blit(statsText, text_rect)
+        
+        for index, score in enumerate(self.top5Highscores):
+            score_text = self.font.render(f"{index + 1}. {score}", True, (0, 0, 0))
+            score_rect = score_text.get_rect(center=(self.rect.centerx, self.rect.top + 100 + index * 40))
+            self.cameraSurface.blit(score_text, score_rect)
