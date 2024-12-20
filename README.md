@@ -2,7 +2,6 @@
 
 <p align="center">
     <a href="https://github.com/noahbachmann/M431_PythonGame">💻Github Project</a> <br>
-    <a  href="https://repo-tracker.com/r/gh/noahbachmann/M431_PythonGame">📄Project - Documentation</a> <br>
     <a  href="https://repo-tracker.com/r/gh/noahbachmann/M431_PythonGame">📊Github Project Stats</a> <br>
     <a  href="https://www.pygame.org/wiki/GettingStarted">🐍Pygame</a> <br>
 </p>
