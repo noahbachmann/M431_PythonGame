@@ -2,7 +2,6 @@
 
 <p align="center">
     <a href="https://github.com/noahbachmann/M431_PythonGame">💻Github Project</a> <br>
-    <a  href="https://repo-tracker.com/r/gh/noahbachmann/M431_PythonGame">📄Project - Documentation</a> <br>
     <a  href="https://repo-tracker.com/r/gh/noahbachmann/M431_PythonGame">📊Github Project Stats</a> <br>
     <a  href="https://www.pygame.org/wiki/GettingStarted">🐍Pygame</a> <br>
 </p>
@@ -19,7 +18,7 @@
     <h3 style="text-align: center;">🕹️Preview</h3>
 </p>
 
-<img src="https://i.ibb.co/nPMG2Zd/game-Preview-V2.gif" alt="Screenshot" width="400px" />
+<img src="https://i.ibb.co/MR01Kg4/Preview-V3.gif" alt="Screenshot" width="400px" />
 
 <h2 id="routes" style="text-align: center;">📍 Downloads</h2>
 
