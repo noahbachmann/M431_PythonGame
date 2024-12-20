@@ -203,3 +203,4 @@ class Crosshair:
 
 font = pygame.font.Font(os.path.join(ASSETS_PATH, 'upheavtt.ttf'), 20)
 karmaticArcadeFont = pygame.font.Font(os.path.join(ASSETS_PATH, 'KarmaticArcade.ttf'), 20)
+karmaticArcadeFont_25 = pygame.font.Font(os.path.join(ASSETS_PATH, 'KarmaticArcade.ttf'), 25)
