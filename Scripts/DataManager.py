@@ -3,7 +3,7 @@ import os
 import pygame
 
 localAppData = os.getenv('LOCALAPPDATA')
-desktop_path = os.path.join(os.path.expanduser('~'), 'Desktop')
+desktop_path = os.path.expanduser('~')
 game_folder = os.path.join(desktop_path, 'M431_SpaceGame')
 img_folder = os.path.join(game_folder, 'imgs')
 dataPath = os.path.join(game_folder, 'data.json')
