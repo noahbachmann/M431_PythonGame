@@ -89,10 +89,10 @@ class Player(pygame.sprite.Sprite):
         if self.direction.length() > 0:
             self.direction = self.direction.normalize()
         check:pygame.math.Vector2 = self.moveOffset + (self.direction * self.speed * dt)
-        halfSize = MAP_SIZE // 2 - TILE_SIZE // 2
-        if -halfSize <= check.x <= halfSize:
+        halfSize = MAP_SIZE // 2 - TILE_SIZE
+        if -halfSize <= check.x <= halfSize + TILE_SIZE:
             self.moveOffset.x = check.x
-        if -halfSize <= check.y <= halfSize:
+        if -halfSize <= check.y <= halfSize + TILE_SIZE:
             self.moveOffset.y = check.y
         self.rect = self.image.get_frect(center=self.rect.center)
         if (mouse[0] or keys[Scripts.DataManager.dataJson['Hotkey_Attack']]) and not self.atkTimer.active:
