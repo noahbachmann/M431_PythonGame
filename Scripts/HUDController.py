@@ -17,8 +17,8 @@ class HUDController:
         self.upgradeButton = Button((Scripts.Settings.WINDOW_SIZE - TILE_SIZE*1.5,TILE_SIZE*1.5),UI_Assets.BUTTON_32x32, func=self.toggleSettings, icon=UI_Assets.ICON_UPGRADE, size=(64,64))
         self.upgradeMenu = UpgradesMenu(surface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, 100, self.player, gameState,self, size=(600, Scripts.Settings.WINDOW_SIZE-200))
         self.hearts = []
-        self.heartBar = pygame.transform.scale(Heart_Assets.HEALTHBAR, (196, 66))
-        self.heartBarRect = self.heartBar.get_frect(topleft = (16, 16))
+        self.heartBar = pygame.transform.scale(Heart_Assets.HEALTHBAR, (128, 44))
+        self.heartBarRect = self.heartBar.get_frect(bottomleft = (16, Scripts.Settings.WINDOW_SIZE - 16))
         self.energyBar = EnergyBar((Scripts.Settings.WINDOW_SIZE/2, 16), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR, (128,32), (80,8))
         self.heavyBar = pygame.transform.scale(Heavy_Attack_Assets.HEAVYATTACKBAR, (128,64))
         self.heavyBarRect = self.heavyBar.get_frect(bottomright = (Scripts.Settings.WINDOW_SIZE - 16, Scripts.Settings.WINDOW_SIZE - 16))
@@ -26,16 +26,17 @@ class HUDController:
         self.showHealth()
     
     def draw(self, surface, dt):
-        surface.blit(self.heartBar, self.heartBarRect)
-        surface.blit(self.heavyBar, self.heavyBarRect)
-        self.upgradeButton.draw(surface)
-        self.energyBar.draw(surface)
-        self.heavyAnimation.draw(surface, dt)
-        surface.blit(self.scoreText, self.scoreTextRect)
-        for heart in self.hearts:
-            heart.draw(surface)
         if self.pause:
             self.upgradeMenu.draw(surface)
+        else:
+            surface.blit(self.heartBar, self.heartBarRect)
+            surface.blit(self.heavyBar, self.heavyBarRect)
+            self.upgradeButton.draw(surface)
+            self.energyBar.draw(surface)
+            self.heavyAnimation.draw(surface, dt)
+            surface.blit(self.scoreText, self.scoreTextRect)
+        for heart in self.hearts:
+            heart.draw(surface)
 
     def update(self, surface, dt):
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))
@@ -52,14 +53,14 @@ class HUDController:
         self.pause = not self.pause
 
     def showHealth(self):
-        x = 108
-        y = 55
+        x = 78
+        y = Scripts.Settings.WINDOW_SIZE - 34
         maxHealth = self.player.maxHealth // 2
         for i in range(maxHealth):
-            self.hearts.append(Heart((x,y),Heart_Assets.HEART_FULL, (30,30)))
-            x += 48
+            self.hearts.append(Heart((x,y),Heart_Assets.HEART_FULL, (20,20)))
+            x += 30
         if self.player.maxHealth % 2 != 0:
-            self.hearts.append(Heart((x,y),Heart_Assets.HALFHEART_FULL, (30,30)))
+            self.hearts.append(Heart((x,y),Heart_Assets.HALFHEART_FULL, (20,20)))
         
     def takeDamage(self):
         if self.player.maxHealth % 2 != 0 and self.player.health == self.player.maxHealth - 1:
@@ -71,13 +72,13 @@ class HUDController:
         self.playerHealth = self.player.health
     
     def healthUpgrade(self):
-        x = 32
-        y = 32
+        x = 78
+        y = Scripts.Settings.WINDOW_SIZE - 34
         if self.player.maxHealth / 2 > len(self.hearts):
             if self.player.maxHealth == self.player.health:
-                self.hearts.append(Heart((x+(48*len(self.hearts)),y),Heart_Assets.HALFHEART_FULL, (32,32)))
+                self.hearts.append(Heart((x+(30*len(self.hearts)),y),Heart_Assets.HALFHEART_FULL, (20,20)))
             else:
-                self.hearts.append(Heart((x+(48*len(self.hearts)),y),Heart_Assets.HALFHEART_EMPTY, (32,32)))
+                self.hearts.append(Heart((x+(30*len(self.hearts)),y),Heart_Assets.HALFHEART_EMPTY, (20,20)))
         if self.player.health != self.playerHealth:
             if self.player.health % 2 == 0:
                 self.hearts[(self.player.health // 2)-1].newImage(Heart_Assets.HEART_FULL)
