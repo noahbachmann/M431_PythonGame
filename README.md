@@ -19,7 +19,7 @@
     <h3 style="text-align: center;">🕹️Preview</h3>
 </p>
 
-<img src="https://i.ibb.co/F0GRN7X/Game-Preview.gif" alt="Screenshot" width="400px" />
+<img src="https://i.ibb.co/nPMG2Zd/game-Preview-V2.gif" alt="Screenshot" width="400px" />
 
 <h2 id="routes" style="text-align: center;">📍 Downloads</h2>
 
