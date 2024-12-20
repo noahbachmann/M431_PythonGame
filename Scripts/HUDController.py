@@ -12,7 +12,7 @@ class HUDController:
         self.playerHealth = self.player.health
         self.pause = False
         self.hudSpritesGroup = hudSpritesGroup
-        self.scoreText = karmaticArcadeFont_25.render(f"{self.player.score:09d}", True, (255,255,255))
+        self.scoreText = karmaticArcadeFont_25.render(f"{self.player.score:07d}", True, (255,255,255))
         self.scoreTextRect = self.scoreText.get_frect(topleft = (16, 16))
         self.upgradeButton = Button((Scripts.Settings.WINDOW_SIZE - TILE_SIZE*1.5,TILE_SIZE*1.5),UI_Assets.BUTTON_32x32, func=self.toggleSettings, icon=UI_Assets.ICON_UPGRADE, size=(64,64))
         self.upgradeMenu = UpgradesMenu(surface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, 100, self.player, gameState,self, size=(600, Scripts.Settings.WINDOW_SIZE-200))
@@ -40,7 +40,7 @@ class HUDController:
 
     def update(self, surface, dt):
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))
-        self.scoreText = karmaticArcadeFont_25.render(f"{self.player.score:09d}", True, (255,255,255))
+        self.scoreText = karmaticArcadeFont_25.render(f"{self.player.score:07d}", True, (255,255,255))
         self.upgradeButton.update(surface)
         if self.playerHealth != self.player.health:
             if self.pause:

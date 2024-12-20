@@ -186,4 +186,4 @@ class MiniBoss(DoubleShooter):
     def heavyShoot(self):
         offset = pygame.math.Vector2(math.cos(math.radians(self.angle)), math.sin(math.radians(self.angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        ExplosionShot(spawnPos,self.damage,450,1,self.angle,128,Enemy_Laser.ENEMY_HEAVY_LASER, self.groups(), 300, self.offset.copy(), (4,8))
+        ExplosionShot(spawnPos,self.damage,450,1,self.angle,128,Enemy_Laser.ENEMY_HEAVY_LASER, self.groups(), 300, self.offset.copy(), (9,14))

@@ -28,11 +28,11 @@ class Spawner:
             Apex.APEX_IDLE_1,{"idle":{"frames":[Apex.APEX_IDLE_1,Apex.APEX_IDLE_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, True, 420,0,(64, 64)]},
                                 #health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
-            "Jinx": {"class": BasicShooter, "weight": 5, "args": [2, 1, 2, 150, 3, self.player,
+            "Jinx": {"class": BasicShooter, "weight": 5, "args": [2, 1, 4, 150, 3, self.player,
             Jinx.JINX_1,{"idle":{"frames":Jinx.animationArray, "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 450,0,(64, 64)]}, 
             #health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
-            "Moculus": {"class": BasicShooter, "weight": 10, "args": [2, 1, 2, 180, 1.5, self.player,
+            "Moculus": {"class": BasicShooter, "weight": 10, "args": [2, 1, 3, 180, 1.5, self.player,
             Moculus.MOCULUS_1,{"idle":{"frames":Moculus.animationArray, "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 380,0,(64, 64)]}, 
            
@@ -88,13 +88,16 @@ class Spawner:
                 if self.upgraded % 3 == 0:
                     enemy["args"][0] += 1
                     enemy["args"][1] += 1
-                if self.upgraded % 4 == 0:
-                    if self.spawnRate > 1:
-                        self.spawnRate -= 0.5
-                    elif self.spawnRate > 0.5:
-                        self.spawnRate -= 0.1
-                    else:
+                if self.upgraded % 3 == 0:
+                    if self.upgraded % 9 == 0:
                         self.spawns += 1
+                    else:
+                        if self.spawnRate > 1:
+                            self.spawnRate -= 0.5
+                        elif self.spawnRate > 0.5:
+                            self.spawnRate -= 0.1
+                        else:
+                            self.spawns += 1
 
         if self.upgraded % 10:
             for key, enemy in self.miniBosses.items():

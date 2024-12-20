@@ -44,23 +44,10 @@ class Button(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
         if self.text:
             if self.keyText:
-                textInfo = None
-                if self.text == 'Up':
-                    textInfo = font.render(pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Up']), False, (0,0,0))
-                elif self.text == 'Down':
-                    textInfo = font.render(pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Down']), False, (0,0,0))
-                elif self.text == 'Left':
-                    textInfo = font.render(pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Left']), False, (0,0,0))
-                elif self.text == 'Right':
-                    textInfo = font.render(pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Right']), False, (0,0,0))
-                elif self.text == 'Boost':
-                    textInfo = font.render(pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Boost']), False, (0,0,0))
-                elif self.text == 'close':
-                    textInfo = font.render(pygame.key.name(Scripts.DataManager.dataJson['Hotkey_close']), False, (0,0,0))
-                elif self.text == 'Attack':
-                    textInfo = font.render(pygame.key.name(Scripts.DataManager.dataJson['Hotkey_Attack']), False, (0,0,0))
-                elif self.text == 'HeavyAttack':
-                    textInfo = font.render(pygame.key.name(Scripts.DataManager.dataJson['Hotkey_HeavyAttack']), False, (0,0,0))
+                textCheck = pygame.key.name(Scripts.DataManager.dataJson[self.text])
+                if textCheck == "left shift":
+                    textCheck = "shift"
+                textInfo = font.render(textCheck, True, (0,0,0))
                 self.textRect = textInfo.get_frect(center = self.pos)
                 surface.blit(textInfo, self.textRect)
             else:

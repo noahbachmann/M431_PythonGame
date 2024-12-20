@@ -121,7 +121,7 @@ class Player(pygame.sprite.Sprite):
     def heavy(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Heavy(spawnPos,2,200,angle,128,Heavy_Attack.HEAVY_ATTACK_LASER, Heavy_Attack.HEAVY_ATTACK, self.attackGroups, self.moveOffset.copy(), (8,8))
+        Heavy(spawnPos,2,220,angle,128,Heavy_Attack.HEAVY_ATTACK_LASER, Heavy_Attack.HEAVY_ATTACK, self.attackGroups, self.moveOffset.copy(), (9, 14))
         self.heavyState = "recharging"
 
     def hit(self, damage):
