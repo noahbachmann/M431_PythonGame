@@ -157,7 +157,8 @@ class Enemy_Laser:
     LASER_EXPLOSION_4 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Laser Explosion', 'Laser_Explosion_4.png'))
     LASER_EXPLOSION_5 = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Laser Explosion', 'Laser_Explosion_5.png'))
     animationArray_laser_explosion = [LASER_EXPLOSION_1, LASER_EXPLOSION_2, LASER_EXPLOSION_3, LASER_EXPLOSION_4, LASER_EXPLOSION_5]
-
+    ENEMY_HEAVY_LASER = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Heavy_Attack_Laser.png'))
+    ENEMY_HEAVY_ATTACK = pygame.image.load(os.path.join(ASSETS_PATH, 'Enemy Laser', 'Enemy_Heavy_Attack.png'))
 class Heavy_Attack:
     HEAVY_ATTACK_1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_1.png'))
     HEAVY_ATTACK_2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_2.png'))
@@ -168,7 +169,7 @@ class Heavy_Attack:
     HEAVY_ATTACK_7 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_7.png'))
     HEAVY_ATTACK_8 = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_8.png'))
     animationArray = [HEAVY_ATTACK_2, HEAVY_ATTACK_3, HEAVY_ATTACK_4, HEAVY_ATTACK_5]
-
+    HEAVY_ATTACK = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack.png'))
     HEAVY_ATTACK_LASER = pygame.image.load(os.path.join(ASSETS_PATH, 'Heavy Attack', 'Heavy_Attack_Laser.png'))
 
 

@@ -1,7 +1,7 @@
 import pygame
 import math
 from Scripts.Timer import *
-from Scripts.AssetsManager import EXPLOSION_RADIUS, Audio
+from Scripts.AssetsManager import Enemy_Laser, Audio
 
 class Shot(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, damage, speed, hits, angle, image, groups, lifeDistance = 0, playerOffset:pygame.math.Vector2 = pygame.math.Vector2(0,0), size:tuple = None, hitAnimation = None):
@@ -67,7 +67,7 @@ class ExplosionShot(Shot):
         self.collided = False
         self.isHeavy = True
         self.explosionSize = explosionSize
-        self.explosionImage = EXPLOSION_RADIUS
+        self.explosionImage = Enemy_Laser.ENEMY_HEAVY_ATTACK
         self.explosionPos = pygame.math.Vector2(0,0)
         self.currentSize = 4
         self.savedSize = 0
