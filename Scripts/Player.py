@@ -55,7 +55,7 @@ class Player(pygame.sprite.Sprite):
         mousePos = (mousePos[0] - self.camOffset[0], mousePos[1] - self.camOffset[1])
         mouse = pygame.mouse.get_pressed()
         keys = pygame.key.get_pressed()
-        boostKeys = pygame.key.get_just_pressed()
+        boostKeys = pygame.key.get_pressed()
         if boostKeys[Scripts.DataManager.dataJson['Hotkey_Boost']]:
             if not self.boosting and self.boostAmount > 0:
                 self.boosting = True
