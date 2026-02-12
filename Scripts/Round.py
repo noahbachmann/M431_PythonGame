@@ -32,28 +32,6 @@ class Round:
         self.running = True
     
     async def run(self):
-        x = {"state": True}
-        def turnX():
-                x["state"] = False
-        if Scripts.DataManager.dataJson["top5Highscores"][0] == 0:
-            tutorial = TUTORIAL
-            tutorialRect = tutorial.get_frect(center = (Scripts.Settings.WINDOW_SIZE // 2, Scripts.Settings.WINDOW_SIZE // 2))
-            tutorialButton = Button((Scripts.Settings.WINDOW_SIZE - 128, Scripts.Settings.WINDOW_SIZE - 128), func=turnX,  text= "X", size=(64,64))
-            self.cameraSurface.fill((7, 0, 25))
-            self.cameraSurface.blit(tutorial, tutorialRect)
-            tutorialButton.update(self.cameraSurface)
-            self.drawToScreen()
-            while x["state"]:
-                await asyncio.sleep(0)
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.running = False
-                        self.gameState['quit'] = True
-                        return -1
-                self.cameraSurface.blit(tutorial, tutorialRect)
-                tutorialButton.update(self.cameraSurface)
-                self.drawToScreen()
-                continue
         self.createBackground()
         self.createBorder()
         while self.running:
@@ -61,28 +39,23 @@ class Round:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                    self.gameState['quit'] = True
                     Scripts.DataManager.saveData(self.player.score)
                     return -1
                 if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
                             self.hudController.pause = not self.hudController.pause
                             continue
-                        elif event.key == Scripts.DataManager.dataJson['Hotkey_close']:
-                            Scripts.DataManager.saveData(self.player.score)
-                            pygame.quit()
-                            sys.exit()
             
             dt = self.clock.tick() / 1000
 
             if self.hudController.pause:
                 self.hudController.update(self.cameraSurface, dt)
                 self.drawToScreen()
-                if self.gameState['gaming'] != "Gaming" or self.gameState['quit']:
+                if not self.running:
                     return -1
                 continue
         
-            if not self.hudController.pause:
+            else:
                 self.cameraSurface.fill((7, 0, 25))
                 self.collisions()
                 if self.player.health <= 0:

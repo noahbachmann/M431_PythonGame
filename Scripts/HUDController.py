@@ -15,7 +15,7 @@ class HUDController:
         self.scoreText = karmaticArcadeFont_25.render(f"{self.player.score:07d}", True, (255,255,255))
         self.scoreTextRect = self.scoreText.get_frect(topleft = (16, 16))
         self.upgradeButton = Button((Scripts.Settings.WINDOW_SIZE - TILE_SIZE*1.5,TILE_SIZE*1.5),UI_Assets.BUTTON_32x32, func=self.toggleSettings, icon=UI_Assets.ICON_UPGRADE, size=(64,64))
-        self.upgradeMenu = UpgradesMenu(surface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, 100, self.player, gameState,self, size=(600, Scripts.Settings.WINDOW_SIZE-200))
+        self.upgradeMenu = UpgradesMenu(surface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, 100, self.player, gameState, self, size=(600, Scripts.Settings.WINDOW_SIZE-200))
         self.hearts = []
         self.heartBar = pygame.transform.scale(Heart_Assets.HEALTHBAR, (128, 44))
         self.heartBarRect = self.heartBar.get_frect(bottomleft = (16, Scripts.Settings.WINDOW_SIZE - 16))
@@ -50,7 +50,7 @@ class HUDController:
         self.draw(surface, dt)
 
     def toggleSettings(self):
-        self.pause = not self.pause
+        self.pause = True
 
     def showHealth(self):
         x = 78
