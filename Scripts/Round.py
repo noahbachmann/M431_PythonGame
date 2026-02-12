@@ -1,4 +1,5 @@
 import pygame
+import asyncio
 from random import randint
 import Scripts.Settings
 from Scripts.Player import *
@@ -30,7 +31,7 @@ class Round:
         self.enemySpawner = Spawner("normal", self.player, (self.allSprites, self.enemySprites))
         self.running = True
     
-    def run(self):
+    async def run(self):
         x = {"state": True}
         def turnX():
                 x["state"] = False
@@ -43,6 +44,7 @@ class Round:
             tutorialButton.update(self.cameraSurface)
             self.drawToScreen()
             while x["state"]:
+                await asyncio.sleep(0)
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         self.running = False
@@ -55,6 +57,7 @@ class Round:
         self.createBackground()
         self.createBorder()
         while self.running:
+            await asyncio.sleep(0)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False

@@ -1,9 +1,14 @@
 import json
 import os
+import sys
 import pygame
 
-localAppData = os.getenv('LOCALAPPDATA')
-desktop_path = os.path.expanduser('~')
+desktop_path = ""
+if sys.platform == "emscripten":
+	desktop_path = "/data/M431_SpaceGame"
+else:
+	desktop_path = os.path.expanduser('~')
+
 game_folder = os.path.join(desktop_path, 'M431_SpaceGame')
 img_folder = os.path.join(game_folder, 'imgs')
 dataPath = os.path.join(game_folder, 'data.json')
@@ -30,11 +35,8 @@ def saveData(score = None):
                 dataJson["top5Highscores"].pop()
                 break       
 
-    if not os.path.exists(game_folder):
-        os.makedirs(game_folder)
-    
-    if not os.path.exists(img_folder):
-        os.makedirs(img_folder)
+    os.makedirs(game_folder, exist_ok=True)
+    os.makedirs(img_folder, exist_ok=True)
 
     with open(dataPath, 'w') as data_file:
         json.dump(dataJson, data_file, indent=4)  
