@@ -13,7 +13,7 @@ pygame.init()
 async def main():
 	await asyncio.sleep(0)
 	Scripts.DataManager.loadData()
-	screen = pygame.display.set_mode((0,0))
+	screen = pygame.display.set_mode((1024,1024))
 	screenSize = screen.get_size()
 	if screenSize[1] < Scripts.Settings.WINDOW_SIZE:
 		Scripts.Settings.WINDOW_SIZE = screenSize[1]
