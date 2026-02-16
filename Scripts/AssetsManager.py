@@ -203,6 +203,8 @@ class Crosshair:
     Crosshair1 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crosshair', 'Crosshair-1.png'))
     Crosshair2 = pygame.image.load(os.path.join(ASSETS_PATH, 'Crosshair', 'Crosshair-2.png'))
 
-font = pygame.font.Font(os.path.join(ASSETS_PATH, 'upheavtt.ttf'), 20)
-karmaticArcadeFont = pygame.font.Font(os.path.join(ASSETS_PATH, 'KarmaticArcade.ttf'), 20)
-karmaticArcadeFont_25 = pygame.font.Font(os.path.join(ASSETS_PATH, 'KarmaticArcade.ttf'), 25)
+font = pygame.font.Font(os.path.join(ASSETS_PATH, 'upheavtt.ttf'), 24)
+font_32 = pygame.font.Font(os.path.join(ASSETS_PATH, 'upheavtt.ttf'), 32)
+karmaticArcadeFont = pygame.font.Font(os.path.join(ASSETS_PATH, 'KarmaticArcade.ttf'), 24)
+karmaticArcadeFont_40 = pygame.font.Font(os.path.join(ASSETS_PATH, 'KarmaticArcade.ttf'), 40)
+karmaticArcadeFont_48 = pygame.font.Font(os.path.join(ASSETS_PATH, 'KarmaticArcade.ttf'), 48)

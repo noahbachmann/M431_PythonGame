@@ -38,7 +38,7 @@ async def main():
 
 	while True:
 		if gameState == 'menu':
-			MainMenuGame = MainMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 650) // 2, (Scripts.Settings.WINDOW_SIZE - 600) // 2,(650,650), True, gameState)
+			MainMenuGame = MainMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 500) // 2, (Scripts.Settings.WINDOW_SIZE - 300) // 2,(500,300), True, gameState)
 			while MainMenuGame.enabled:
 					await asyncio.sleep(0)
 					screen.fill((0,0,0))
@@ -51,7 +51,7 @@ async def main():
 		score = await round.run()
 		
 		Scripts.DataManager.saveData(score)
-		endGameMenu = EndGameMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, (Scripts.Settings.WINDOW_SIZE - 600) // 2,(600,600), gameState, True, score)
+		endGameMenu = EndGameMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 400) // 2, (Scripts.Settings.WINDOW_SIZE - 400) // 2,(400,400), gameState, True, score)
 		while endGameMenu.enabled: 
 				await asyncio.sleep(0)
 				screen.fill((0,0,0))

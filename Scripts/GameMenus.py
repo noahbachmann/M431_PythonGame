@@ -1,6 +1,6 @@
 import pygame
 from Scripts.Button import *
-from Scripts.AssetsManager import UI_Assets, karmaticArcadeFont
+from Scripts.AssetsManager import UI_Assets, karmaticArcadeFont_40, font, font_32
 from Scripts.Settings import *
 import Scripts.DataManager
 
@@ -42,9 +42,9 @@ class Menu:
 class EndGameMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, gameState, enabled,  score):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
-        self.buttons.append(Button((self.rect.centerx, self.rect.centery), func=self.newGame, icon=UI_Assets.ICON_PLAY))
-        self.texts.append((font.render(str(score), False, (0,0,0)), None))
-        self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - 96)))
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + TILE_SIZE), func=self.newGame, icon=UI_Assets.ICON_PLAY))
+        self.texts.append((karmaticArcadeFont_40.render(str(score), False, (0,0,0)), None))
+        self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - TILE_SIZE)))
         
     def newGame(self):
         self.enabled = False
@@ -58,10 +58,10 @@ class UpgradesMenu(Menu):
         self.upgradesMultiplier = [20,40,40,15,20,40]
         self.generatedButtons = False
         self.hudController = hudController
-        self.buttons.append(Button((self.rect.centerx - TILE_SIZE*1.5, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.endPause, icon=UI_Assets.ICON_PLAY))
-        self.buttons.append(Button((self.rect.centerx, self.rect.midbottom[1] - TILE_SIZE * 1.5), func=self.restart, icon=UI_Assets.ICON_RESET))
-        self.texts.append((font.render(str(self.player.gold), False, (0,0,0)), None))
-        self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.bottomright[0] - 64, self.rect.bottomright[1] - 64)))
+        self.buttons.append(Button((self.rect.centerx - TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE), func=self.endPause, icon=UI_Assets.ICON_PLAY))
+        self.buttons.append(Button((self.rect.centerx + TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE), func=self.restart, icon=UI_Assets.ICON_RESET))
+        self.texts.append((font_32.render(str(self.player.gold), False, (0,0,0)), None))
+        self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.bottomright[0] - TILE_SIZE, self.rect.bottomright[1] - TILE_SIZE)))
 
     def restart(self):
       self.enabled = False
@@ -101,7 +101,7 @@ class UpgradesMenu(Menu):
         self.general()
         for button in self.buttons:
             button.update(surface)
-        self.texts[0] = (font.render(str(self.player.gold), False, (0,0,0)), self.texts[0][1])
+        self.texts[0] = (font_32.render(str(self.player.gold), False, (0,0,0)), self.texts[0][1])
         for text, textRect in self.texts:
             self.cameraSurface.blit(text, textRect)
 
@@ -112,11 +112,9 @@ class UpgradesMenu(Menu):
 class MainMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, enabled, gameState):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
-        self.buttons.append(Button((self.rect.centerx *0.8, self.rect.centery), func=self.newGame, icon=UI_Assets.ICON_PLAY))  
-        self.texts.append((karmaticArcadeFont.render(str("Space Shooter"), False, (0,0,0)),))
-        self.texts.append((karmaticArcadeFont.render(str("Play"), False, (0,0,0)),))
-        self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery //2)))
-        self.texts[1] = (self.texts[1][0], self.texts[1][0].get_frect(midleft=(self.rect.centerx *0.8 + TILE_SIZE, self.rect.centery - TILE_SIZE*1.2)))
+        self.buttons.append(Button((self.rect.centerx, self.rect.centery + TILE_SIZE), func=self.newGame, icon=UI_Assets.ICON_PLAY))  
+        self.texts.append((karmaticArcadeFont_40.render(str("Space Shooter"), False, (0,0,0)),))
+        self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - TILE_SIZE)))
         
     def newGame(self):
         self.enabled = False
