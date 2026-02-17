@@ -3,9 +3,10 @@ import sys
 import asyncio
 import pygame
 import json
+import builtins
 import platform
 
-API_URL = "https://space-fighter-web.vercel.app"
+API_URL = builtins.API_BASE
 
 dataJson = {
     'Hotkey_Up': pygame.K_w,
