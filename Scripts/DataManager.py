@@ -5,7 +5,7 @@ import pygame
 import json
 import platform
 
-API_URL = "space-fighter-web.vercel.app"
+API_URL = "https://space-fighter-web.vercel.app"
 
 dataJson = {
     'Hotkey_Up': pygame.K_w,
@@ -72,7 +72,6 @@ async def _fetch_json(url: str, method: str = 'GET', payload: dict = None):
                 text = requests.get(url).text
             else:
                 text = requests.post(url, json=payload or {}).text
-            print(f"[DataManager] response: {text}")
 
         if str(text).startswith('ERROR:'):
             print(f"fetch error from JS: {text}")
