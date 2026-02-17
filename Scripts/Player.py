@@ -104,7 +104,7 @@ class Player(pygame.sprite.Sprite):
             if (mouse[2] or keys[pygame.K_f]):
                 self.heavy(angle)
                 self.heavyCdTimer.activate() 
-        if self.score > Scripts.DataManager.dataJson["top5Highscores"][0] > 1000 and not self.hitHighscore:
+        if Scripts.DataManager.isHighScore(self.score) and not self.hitHighscore:
             Audio.UNREAL.play()      
             self.hitHighscore = True
         self.atkTimer.update()

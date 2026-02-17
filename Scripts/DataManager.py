@@ -1,22 +1,13 @@
-import json
-import os
+from typing import List
 import sys
+import asyncio
 import pygame
+import json
+import platform
 
-desktop_path = ""
-if sys.platform == "emscripten":
-	desktop_path = "/data/M431_SpaceGame"
-else:
-	desktop_path = os.path.expanduser('~')
-
-game_folder = os.path.join(desktop_path, 'M431_SpaceGame')
-img_folder = os.path.join(game_folder, 'imgs')
-dataPath = os.path.join(game_folder, 'data.json')
+API_URL = "http://localhost:3000"
 
 dataJson = {
-    'crosshair': "Placeholder",
-    'customCrosshair': False,
-    "top5Highscores": [0, 0, 0, 0, 0],
     'Hotkey_Up': pygame.K_w,
     'Hotkey_Down': pygame.K_s,
     'Hotkey_Left': pygame.K_a,
@@ -27,44 +18,102 @@ dataJson = {
     'Hotkey_HeavyAttack': pygame.K_f
 }
 
-def saveData(score = None):
-    if score:
-        for i in range(5):
-            if score > dataJson["top5Highscores"][i]:
-                dataJson["top5Highscores"].insert(i, score) 
-                dataJson["top5Highscores"].pop()
-                break       
+_JS_FETCH = """
+window.Fetch = {}
+window.Fetch.GET = function * GET(url) {
+    console.log('GET: ' + url);
+    var content = 'undefined';
+    fetch(new Request(url, { method: 'GET' }))
+        .then(resp => resp.text())
+        .then(resp => { content = resp; })
+        .catch(err => { console.log('GET error:', err); content = 'ERROR:' + String(err); });
+    while (content == 'undefined') { yield; }
+    yield content;
+}
+window.Fetch.POST = function * POST(url, data) {
+    console.log('POST: ' + url, data);
+    var content = 'undefined';
+    fetch(new Request(url, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: data
+    }))
+        .then(resp => resp.text())
+        .then(resp => { content = resp; })
+        .catch(err => { console.log('POST error:', err); content = 'ERROR:' + String(err); });
+    while (content == 'undefined') { yield; }
+    yield content;
+}
+"""
 
-    os.makedirs(game_folder, exist_ok=True)
-    os.makedirs(img_folder, exist_ok=True)
+_is_emscripten = sys.platform == "emscripten"
 
-    with open(dataPath, 'w') as data_file:
-        json.dump(dataJson, data_file, indent=4)  
-
-def loadData():
-    global dataJson  
+if _is_emscripten:
     try:
-        with open(dataPath, 'r') as data_file:
-            dataJson = json.load(data_file)  
-    except FileNotFoundError:
-        print(f"No data file found at {dataPath}, using defaults.")
-    except json.JSONDecodeError:
-        print("Error decoding JSON data. Using defaults.")
+        platform.window.eval(_JS_FETCH)
+    except Exception as e:
+        print(f"[DataManager] JS fetch init error: {e}")
+        _is_emscripten = False
+
+if not _is_emscripten:
+    import requests
 
 
-def resetHotkeys():
-    dataJson['Hotkey_Up'] = pygame.K_w
-    dataJson['Hotkey_Down'] = pygame.K_s
-    dataJson['Hotkey_Left'] = pygame.K_a
-    dataJson['Hotkey_Right'] = pygame.K_d
-    dataJson['Hotkey_Boost'] = pygame.K_LSHIFT
-    dataJson['Hotkey_close'] = pygame.K_j
-    dataJson['Hotkey_Attack'] = pygame.K_SPACE
-    dataJson['Hotkey_HeavyAttack'] = pygame.K_f
-    
-    saveData()
+async def _fetch_json(url: str, method: str = 'GET', payload: dict = None):
+    try:
+        if _is_emscripten:
+            await asyncio.sleep(0)
+            if method == 'GET':
+                text = await platform.jsiter(platform.window.Fetch.GET(url))
+            else:
+                text = await platform.jsiter(platform.window.Fetch.POST(url, json.dumps(payload or {})))
+        else:
+            if method == 'GET':
+                text = requests.get(url).text
+            else:
+                text = requests.post(url, json=payload or {}).text
+            print(f"[DataManager] response: {text}")
+
+        if str(text).startswith('ERROR:'):
+            print(f"fetch error from JS: {text}")
+            return None
+        return json.loads(text)
+    except Exception as e:
+        print(f"fetch error: {e}")
+        return None
 
 
+class DataManager:
+    def __init__(self):
+        self.hi_scores: List[int] = []
 
-loadData()
-saveData()
+    async def fetchScores(self) -> List[int]:
+        data = await _fetch_json(f"{API_URL}/api/scores")
+        if data is not None:
+            self.hi_scores = [s["score"] for s in data]
+        return self.hi_scores
+
+    async def submitScore(self, score: int) -> dict:
+        result = await _fetch_json(f"{API_URL}/api/scores", method='POST', payload={"name": "Player", "score": score})
+        return {"success": result is not None}
+
+    def isHighScore(self, score: int) -> bool:
+        if score <= 99:
+            return False
+        if len(self.hi_scores) < 10:
+            return True
+        return score > min(self.hi_scores)
+
+
+_manager = DataManager()
+
+
+async def loadData():
+    scores = await _manager.fetchScores()
+    print(f"Loaded scores: {scores}")
+
+def isHighScore(score: int) -> bool:
+    return _manager.isHighScore(score)
+
+async def submitScore(score: int) -> dict:
+    return await _manager.submitScore(score)

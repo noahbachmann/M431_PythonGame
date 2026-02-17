@@ -7,7 +7,6 @@ from Scripts.HUDController import *
 from Scripts.EnemySpawner import *
 from Scripts.AssetsManager import *
 from Scripts.Groups import AllSprites
-import Scripts.DataManager
 
 class Round:
     def __init__(self, surface, screen, gameState):
@@ -39,8 +38,7 @@ class Round:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                    Scripts.DataManager.saveData(self.player.score)
-                    return -1
+                    return 0
                 if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
                             self.hudController.pause = not self.hudController.pause
@@ -52,7 +50,7 @@ class Round:
                 self.hudController.update(self.cameraSurface, dt)
                 self.drawToScreen()
                 if not self.running:
-                    return -1
+                    return 0
                 continue
         
             else:

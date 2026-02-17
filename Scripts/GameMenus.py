@@ -2,11 +2,9 @@ import pygame
 from Scripts.Button import *
 from Scripts.AssetsManager import UI_Assets, karmaticArcadeFont_40, font, font_32
 from Scripts.Settings import *
-import Scripts.DataManager
 
 class Menu:
     def __init__(self, surface, left, top, gameState, color = None, enabled = False, size:tuple = None):
-        Scripts.DataManager.loadData()
         self.cameraSurface = surface
         self.left = left
         self.top = top
@@ -37,15 +35,22 @@ class Menu:
     def mainMenu(self):
         self.enabled = False
         self.gameState = 'menu'
-        Scripts.DataManager.saveData()
 
 class EndGameMenu(Menu):
-    def __init__(self, surface, left, top, size:tuple, gameState, enabled,  score):
+    def __init__(self, surface, left, top, size:tuple, gameState, enabled, score, is_new_highscore=False):
         super().__init__(surface, left, top, gameState, enabled=enabled, size=size)
         self.buttons.append(Button((self.rect.centerx, self.rect.centery + TILE_SIZE), func=self.newGame, icon=UI_Assets.ICON_PLAY))
+
+        # Add score text
         self.texts.append((karmaticArcadeFont_40.render(str(score), False, (0,0,0)), None))
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.centerx, self.rect.centery - TILE_SIZE)))
-        
+
+        # Add "NEW HIGHSCORE!" text if it's a new highscore
+        if is_new_highscore:
+            highscore_text = karmaticArcadeFont_40.render("NEW HIGHSCORE!", False, (255, 215, 0))  # Gold color
+            highscore_rect = highscore_text.get_frect(center=(self.rect.centerx, self.rect.centery - TILE_SIZE * 3))
+            self.texts.append((highscore_text, highscore_rect))
+
     def newGame(self):
         self.enabled = False
 

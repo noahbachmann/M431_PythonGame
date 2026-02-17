@@ -1,3 +1,6 @@
 pygame-ce
 pyinstaller
 Tk
+pygbag
+httpx
+requests
