@@ -5,7 +5,7 @@ import pygame
 import json
 import platform
 
-API_URL = "http://localhost:3000"
+API_URL = "space-fighter-web.vercel.app"
 
 dataJson = {
     'Hotkey_Up': pygame.K_w,
