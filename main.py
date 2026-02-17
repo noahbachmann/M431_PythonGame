@@ -21,8 +21,6 @@ async def main():
 	pygame.display.set_caption("My Space Shooter")
 	gameState = False
 	background = BACKGROUND_IMAGE
-	await Scripts.DataManager.loadData()
-
 	def drawFunction():
 		screen.blit(background, background.get_frect(center = (screen.get_frect().center)))
 		screen.blit(cameraSurface, cameraSurface.get_frect(center = (screenSize[0]//2, screenSize[1]//2)))
@@ -53,10 +51,8 @@ async def main():
 		round = Round(cameraSurface, screen, gameState)
 		score = await round.run()
 
-		is_new_highscore = Scripts.DataManager.isHighScore(score)
-		if is_new_highscore:
-			await Scripts.DataManager.submitScore(score)
-		endGameMenu = EndGameMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 400) // 2, (Scripts.Settings.WINDOW_SIZE - 400) // 2,(400,400), gameState, True, score, is_new_highscore)
+		await Scripts.DataManager.submitScore(score)
+		endGameMenu = EndGameMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 400) // 2, (Scripts.Settings.WINDOW_SIZE - 400) // 2,(400,400), gameState, True, score)
 		while endGameMenu.enabled:
 				await asyncio.sleep(0)
 				for event in pygame.event.get():

@@ -35,7 +35,6 @@ class Player(pygame.sprite.Sprite):
         self.frames = animationFrames
         self.frameIndex = 0
         self.animationState = "idle"
-        self.hitHighscore = False
         self.heavyState = "charged"
         if size:
             self.image = pygame.transform.scale(Sunset.SUNSET_IDLE_1, size)
@@ -104,9 +103,6 @@ class Player(pygame.sprite.Sprite):
             if (mouse[2] or keys[pygame.K_f]):
                 self.heavy(angle)
                 self.heavyCdTimer.activate() 
-        if Scripts.DataManager.isHighScore(self.score) and not self.hitHighscore:
-            Audio.UNREAL.play()      
-            self.hitHighscore = True
         self.atkTimer.update()
         self.heavyCdTimer.update()
         self.damageTimer.update()
