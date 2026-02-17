@@ -5,7 +5,8 @@ This file provides context and guidance for working with the Python Space Shoote
 ## Project Overview
 
 **Python Space Shooter** is a Pygame-based space shooter game with dual deployment modes:, Desktop: Standalone pygame application, can be packaged with PyInstaller
-- **Web**: Runs in browser via pygbag (WebAssembly/Emscripten) This is where we will work 100% of the time. Dont mind the Desktop version much.
+- **Web**: Runs in browser via pygbag (WebAssembly/Emscripten) This is where we will work 100% of the time. Dont mind the Desktop version much. 
+**VERY IMPORTANT**: We embed the .html in an iFrame in our Nuxt website hosted on Vercel. The api is also in the nuxt website
 
 The codebase uses an asyncio-based game loop and syncs scores to a **Nuxt server API** that manages the Neon PostgreSQL database for global leaderboards.
 
@@ -60,14 +61,13 @@ Both desktop and web versions use **httpx** for async HTTP requests to the Nuxt 
 **DataManager** (Scripts/DataManager.py) handles all leaderboard communication via Nuxt server API:
 
 **Both Desktop & Web Modes**:
-- DataManager calls Nuxt `/api/hiscores` endpoint over HTTPS
-- Uses httpx for async HTTP requests (works universally)
+- DataManager calls Nuxt `/api/scores` endpoint over HTTP
 - Cached top 10 scores stored locally
 
 **Database Setup**:
-- Simple schema: `hiscores` table with `player_name` (varchar) and `score` (bigint)
-- Nuxt server route: `server/api/hiscores.ts`
-- Environment variables: `API_BASE` (Nuxt URL), `API_KEY` (shared secret for auth)
+- Simple schema in Neon: `scores` table with `player_name` (varchar) and `score` (bigint)
+- Nuxt server route: `server/api/scores.ts`
+- important variables: `API_BASE` (Nuxt URL)
 
 See **SETUP_DATABASE.md** for database setup.
 
@@ -95,22 +95,6 @@ All game loops and event handlers use asyncio:
 - This is **critical for web (pygbag) compatibility** - without it the browser will freeze
 - Desktop also benefits from responsive event handling
 
-### API Configuration
-Set environment variables before running the game:
-```bash
-export API_BASE=https://your-nuxt-site.com     # Your Nuxt deployment URL
-export API_KEY=your-secret-key                  # Shared secret key (must match Nuxt env)
-python main.py
-```
-
-### Database Setup
-1. Create Neon PostgreSQL project
-2. Add Nuxt server route: `server/api/hiscores.ts` (see architecture example)
-3. Set `API_BASE` and `API_KEY` environment variables in your Nuxt `.env`
-4. See **SETUP_DATABASE.md** for detailed instructions
-
-
-
 ### Common Patterns
 
 **Fetch Leaderboard**:
@@ -132,16 +116,8 @@ if result["success"]:
 all_sprites.add(enemy)  # Sprite renders at position - group.offset
 ```
 
-## Recent Changes
-
-- **Refactored to Nuxt API**: Uses httpx for universal async HTTP requests
-- **Simplified DataManager**: Removed platform-specific logic, cleaner API
-- **Environment variables**: API_BASE and API_KEY for configuration
-
 ## Debugging Tips
 
 - Use `print()` statements; they appear in console (desktop) or browser console (web)
-- Verify `API_BASE` and `API_KEY` environment variables are set correctly
-- Check Nuxt server route `server/api/hiscores.ts` is deployed and accessible
+- Check Nuxt server route `server/api/scores.ts` is deployed and accessible
 - Verify asyncio.sleep(0) is present in all game loops for web compatibility
-- Test API locally: `curl -H "x-api-key: your-key" http://localhost:3000/api/hiscores`

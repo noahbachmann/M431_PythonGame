@@ -10,8 +10,10 @@ class AllSprites(pygame.sprite.Group):
             surface.blit(sprite.image, sprite.rect)
 
     def update(self, surface, dt, playerOffset):
-        for sprite in self:
+        for sprite in list(self.sprites()):
             sprite.update(dt)
+            if not sprite.alive():
+                continue
             offsetDifference = playerOffset - sprite.offset
             sprite.offset += offsetDifference
             if hasattr(sprite, 'isHeavy') and sprite.isHeavy and sprite.exploding:

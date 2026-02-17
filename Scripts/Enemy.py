@@ -46,9 +46,8 @@ class Enemy(pygame.sprite.Sprite):
                 self.angle = self.getAngle()
                 self.directionToPlayer = pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center)
             self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
-        elif int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.frames[self.animationState]["frames"]) == len(self.frames[self.animationState]["frames"]) - 1:
+        elif int(self.frameIndex) >= len(self.frames[self.animationState]["frames"]):
             self.kill()
-            del self
         
     def hit(self, damage):
         if self.animationState == "death":
@@ -88,9 +87,8 @@ class BasicMelee(Enemy):
     def update(self, dt):
         self.animate(dt)
         if self.animationState == "death":
-            if int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.frames[self.animationState]["frames"]) == 0:
+            if int(self.frameIndex) >= len(self.frames[self.animationState]["frames"]):
                 self.kill()
-                del self
             return
         self.directionToPlayer = (pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center))
         self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
@@ -179,8 +177,10 @@ class MiniBoss(DoubleShooter):
         super().__init__(pos, health, damage, gold, speed, atkSpeed, player, image, frames, groups, swap, range, rotationSpeed, size)
         self.heavyTimer = Timer(5, True, True, self.heavyShoot)
 
-    def update(self,dt):
+    def update(self, dt):
         super().update(dt)
+        if self.animationState == "death":
+            return
         self.heavyTimer.update()
 
     def heavyShoot(self):
