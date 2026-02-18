@@ -44,9 +44,12 @@ class Round:
                             self.hudController.pause = not self.hudController.pause
                             continue
             
-            dt = self.clock.tick() / 1000
+            dt = min(self.clock.tick(60) / 1000, 0.05)
 
             if self.hudController.pause:
+                for sprite in list(self.enemySprites.sprites()):
+                    if hasattr(sprite, 'animationState') and sprite.animationState == "death":
+                        sprite.update(dt)
                 self.hudController.update(self.cameraSurface, dt)
                 self.drawToScreen()
                 if not self.running:
