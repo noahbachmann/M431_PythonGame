@@ -67,5 +67,5 @@ async def _fetch_json(url: str, payload: dict = None):
 
 
 async def submitScore(score: int) -> dict:
-    result = await _fetch_json(f"{API_URL}/api/scores", payload={"name": "Player", "score": score})
+    result = await _fetch_json(f"{API_URL}/api/scores/notify", payload={"score": score})
     return {"success": result is not None}
