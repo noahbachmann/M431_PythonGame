@@ -11,20 +11,20 @@ class Spawner:
         self.spawnPoints = []
         self.enemies = {
             #health, damage, gold, speed, player, image, groups, size:tuple = None
-            "Brawler": {"class": BasicMelee, "weight": 35, "args": [2, 1, 3, 220, self.player,
+            "Brawler": {"class": BasicMelee, "weight": 35, "args": [2, 1, 4, 220, self.player,
             Brawler.BRAWLER_IDLE_1,{"idle":{"frames":[Brawler.BRAWLER_IDLE_1, Brawler.BRAWLER_IDLE_2, Brawler.BRAWLER_IDLE_3], "speed":8},
                                     "attack":{"frames":[Brawler.BRAWLER_BOOSTATTACK_1, Brawler.BRAWLER_BOOSTATTACK_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}}, self.enemyGroups,45,(64, 64)]},
             #health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None
-            "Arachnis": {"class": BasicShooter, "weight": 35, "args": [2, 1, 1, 150, 3.5, self.player,
+            "Arachnis": {"class": BasicShooter, "weight": 35, "args": [2, 1, 2, 150, 3.5, self.player,
             Arachnis.ARACHNIS_1,{"idle":{"frames":[Arachnis.ARACHNIS_1,Arachnis.ARACHNIS_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, 400,0,(64, 64)]}, 
             #health, damage, gold, speed, atkSpeed, player, image, groups, swap, range=None, size:tuple = None
-            "DarkForce": {"class": DoubleShooter, "weight": 15, "args": [2, 1, 2, 150, 4, self.player,
+            "DarkForce": {"class": DoubleShooter, "weight": 15, "args": [2, 1, 3, 150, 4, self.player,
             Dark_Force.DARK_FORCE_1,{"idle":{"frames":[Dark_Force.DARK_FORCE_1,Dark_Force.DARK_FORCE_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, False, 430,0,(64, 64)]},
               #health, damage, gold, speed, atkSpeed, player, image, groups, swap, range=None, size:tuple = None
-            "Apex": {"class": DoubleShooter, "weight": 0, "args": [2, 1, 2, 150, 2, self.player,
+            "Apex": {"class": DoubleShooter, "weight": 0, "args": [2, 1, 3, 150, 2, self.player,
             Apex.APEX_IDLE_1,{"idle":{"frames":[Apex.APEX_IDLE_1,Apex.APEX_IDLE_2], "speed":8},
                                 "death":{"frames":Enemy_Explosion.animationArray, "speed":10}},self.enemyGroups, True, 420,0,(64, 64)]},
                                 #health, damage, gold, speed, atkSpeed, player, image, groups, range=None, size:tuple = None

@@ -55,7 +55,7 @@ class Enemy(pygame.sprite.Sprite):
         self.health -= damage
         if self.health <= 0:
             self.player.gold += self.gold
-            self.player.score += self.gold*50
+            self.player.score += self.gold*40
             self.animationState = "death"
             self.frameIndex = 0
             Audio.ENEMY_DEATH.play()

@@ -50,7 +50,7 @@ async def main():
 		gameState = 'game'
 		round = Round(cameraSurface, screen, gameState)
 		score = await round.run()
-		if score > 5000:
+		if score > 1000:
 			await Scripts.DataManager.submitScore(score)
 		endGameMenu = EndGameMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 400) // 2, (Scripts.Settings.WINDOW_SIZE - 400) // 2,(400,400), gameState, True, score)
 		while endGameMenu.enabled:
