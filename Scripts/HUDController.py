@@ -31,12 +31,11 @@ class HUDController:
         else:
             surface.blit(self.heartBar, self.heartBarRect)
             surface.blit(self.heavyBar, self.heavyBarRect)
-            self.upgradeButton.draw(surface)
             self.energyBar.draw(surface)
             self.heavyAnimation.draw(surface, dt)
             surface.blit(self.scoreText, self.scoreTextRect)
-        for heart in self.hearts:
-            heart.draw(surface)
+            for heart in self.hearts:
+               heart.draw(surface)
 
     def update(self, surface, dt):
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))

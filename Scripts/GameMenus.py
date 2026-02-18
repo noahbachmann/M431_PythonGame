@@ -62,9 +62,9 @@ class UpgradesMenu(Menu):
         self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.bottomright[0] - TILE_SIZE, self.rect.bottomright[1] - TILE_SIZE)))
 
     def restart(self):
+      self.hudController.pause = False
       self.enabled = False
       self.player.health = 0
-      self.hudController.pause = False
 
     def general(self):
         upgrdHeight = self.rect.height - (self.rect.height//4) 
@@ -105,7 +105,7 @@ class UpgradesMenu(Menu):
 
     def endPause(self):
         self.hudController.pause = False
-
+        self.enabled = False
 
 class MainMenu(Menu):
     def __init__(self, surface, left, top, size:tuple, enabled, gameState):
