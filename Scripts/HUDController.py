@@ -1,4 +1,4 @@
-import pygame, time
+import pygame
 import Scripts.Settings
 from Scripts.AssetsManager import font,karmaticArcadeFont, UI_Assets, Heart_Assets, Energybar_Assets, Heavy_Attack_Assets
 from Scripts.Button import *
@@ -12,8 +12,11 @@ class HUDController:
         self.playerHealth = self.player.health
         self.pause = False
         self.hudSpritesGroup = hudSpritesGroup
+        self._cachedScore = self.player.score
+        self._cachedGold = self.player.gold
         self.scoreText = karmaticArcadeFont.render(f"{self.player.score:07d}", True, (255,255,255))
         self.scoreTextRect = self.scoreText.get_frect(topleft = (16, 16))
+        self.goldText = font.render(str(self.player.gold), False, (240,240,240))
         self.upgradeButton = Button((Scripts.Settings.WINDOW_SIZE - TILE_SIZE,TILE_SIZE),UI_Assets.BUTTON_32x32, func=self.toggleSettings, icon=UI_Assets.ICON_UPGRADE, size=(64,64))
         self.upgradeMenu = UpgradesMenu(surface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, 100, self.player, gameState, self, size=(600, Scripts.Settings.WINDOW_SIZE-200))
         self.hearts = []
@@ -38,8 +41,12 @@ class HUDController:
                heart.draw(surface)
 
     def update(self, surface, dt):
-        self.goldText = font.render(str(self.player.gold), False, (240,240,240))
-        self.scoreText = karmaticArcadeFont.render(f"{self.player.score:07d}", True, (255,255,255))
+        if self.player.score != self._cachedScore:
+            self._cachedScore = self.player.score
+            self.scoreText = karmaticArcadeFont.render(f"{self.player.score:07d}", True, (255,255,255))
+        if self.player.gold != self._cachedGold:
+            self._cachedGold = self.player.gold
+            self.goldText = font.render(str(self.player.gold), False, (240,240,240))
         self.upgradeButton.update(surface)
         if self.playerHealth != self.player.health:
             if self.pause:
@@ -87,21 +94,28 @@ class HUDController:
                 self.hearts[len(self.hearts)-1].newImage(Heart_Assets.HEART_EMPTY)
             self.playerHealth = self.player.health
 
+_heartCache = {}
+def _getScaledHeart(image, size):
+    key = id(image)
+    if key not in _heartCache:
+        _heartCache[key] = pygame.transform.scale(image, size)
+    return _heartCache[key]
+
 class Heart(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, image, size:tuple = None ):
         super().__init__()
         if size:
-            self.image = pygame.transform.scale(image, size)
+            self.image = _getScaledHeart(image, size)
             self.size = size
         else:
             self.image = image
         self.rect = self.image.get_frect(center=pos)
-    
+
     def newImage(self, image):
         if self.size:
-            self.image = pygame.transform.scale(image, self.size)
+            self.image = _getScaledHeart(image, self.size)
         else:
-            self.image = image 
+            self.image = image
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
@@ -133,13 +147,13 @@ class HeavyBar(pygame.sprite.Sprite):
         self.pos = pos
         self.size = size
         self.player = player
-        self.rechargeArray = rechargeArray
-        self.triggerArray = triggerArray
+        self.scaledRechargeArray = [pygame.transform.scale(f, size) for f in rechargeArray]
+        self.scaledTriggerArray = [pygame.transform.scale(f, size) for f in triggerArray]
         self.animationState = "charged"
         self.heavyState = "charged"
         self.frameIndex = 0
-        self.default = image
-        self.image = pygame.transform.scale(image, self.size)
+        self.defaultImage = pygame.transform.scale(image, self.size)
+        self.image = self.defaultImage
         self.rect = self.image.get_frect(bottomright=self.pos)
 
     def draw(self, surface, dt):
@@ -154,14 +168,14 @@ class HeavyBar(pygame.sprite.Sprite):
             return
         if self.animationState == "used":
             self.frameIndex += 25*dt
-            self.image = pygame.transform.scale(self.triggerArray[int(self.frameIndex) % len(self.triggerArray)], self.size)
-            if int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.triggerArray) == 0:
+            self.image = self.scaledTriggerArray[int(self.frameIndex) % len(self.scaledTriggerArray)]
+            if int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.scaledTriggerArray) == 0:
                 self.animationState = "recharging"
                 self.frameIndex = 0
         elif self.animationState == "recharging":
             self.frameIndex += (self.player.heavyCd/4.8)*dt
-            self.image = pygame.transform.scale(self.rechargeArray[int(self.frameIndex) % len(self.rechargeArray)], self.size)
-            if not self.player.heavyCdTimer.active: #or (int(self.frameIndex) != 0 and int(self.frameIndex) % len(self.rechargeArray) == 0)
+            self.image = self.scaledRechargeArray[int(self.frameIndex) % len(self.scaledRechargeArray)]
+            if not self.player.heavyCdTimer.active:
                 self.animationState = "charged"
-                self.image = pygame.transform.scale(self.default, self.size)
+                self.image = self.defaultImage
                 self.frameIndex = 0

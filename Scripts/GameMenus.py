@@ -58,8 +58,10 @@ class UpgradesMenu(Menu):
         self.hudController = hudController
         self.buttons.append(Button((self.rect.centerx - TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE), func=self.endPause, icon=UI_Assets.ICON_PLAY))
         self.buttons.append(Button((self.rect.centerx + TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE), func=self.restart, icon=UI_Assets.ICON_RESET))
-        self.texts.append((font_32.render(str(self.player.gold), False, (0,0,0)), None))
-        self.texts[0] = (self.texts[0][0], self.texts[0][0].get_frect(center=(self.rect.bottomright[0] - TILE_SIZE, self.rect.bottomright[1] - TILE_SIZE)))
+        self._cachedGold = self.player.gold
+        goldSurface = font_32.render(str(self.player.gold), False, (0,0,0))
+        goldRect = goldSurface.get_frect(center=(self.rect.bottomright[0] - TILE_SIZE, self.rect.bottomright[1] - TILE_SIZE))
+        self.texts.append((goldSurface, goldRect))
 
     def restart(self):
       self.hudController.pause = False
@@ -99,7 +101,9 @@ class UpgradesMenu(Menu):
         self.general()
         for button in self.buttons:
             button.update(surface)
-        self.texts[0] = (font_32.render(str(self.player.gold), False, (0,0,0)), self.texts[0][1])
+        if self.player.gold != self._cachedGold:
+            self._cachedGold = self.player.gold
+            self.texts[0] = (font_32.render(str(self.player.gold), False, (0,0,0)), self.texts[0][1])
         for text, textRect in self.texts:
             self.cameraSurface.blit(text, textRect)
 

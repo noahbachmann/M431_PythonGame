@@ -42,6 +42,10 @@ class Round:
                 if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
                             self.hudController.pause = not self.hudController.pause
+                            if self.hudController.pause:
+                                self.enemySpawner.pause()
+                            else:
+                                self.enemySpawner.resume()
                             continue
             
             dt = min(self.clock.tick(60) / 1000, 0.05)
@@ -138,14 +142,12 @@ class BorderSprite(ImageSprite):
         self.rotation = float(randint(1,360))
         self.savedImage = self.image
         self.image = pygame.transform.rotate(self.savedImage, self.rotation)
-        if randint(1,2) == 1:
-            self.rotationDir = True
-        else:
-            self.rotationDir = False
+        self.rotationDir = 0.5 if randint(1,2) == 1 else -0.5
+        self._rotationAccum = 0.0
 
     def update(self, dt):
-        if self.rotationDir:
-            self.rotation -= 0.5
-        else:
-            self.rotation += 0.5
-        self.image = pygame.transform.rotate(self.savedImage, self.rotation)
+        self._rotationAccum += self.rotationDir
+        if abs(self._rotationAccum) >= 3.0:
+            self.rotation += self._rotationAccum
+            self._rotationAccum = 0.0
+            self.image = pygame.transform.rotate(self.savedImage, self.rotation)

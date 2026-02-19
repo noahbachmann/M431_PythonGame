@@ -1,5 +1,4 @@
 import pygame
-import time
 from Scripts.Timer import *
 from Scripts.AssetsManager import font, UI_Assets, Audio
 import Scripts.Settings
@@ -29,9 +28,12 @@ class Button(pygame.sprite.Sprite):
         else:
             self.icon = None
         self.keyText = keyText
+        self._cachedKeyName = None
+        self._cachedKeyText = None
         if self.keyText:
             self.text = text
             self.textRect = None
+            self._updateKeyTextCache()
         elif text:
             self.text = font.render(text, False, (0,0,0))
             self.textRect = self.text.get_frect(center = pos)
@@ -40,16 +42,23 @@ class Button(pygame.sprite.Sprite):
         self.cdTimer = Timer(0.3)
         self.rect = self.image.get_frect(center = pos)
 
+    def _updateKeyTextCache(self):
+        if not self.keyText or not self.text:
+            return
+        keyName = pygame.key.name(Scripts.DataManager.dataJson[self.text])
+        if keyName == "left shift":
+            keyName = "shift"
+        if keyName != self._cachedKeyName:
+            self._cachedKeyName = keyName
+            self._cachedKeyText = font.render(keyName, True, (0,0,0))
+            self.textRect = self._cachedKeyText.get_frect(center = self.pos)
+
     def draw(self, surface):
         surface.blit(self.image, self.rect)
         if self.text:
             if self.keyText:
-                textCheck = pygame.key.name(Scripts.DataManager.dataJson[self.text])
-                if textCheck == "left shift":
-                    textCheck = "shift"
-                textInfo = font.render(textCheck, True, (0,0,0))
-                self.textRect = textInfo.get_frect(center = self.pos)
-                surface.blit(textInfo, self.textRect)
+                self._updateKeyTextCache()
+                surface.blit(self._cachedKeyText, self.textRect)
             else:
                 surface.blit(self.text, self.textRect)
         if self.icon:
@@ -60,7 +69,6 @@ class Button(pygame.sprite.Sprite):
         mousePos = (mousePos[0] - self.offset[0], mousePos[1] - self.offset[1])
         if self.rect.collidepoint(mousePos):
             if pygame.mouse.get_pressed()[0] and not self.cdTimer.active:
-                time.sleep(0.15)
                 self.func()
                 Audio.BUTTON_PRESS.play()
                 self.cdTimer.activate()

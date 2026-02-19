@@ -14,7 +14,10 @@ class Shot(pygame.sprite.Sprite):
         self.isEnemy = False
         self.collided = False
         self.animationState = "idle"
-        self.hitAnimation = hitAnimation
+        if hitAnimation:
+            self.hitAnimation = [pygame.transform.scale(f, (26, 26)) for f in hitAnimation]
+        else:
+            self.hitAnimation = hitAnimation
         self.frameIndex = 0
         self.direction = pygame.math.Vector2(
             math.cos(math.radians(angle)), 
@@ -58,7 +61,7 @@ class Shot(pygame.sprite.Sprite):
 
     def animate(self, dt):
         self.frameIndex += 14*dt
-        self.image = pygame.transform.scale(self.hitAnimation[int(self.frameIndex)], (26,26))
+        self.image = self.hitAnimation[int(self.frameIndex)]
 
 class ExplosionShot(Shot):
     def __init__(self, pos, damage, speed, hits, angle, explosionSize, image, groups, lifeDistance=0, playerOffset = pygame.math.Vector2(0, 0), size = None):

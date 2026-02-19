@@ -32,15 +32,23 @@ class Player(pygame.sprite.Sprite):
         self.heavyCdTimer = Timer(self.heavyCd)
         self.gold = 0
         self.score = 0
-        self.frames = animationFrames
         self.frameIndex = 0
         self.animationState = "idle"
         self.heavyState = "charged"
         if size:
-            self.image = pygame.transform.scale(Sunset.SUNSET_IDLE_1, size)
             self.size = size
+            self.image = pygame.transform.scale(Sunset.SUNSET_IDLE_1, size)
+            self.scaledFrames = {}
+            for state, data in animationFrames.items():
+                self.scaledFrames[state] = {
+                    "frames": [pygame.transform.scale(f, size) for f in data["frames"]],
+                    "speed": data["speed"]
+                }
+            self.scaledInvis = pygame.transform.scale(Sunset.SUNSET_INVIS, size)
         else:
             self.image = Sunset.SUNSET_IDLE_1
+            self.scaledFrames = animationFrames
+            self.scaledInvis = Sunset.SUNSET_INVIS
         self.savedImage = self.image
         self.rect = self.image.get_frect(center=pos)
 
@@ -54,8 +62,7 @@ class Player(pygame.sprite.Sprite):
         mousePos = (mousePos[0] - self.camOffset[0], mousePos[1] - self.camOffset[1])
         mouse = pygame.mouse.get_pressed()
         keys = pygame.key.get_pressed()
-        boostKeys = pygame.key.get_pressed()
-        if boostKeys[Scripts.DataManager.dataJson['Hotkey_Boost']]:
+        if keys[Scripts.DataManager.dataJson['Hotkey_Boost']]:
             if not self.boosting and self.boostAmount > 0:
                 self.boosting = True
                 Audio.BOOST.play(-1)
@@ -135,22 +142,20 @@ class Player(pygame.sprite.Sprite):
             self.damagingTimer.deactivate()
             return
         if self.damageCount % 2 == 0:
-            self.image = pygame.transform.scale(self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState]["frames"])], self.size)
+            frames = self.scaledFrames[self.animationState]["frames"]
+            self.image = frames[int(self.frameIndex) % len(frames)]
             self.savedImage = self.image
         else:
-            self.image = pygame.transform.scale(Sunset.SUNSET_INVIS, self.size) 
+            self.image = self.scaledInvis
             self.savedImage = self.image        
 
     def animate(self, dt):
         if self.damageTimer.active:
             return
-        self.frameIndex += self.frames[self.animationState]["speed"]*dt
-        if self.size:
-            self.image = pygame.transform.scale(self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState]["frames"])], self.size)
-            self.savedImage = self.image
-        else:
-            self.image = self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState]["frames"])]
-            self.savedImage = self.image
+        frames = self.scaledFrames[self.animationState]
+        self.frameIndex += frames["speed"]*dt
+        self.image = frames["frames"][int(self.frameIndex) % len(frames["frames"])]
+        self.savedImage = self.image
 
     def upgrade(self, type:str, upgradesLevel):
         cost = 0

@@ -59,6 +59,16 @@ class Spawner:
         self.spawnTimer.update()
         self.spawnMinibossTimer.update()
         self.enemyUpgradeTimer.update()
+
+    def pause(self):
+        self.spawnTimer.pause()
+        self.spawnMinibossTimer.pause()
+        self.enemyUpgradeTimer.pause()
+
+    def resume(self):
+        self.spawnTimer.resume()
+        self.spawnMinibossTimer.resume()
+        self.enemyUpgradeTimer.resume()
         
     def spawnEnemy(self):
         for x in range(self.spawns):

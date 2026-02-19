@@ -13,15 +13,21 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = speed
         self.rotationSpeed = rotationSpeed
         self.player = player
-        self.frames = frames
         self.frameIndex = 0
         self.animationState = "idle"
         self.angle = 0
         if size:
             self.size = size
             self.image = pygame.transform.scale(image, size)
+            self.scaledFrames = {}
+            for state, data in frames.items():
+                self.scaledFrames[state] = {
+                    "frames": [pygame.transform.scale(f, size) for f in data["frames"]],
+                    "speed": data["speed"]
+                }
         else:
             self.image = image
+            self.scaledFrames = frames
         self.savedImage = self.image
         self.rect = self.image.get_frect(center=pos)
         self.offset = player.moveOffset.copy()
@@ -46,7 +52,7 @@ class Enemy(pygame.sprite.Sprite):
                 self.angle = self.getAngle()
                 self.directionToPlayer = pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center)
             self.image = pygame.transform.rotate(self.savedImage, -self.angle-90)
-        elif int(self.frameIndex) >= len(self.frames[self.animationState]["frames"]):
+        elif int(self.frameIndex) >= len(self.scaledFrames[self.animationState]["frames"]):
             self.kill()
         
     def hit(self, damage):
@@ -61,13 +67,10 @@ class Enemy(pygame.sprite.Sprite):
             Audio.ENEMY_DEATH.play()
     
     def animate(self, dt):
-        self.frameIndex += self.frames[self.animationState]["speed"]*dt
-        if self.size:
-            self.image = pygame.transform.scale(self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState]["frames"])], self.size)
-            self.savedImage = self.image
-        else:
-            self.image = self.frames[self.animationState]["frames"][int(self.frameIndex) % len(self.frames[self.animationState]["frames"])]
-            self.savedImage = self.image
+        frames = self.scaledFrames[self.animationState]
+        self.frameIndex += frames["speed"]*dt
+        self.image = frames["frames"][int(self.frameIndex) % len(frames["frames"])]
+        self.savedImage = self.image
     
     def getAngle(self):
         playerPos = pygame.Vector2(self.player.rect.center)
@@ -87,7 +90,7 @@ class BasicMelee(Enemy):
     def update(self, dt):
         self.animate(dt)
         if self.animationState == "death":
-            if int(self.frameIndex) >= len(self.frames[self.animationState]["frames"]):
+            if int(self.frameIndex) >= len(self.scaledFrames[self.animationState]["frames"]):
                 self.kill()
             return
         self.directionToPlayer = (pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center))
@@ -143,8 +146,6 @@ class BasicShooter(Enemy):
         if self.range:
             if (pygame.Vector2(self.player.rect.center) - pygame.Vector2(self.rect.center)).length() > self.range:
                 self.rect.center += self.directionToPlayer.normalize() * self.speed * dt
-            else:
-                self.rect.center += self.directionToPlayer.normalize() * 0
         self.atkTimer.update()
 
     def shoot(self):
