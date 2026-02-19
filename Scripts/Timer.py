@@ -24,7 +24,7 @@ class Timer:
 
     def resume(self):
         if self.active:
-            self.start_time = get_ticks() - self._elapsed
+            self.start_time = get_ticks() - getattr(self, '_elapsed', 0)
 
     def update(self):
         if not self.active: return

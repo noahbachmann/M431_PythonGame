@@ -16,10 +16,9 @@ class HUDController:
         self._cachedGold = self.player.gold
         self.scoreText = karmaticArcadeFont.render(f"{self.player.score:07d}", True, (255,255,255))
         self.scoreTextRect = self.scoreText.get_frect(topleft = (16, 16))
-        self.goldText = font.render(str(self.player.gold), False, (240,240,240))
         self.upgradeButton = Button((Scripts.Settings.WINDOW_SIZE - TILE_SIZE,TILE_SIZE),UI_Assets.BUTTON_32x32, func=self.toggleSettings, icon=UI_Assets.ICON_UPGRADE, size=(64,64))
         self.hudGoldText = font_32.render(f"$ {self.player.gold}", False, (255, 215, 0))
-        self.hudGoldRect = self.hudGoldText.get_frect(topright=(Scripts.Settings.WINDOW_SIZE - TILE_SIZE*0.5, TILE_SIZE + 40))
+        self.hudGoldRect = self.hudGoldText.get_frect(topright=(Scripts.Settings.WINDOW_SIZE - TILE_SIZE*0.6, TILE_SIZE + 40))
         self.upgradeMenu = UpgradesMenu(surface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, 225, self.player, gameState, self, size=(600, Scripts.Settings.WINDOW_SIZE-450))
         self.hearts = []
         self.heartBar = pygame.transform.scale(Heart_Assets.HEALTHBAR, (128, 44))
@@ -49,7 +48,6 @@ class HUDController:
             self.scoreText = karmaticArcadeFont.render(f"{self.player.score:07d}", True, (255,255,255))
         if self.player.gold != self._cachedGold:
             self._cachedGold = self.player.gold
-            self.goldText = font.render(str(self.player.gold), False, (240,240,240))
             self.hudGoldText = font.render(f"$ {self.player.gold}", False, (255, 215, 0))
         self.upgradeButton.update(surface)
         if self.playerHealth != self.player.health:

@@ -33,6 +33,7 @@ class Round:
     async def run(self):
         self.createBackground()
         self.createBorder()
+        _prevPause = False
         while self.running:
             await asyncio.sleep(0)
             for event in pygame.event.get():
@@ -42,12 +43,15 @@ class Round:
                 if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
                             self.hudController.pause = not self.hudController.pause
-                            if self.hudController.pause:
-                                self.enemySpawner.pause()
-                            else:
-                                self.enemySpawner.resume()
                             continue
-            
+
+            if self.hudController.pause != _prevPause:
+                if self.hudController.pause:
+                    self.enemySpawner.pause()
+                else:
+                    self.enemySpawner.resume()
+                _prevPause = self.hudController.pause
+
             dt = min(self.clock.tick(60) / 1000, 0.05)
 
             if self.hudController.pause:

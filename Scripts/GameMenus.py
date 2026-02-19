@@ -51,7 +51,7 @@ class UpgradesMenu(Menu):
     def __init__(self, surface, left, top, player, gameState, hudController, color = None, size:tuple = None):
         super().__init__(surface,left,top, gameState, color,size=size)
         self.player = player
-        self.upgrades = ["Upgrades", "atkSpeed", "atkDmg", "health", "heavyCd", "boostTank", "boostStrength"]
+        self.upgrades = ["Upgrades", "atkSpeed", "atkDmg", "health", "heavy cd", "boost tank", "boost power"]
         self.upgradesLevel = [0,0,0,0,0,0]
         self.upgradesMultiplier = [20,40,40,15,20,40]
         self.generatedButtons = False
@@ -59,7 +59,7 @@ class UpgradesMenu(Menu):
         self.buttons.append(Button((self.rect.centerx - TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE), func=self.endPause, icon=UI_Assets.ICON_PLAY))
         self.buttons.append(Button((self.rect.centerx + TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE), func=self.restart, icon=UI_Assets.ICON_RESET))
         self._cachedGold = self.player.gold
-        goldSurface = font_32.render(f"$ {self.player.gold}", False, (255, 215, 0))
+        goldSurface = font_32.render(f"$ {self.player.gold}", False, (250, 188, 0))
         goldRect = goldSurface.get_frect(center=(self.rect.centerx, self.rect.top + 30))
         self.texts.append((goldSurface, goldRect))
 
@@ -73,9 +73,9 @@ class UpgradesMenu(Menu):
         header_height = 60
         rows_area = upgrdHeight - header_height
         name_x = self.rect.left + 24
-        level_x = self.rect.left + int(self.rect.width * 0.60)
-        btn_x = self.rect.left + int(self.rect.width * 0.75)
-        cost_x = self.rect.left + int(self.rect.width * 0.90)
+        level_x = self.rect.left + int(self.rect.width * 0.55)
+        btn_x = self.rect.left + int(self.rect.width * 0.68)
+        cost_x = self.rect.left + int(self.rect.width * 0.85)
         for i in range(1, 8):
             y = self.rect.top + header_height + (rows_area / 14) * (i * 2 - 1)
             upgradeText = font_32.render(self.upgrades[i - 1], False, (0, 0, 0))
@@ -95,7 +95,7 @@ class UpgradesMenu(Menu):
             button.update(surface)
         if self.player.gold != self._cachedGold:
             self._cachedGold = self.player.gold
-            self.texts[0] = (font_32.render(f"CASH: {self.player.gold}", False, (20, 20, 20)), self.texts[0][1])
+            self.texts[0] = (font_32.render(f"$ {self.player.gold}", False, (250, 188, 0)), self.texts[0][1])
         for text, textRect in self.texts:
             self.cameraSurface.blit(text, textRect)
 
