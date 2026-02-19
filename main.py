@@ -20,9 +20,7 @@ async def main():
 	offset = (screenSize[0] // 2 - Scripts.Settings.WINDOW_SIZE // 2, screenSize[1] // 2 - Scripts.Settings.WINDOW_SIZE // 2)
 	pygame.display.set_caption("My Space Shooter")
 	gameState = False
-	background = BACKGROUND_IMAGE
 	def drawFunction():
-		screen.blit(background, background.get_frect(center = (screen.get_frect().center)))
 		screen.blit(cameraSurface, cameraSurface.get_frect(center = (screenSize[0]//2, screenSize[1]//2)))
 		pygame.display.update()
 

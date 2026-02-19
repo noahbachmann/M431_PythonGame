@@ -27,7 +27,6 @@ def _get_sprite(name: str) -> pygame.Surface:
 STAR_IMAGE = _get_sprite('star.png')
 BORDER_BLOCK = _get_sprite('meteor.png')
 EXPLOSION_RADIUS = _get_sprite('explosionRadius.png')
-BACKGROUND_IMAGE = pygame.image.load(os.path.join(ASSETS_PATH, 'Other', 'background_muster.png'))
 
 class UI_Assets:
     BUTTON_32x32 = _get_sprite('button_32x32.png')
