@@ -51,6 +51,9 @@ class Player(pygame.sprite.Sprite):
             self.scaledInvis = Sunset.SUNSET_INVIS
         self.savedImage = self.image
         self.rect = self.image.get_frect(center=pos)
+        self._lastAngle = None
+        self._lastSavedImage = None
+        self._rotatedImage = self.image
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
@@ -91,7 +94,12 @@ class Player(pygame.sprite.Sprite):
         self.direction.x = int(keys[Scripts.DataManager.dataJson['Hotkey_Right']]) - int(keys[Scripts.DataManager.dataJson['Hotkey_Left']])
         self.direction.y = int(keys[Scripts.DataManager.dataJson['Hotkey_Down']]) - int(keys[Scripts.DataManager.dataJson['Hotkey_Up']])
         angle = math.degrees(math.atan2(mousePos[1] - self.rect.centery, mousePos[0] - self.rect.centerx))
-        self.image = pygame.transform.rotate(self.savedImage, -angle-90)
+        angleInt = int(angle)
+        if angleInt != self._lastAngle or self.savedImage is not self._lastSavedImage:
+            self._rotatedImage = pygame.transform.rotate(self.savedImage, -angle-90)
+            self._lastAngle = angleInt
+            self._lastSavedImage = self.savedImage
+        self.image = self._rotatedImage
         if self.direction.length() > 0:
             self.direction = self.direction.normalize()
         check:pygame.math.Vector2 = self.moveOffset + (self.direction * self.speed * dt)
