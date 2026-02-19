@@ -59,8 +59,8 @@ class UpgradesMenu(Menu):
         self.buttons.append(Button((self.rect.centerx - TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE), func=self.endPause, icon=UI_Assets.ICON_PLAY))
         self.buttons.append(Button((self.rect.centerx + TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE), func=self.restart, icon=UI_Assets.ICON_RESET))
         self._cachedGold = self.player.gold
-        goldSurface = font_32.render(str(self.player.gold), False, (0,0,0))
-        goldRect = goldSurface.get_frect(center=(self.rect.bottomright[0] - TILE_SIZE, self.rect.bottomright[1] - TILE_SIZE))
+        goldSurface = font_32.render(f"$ {self.player.gold}", False, (255, 215, 0))
+        goldRect = goldSurface.get_frect(center=(self.rect.centerx, self.rect.top + 30))
         self.texts.append((goldSurface, goldRect))
 
     def restart(self):
@@ -69,31 +69,23 @@ class UpgradesMenu(Menu):
       self.player.health = 0
 
     def general(self):
-        upgrdHeight = self.rect.height - (self.rect.height//4) 
-        upgrdWidth = self.rect.width - TILE_SIZE*2   
-        for i in range(1,8):
-            x = self.rect.left + TILE_SIZE
-            y = self.rect.top + (upgrdHeight /14) * (i*2 - 1)
-            upgradeText = font.render(self.upgrades[i-1], False, (0,0,0))
-            upgradeTextRect = upgradeText.get_frect(midleft = (x,y))
-            self.cameraSurface.blit(upgradeText, upgradeTextRect)
-            x += upgrdWidth / 2 + (TILE_SIZE /2)
-            if i == 1:
-                levelText = font.render("Lvl.", False, (0,0,0))
-            else:
-                levelText = font.render(str(self.upgradesLevel[i-2]), False, (0,0,0))
-            levelTextRect = levelText.get_frect(center = (x,y))
-            self.cameraSurface.blit(levelText, levelTextRect)
-            x += (upgrdWidth / 2)*(1/3)
+        upgrdHeight = self.rect.height - (self.rect.height // 4)
+        header_height = 60
+        rows_area = upgrdHeight - header_height
+        name_x = self.rect.left + 24
+        level_x = self.rect.left + int(self.rect.width * 0.60)
+        btn_x = self.rect.left + int(self.rect.width * 0.75)
+        cost_x = self.rect.left + int(self.rect.width * 0.90)
+        for i in range(1, 8):
+            y = self.rect.top + header_height + (rows_area / 14) * (i * 2 - 1)
+            upgradeText = font_32.render(self.upgrades[i - 1], False, (0, 0, 0))
+            self.cameraSurface.blit(upgradeText, upgradeText.get_frect(midleft=(name_x, y)))
+            levelText = font_32.render("Lvl." if i == 1 else str(self.upgradesLevel[i - 2]), False, (0, 0, 0))
+            self.cameraSurface.blit(levelText, levelText.get_frect(center=(level_x, y)))
             if not self.generatedButtons and i > 1:
-                self.buttons.append(Button((x,y),UI_Assets.BUTTON_32x32,"+", lambda j=i: self.player.upgrade(self.upgrades[j-1], self.upgradesLevel)))
-            x += (upgrdWidth / 2)*(1/3)
-            if i == 1:
-                costText = font.render("Cost", False, (0,0,0))
-            else:
-                costText = font.render(str((self.upgradesLevel[i-2]*self.upgradesMultiplier[i-2])+(self.upgradesMultiplier[i-2]*2)), False, (0,0,0))
-            costTextRect = costText.get_frect(center = (x,y))
-            self.cameraSurface.blit(costText, costTextRect)
+                self.buttons.append(Button((btn_x, y), UI_Assets.BUTTON_32x32, "+", lambda j=i: self.player.upgrade(self.upgrades[j - 1], self.upgradesLevel)))
+            costText = font_32.render("Cost" if i == 1 else str((self.upgradesLevel[i - 2] * self.upgradesMultiplier[i - 2]) + (self.upgradesMultiplier[i - 2] * 2)), False, (0, 0, 0))
+            self.cameraSurface.blit(costText, costText.get_frect(center=(cost_x, y)))
         self.generatedButtons = True
 
     def draw(self, surface):
@@ -103,7 +95,7 @@ class UpgradesMenu(Menu):
             button.update(surface)
         if self.player.gold != self._cachedGold:
             self._cachedGold = self.player.gold
-            self.texts[0] = (font_32.render(str(self.player.gold), False, (0,0,0)), self.texts[0][1])
+            self.texts[0] = (font_32.render(f"CASH: {self.player.gold}", False, (20, 20, 20)), self.texts[0][1])
         for text, textRect in self.texts:
             self.cameraSurface.blit(text, textRect)
 

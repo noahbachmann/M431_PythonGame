@@ -1,6 +1,6 @@
 import pygame
 import Scripts.Settings
-from Scripts.AssetsManager import font,karmaticArcadeFont, UI_Assets, Heart_Assets, Energybar_Assets, Heavy_Attack_Assets
+from Scripts.AssetsManager import font, font_32, karmaticArcadeFont, UI_Assets, Heart_Assets, Energybar_Assets, Heavy_Attack_Assets
 from Scripts.Button import *
 from Scripts.GameMenus import *
 from Scripts.Player import *
@@ -18,7 +18,9 @@ class HUDController:
         self.scoreTextRect = self.scoreText.get_frect(topleft = (16, 16))
         self.goldText = font.render(str(self.player.gold), False, (240,240,240))
         self.upgradeButton = Button((Scripts.Settings.WINDOW_SIZE - TILE_SIZE,TILE_SIZE),UI_Assets.BUTTON_32x32, func=self.toggleSettings, icon=UI_Assets.ICON_UPGRADE, size=(64,64))
-        self.upgradeMenu = UpgradesMenu(surface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, 100, self.player, gameState, self, size=(600, Scripts.Settings.WINDOW_SIZE-200))
+        self.hudGoldText = font_32.render(f"$ {self.player.gold}", False, (255, 215, 0))
+        self.hudGoldRect = self.hudGoldText.get_frect(topright=(Scripts.Settings.WINDOW_SIZE - TILE_SIZE*0.5, TILE_SIZE + 40))
+        self.upgradeMenu = UpgradesMenu(surface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, 225, self.player, gameState, self, size=(600, Scripts.Settings.WINDOW_SIZE-450))
         self.hearts = []
         self.heartBar = pygame.transform.scale(Heart_Assets.HEALTHBAR, (128, 44))
         self.heartBarRect = self.heartBar.get_frect(bottomleft = (16, Scripts.Settings.WINDOW_SIZE - 16))
@@ -37,6 +39,7 @@ class HUDController:
             self.energyBar.draw(surface)
             self.heavyAnimation.draw(surface, dt)
             surface.blit(self.scoreText, self.scoreTextRect)
+            surface.blit(self.hudGoldText, self.hudGoldRect)
             for heart in self.hearts:
                heart.draw(surface)
 
@@ -47,6 +50,7 @@ class HUDController:
         if self.player.gold != self._cachedGold:
             self._cachedGold = self.player.gold
             self.goldText = font.render(str(self.player.gold), False, (240,240,240))
+            self.hudGoldText = font.render(f"$ {self.player.gold}", False, (255, 215, 0))
         self.upgradeButton.update(surface)
         if self.playerHealth != self.player.health:
             if self.pause:
