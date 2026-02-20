@@ -22,7 +22,7 @@ def _get_sprite(name: str) -> pygame.Surface:
     r = _atlas[name]
     surf = pygame.Surface((r['w'], r['h']), pygame.SRCALPHA)
     surf.blit(_sheet, (0, 0), (r['x'], r['y'], r['w'], r['h']))
-    return surf
+    return surf.convert_alpha()
 
 STAR_IMAGE = _get_sprite('star.png')
 BORDER_BLOCK = _get_sprite('meteor.png')

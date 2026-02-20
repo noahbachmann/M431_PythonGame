@@ -187,19 +187,19 @@ class Player(pygame.sprite.Sprite):
                 self.maxHealth += 1
                 self.health += 1
                 upgradesLevel[2] += 1
-            case "heavyCd":
+            case "heavy cd":
                 cost = ((upgradesLevel[3]*15) + 30)
                 if cost > self.gold or upgradesLevel[3] >= 10:
                     return
                 self.heavyCd -= 0.5
                 upgradesLevel[3] += 1
-            case "boostTank":
+            case "boost tank":
                 cost = ((upgradesLevel[4]*20) + 40)
                 if cost > self.gold or upgradesLevel[4] >= 10:
                     return
                 self.boostTank += 0.5
                 upgradesLevel[4] += 1
-            case "boostStrength":
+            case "boost power":
                 cost = ((upgradesLevel[5]*40) + 80)
                 if cost > self.gold or upgradesLevel[5] >= 10:
                     return

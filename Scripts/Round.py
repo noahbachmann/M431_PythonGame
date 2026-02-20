@@ -61,7 +61,7 @@ class Round:
             dt = min(self.clock.tick(60) / 1000, 0.05)
 
             if self.hudController.pause:
-                for sprite in list(self.enemySprites.sprites()):
+                for sprite in self.enemySprites.sprites():
                     if hasattr(sprite, 'animationState') and sprite.animationState == "death":
                         sprite.update(dt)
                 self.hudController.update(self.cameraSurface, dt)
@@ -108,29 +108,39 @@ class Round:
         pygame.display.update()
 
     def createBackground(self):
-        currentPointX = currentPointY = -(MAP_SIZE//3)*1.5 + (TILE_SIZE//2)
+        mapThird = MAP_SIZE // 3
+        tileHalf = TILE_SIZE // 2
+        startPos = -(mapThird) * 1.5 + tileHalf
+        endBound = MAP_SIZE - (mapThird // 2)
+
+        currentPointX = currentPointY = startPos
         randomNum = randint(1, 20)
         x = 1
-        while currentPointY < MAP_SIZE - ((MAP_SIZE//3)//2):
-            while currentPointX < MAP_SIZE - ((MAP_SIZE//3)//2):
+        while currentPointY < endBound:
+            while currentPointX < endBound:
                 if x == randomNum:
                     self.stars.append(ImageSprite((currentPointX + randint(-16,16), currentPointY + randint(-16,16)), self.allSprites, STAR_IMAGE, (32,32)))
                     randomNum = randint(4,20)
                     x = 1
-                else:    
+                else:
                     x += 1
                 currentPointX += TILE_SIZE
-            currentPointX = -(MAP_SIZE//3)*1.5 + (TILE_SIZE//2)
+            currentPointX = startPos
             currentPointY += TILE_SIZE
     
     def createBorder(self):
-        currentPoint = -(MAP_SIZE//3) - (TILE_SIZE//2)
-        while currentPoint < MAP_SIZE - (MAP_SIZE//3) + TILE_SIZE:
-            self.border.append(BorderSprite((currentPoint, -(MAP_SIZE//3) - (TILE_SIZE//2)), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
-            self.border.append(BorderSprite((currentPoint, MAP_SIZE - (MAP_SIZE//3) + (TILE_SIZE//2)), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
-            if not (currentPoint == -(MAP_SIZE//3) - (TILE_SIZE//2) or currentPoint == MAP_SIZE - (MAP_SIZE//3) + (TILE_SIZE//2)):
-                self.border.append(BorderSprite((-(MAP_SIZE//3) - (TILE_SIZE//2), currentPoint), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
-                self.border.append(BorderSprite((MAP_SIZE - (MAP_SIZE//3) + (TILE_SIZE//2), currentPoint), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
+        mapThird = MAP_SIZE // 3
+        tileHalf = TILE_SIZE // 2
+        leftX = -(mapThird) - tileHalf
+        rightX = MAP_SIZE - mapThird + tileHalf
+        currentPoint = leftX
+
+        while currentPoint < MAP_SIZE - mapThird + TILE_SIZE:
+            self.border.append(BorderSprite((currentPoint, leftX), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
+            self.border.append(BorderSprite((currentPoint, rightX), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
+            if not (currentPoint == leftX or currentPoint == rightX):
+                self.border.append(BorderSprite((leftX, currentPoint), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
+                self.border.append(BorderSprite((rightX, currentPoint), (self.allSprites, self.collisionSprites), BORDER_BLOCK, (64,64)))
             currentPoint += TILE_SIZE
 
 class ImageSprite(pygame.sprite.Sprite):
@@ -144,20 +154,8 @@ class ImageSprite(pygame.sprite.Sprite):
         self.offset = pygame.math.Vector2(0,0)
     
     def draw(self, surface):
-        surface.blit(self.image, self.rect)
+	    surface.blit(self.image, self.rect)
 
 class BorderSprite(ImageSprite):
     def __init__(self, pos, groups, image, size = None):
         super().__init__(pos, groups, image, size)
-        self.rotation = float(randint(1,360))
-        self.savedImage = self.image
-        self.image = pygame.transform.rotate(self.savedImage, self.rotation)
-        self.rotationDir = 0.5 if randint(1,2) == 1 else -0.5
-        self._rotationAccum = 0.0
-
-    def update(self, dt):
-        self._rotationAccum += self.rotationDir
-        if abs(self._rotationAccum) >= 3.0:
-            self.rotation += self._rotationAccum
-            self._rotationAccum = 0.0
-            self.image = pygame.transform.rotate(self.savedImage, self.rotation)
