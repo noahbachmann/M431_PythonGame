@@ -126,13 +126,13 @@ class Player(pygame.sprite.Sprite):
     def shoot(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Shot(spawnPos,self.atkDamage,500,1,angle,Player_Laser.PLAYER_LASER_1, self.attackGroups, playerOffset=self.moveOffset.copy(), size=(7,14),hitAnimation=Player_Laser.animationArray_laser_explosion)
+        Shot(spawnPos,self.atkDamage,500,1,angle,Player_Laser.PLAYER_LASER_1, self.attackGroups, 1500, playerOffset=self.moveOffset.copy(), size=(7,14),hitAnimation=Player_Laser.animationArray_laser_explosion)
         Audio.LASER_HIGH.play()
 
     def heavy(self, angle):
         offset = pygame.math.Vector2(math.cos(math.radians(angle)), math.sin(math.radians(angle))) * self.rect.height / 2
         spawnPos = self.rect.center + offset
-        Heavy(spawnPos,2,220,angle,128,Heavy_Attack.HEAVY_ATTACK_LASER, Heavy_Attack.HEAVY_ATTACK, self.attackGroups, self.moveOffset.copy(), (9, 14))
+        Heavy(spawnPos,2,220,angle,128,Heavy_Attack.HEAVY_ATTACK_LASER, Heavy_Attack.HEAVY_ATTACK, self.attackGroups, self.moveOffset.copy(), (9, 14), lifeDistance=1000)
         self.heavyState = "recharging"
 
     def hit(self, damage):
@@ -210,14 +210,15 @@ class Player(pygame.sprite.Sprite):
             
                 
 class Heavy(pygame.sprite.Sprite):
-    def __init__(self, pos:tuple, damage, speed, angle, explosionSize, image, explosionImage, groups, playerOffset:pygame.math.Vector2 = pygame.math.Vector2(0,0), size:tuple = None):
+    def __init__(self, pos:tuple, damage, speed, angle, explosionSize, image, explosionImage, groups, playerOffset:pygame.math.Vector2 = pygame.math.Vector2(0,0), size:tuple = None, lifeDistance:float = 0):
         super().__init__(groups)
         self.isHeavy = True
         self.exploding = False
         self.damage = damage
         self.speed = speed
+        self.lifeDistance = lifeDistance
         self.direction = pygame.math.Vector2(
-            math.cos(math.radians(angle)), 
+            math.cos(math.radians(angle)),
             math.sin(math.radians(angle))
         ).normalize()
         self.explosionSize = explosionSize
@@ -232,12 +233,18 @@ class Heavy(pygame.sprite.Sprite):
             self.image = image
         self.image = pygame.transform.rotate(self.image, -angle-90)
         self.rect = self.image.get_frect(center=pos)
+        self.startPos = pygame.math.Vector2(pos)
         self.offset = playerOffset
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
-    
-    def update(self, dt):  
+
+    def update(self, dt):
+        if not self.exploding and self.lifeDistance != 0:
+            if (pygame.math.Vector2(self.rect.center) - self.startPos).length() >= self.lifeDistance:
+                self.exploding = True
+                self.explosionPos = pygame.math.Vector2(self.rect.center)
+                Audio.EXPLOSION.play()
         if self.exploding:
             self.savedSize += dt * 200
             self.currentSize = int(self.savedSize) + 4
