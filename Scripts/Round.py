@@ -54,6 +54,10 @@ class Round:
             if self.hudController.pause != _prevPause:
                 if self.hudController.pause:
                     self.enemySpawner.pause()
+                    if self.player.boosting:
+                        self.player.boosting = False
+                        self.player.speed = self.player.normalSpeed
+                        Audio.BOOST.stop()
                 else:
                     self.enemySpawner.resume()
                 _prevPause = self.hudController.pause
