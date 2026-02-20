@@ -1,12 +1,14 @@
 import pygame
+import platform
 import asyncio
 from random import randint
-import Scripts.Settings
+
 from Scripts.Player import *
 from Scripts.HUDController import *
 from Scripts.EnemySpawner import *
 from Scripts.AssetsManager import *
 from Scripts.Groups import AllSprites
+
 
 class Round:
     def __init__(self, surface, screen, gameState):
@@ -34,6 +36,7 @@ class Round:
         self.createBackground()
         self.createBorder()
         _prevPause = False
+        _win = platform.window
         while self.running:
             await asyncio.sleep(0)
             for event in pygame.event.get():
@@ -44,6 +47,9 @@ class Round:
                         if event.key == pygame.K_ESCAPE:
                             self.hudController.pause = not self.hudController.pause
                             continue
+
+            if _win is not None and not _win.gameFocused and not self.hudController.pause:
+                self.hudController.pause = True
 
             if self.hudController.pause != _prevPause:
                 if self.hudController.pause:
