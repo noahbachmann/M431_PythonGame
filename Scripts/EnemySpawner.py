@@ -109,7 +109,7 @@ class Spawner:
                         else:
                             self.spawns += 1
 
-        if self.upgraded % 10:
+        if self.upgraded % 10 == 0:
             for key, enemy in self.miniBosses.items():
                     enemy["args"][0] += 5
         self.upgraded += 1      

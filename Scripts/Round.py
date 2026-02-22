@@ -101,7 +101,9 @@ class Round:
             if enemies.count == 1 and (hasattr(enemies[0], 'collided') and enemies[0].collided):
                 pass
             else:
-                self.player.hit(enemies[0].damage)
+                aliveEnemies = [e for e in enemies if e.animationState != "death"]
+                if aliveEnemies:
+                    self.player.hit(aliveEnemies[0].damage)
                 for enemy in enemies:
                     if not enemy.isEnemy:
                         enemy.hit()
