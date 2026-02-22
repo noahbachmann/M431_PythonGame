@@ -21,12 +21,12 @@ class HUDController:
         self.hudGoldRect = self.hudGoldText.get_frect(topright=(Scripts.Settings.WINDOW_SIZE - TILE_SIZE*0.6, TILE_SIZE + 40))
         self.upgradeMenu = UpgradesMenu(surface, (Scripts.Settings.WINDOW_SIZE - 600) // 2, 225, self.player, gameState, self, size=(600, Scripts.Settings.WINDOW_SIZE-450))
         self.hearts = []
-        self.heartBar = pygame.transform.scale(Heart_Assets.HEALTHBAR, (128, 44))
+        self.heartBar = pygame.transform.scale(Heart_Assets.HEALTHBAR, (192, 66))
         self.heartBarRect = self.heartBar.get_frect(bottomleft = (16, Scripts.Settings.WINDOW_SIZE - 16))
-        self.energyBar = EnergyBar((Scripts.Settings.WINDOW_SIZE/2, 16), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR, (128,32), (80,8))
-        self.heavyBar = pygame.transform.scale(Heavy_Attack_Assets.HEAVYATTACKBAR, (128,64))
+        self.energyBar = EnergyBar((Scripts.Settings.WINDOW_SIZE/2, 24), self.player, Energybar_Assets.ENERGYBAR_ENERGY, Energybar_Assets.ENERGYBAR, (192,48), (120,12))
+        self.heavyBar = pygame.transform.scale(Heavy_Attack_Assets.HEAVYATTACKBAR, (192,96))
         self.heavyBarRect = self.heavyBar.get_frect(bottomright = (Scripts.Settings.WINDOW_SIZE - 16, Scripts.Settings.WINDOW_SIZE - 16))
-        self.heavyAnimation = HeavyBar((Scripts.Settings.WINDOW_SIZE - 16, Scripts.Settings.WINDOW_SIZE - 16), Heavy_Attack_Assets.HEAVY_ATTACK_CHARGE_13, self.player, Heavy_Attack_Assets.heavyAttackChargeArray, Heavy_Attack_Assets.heavyAttackUsedArray, (128,64))
+        self.heavyAnimation = HeavyBar((Scripts.Settings.WINDOW_SIZE - 16, Scripts.Settings.WINDOW_SIZE - 16), Heavy_Attack_Assets.HEAVY_ATTACK_CHARGE_13, self.player, Heavy_Attack_Assets.heavyAttackChargeArray, Heavy_Attack_Assets.heavyAttackUsedArray, (192,96))
         self.showHealth()
     
     def draw(self, surface, dt):
@@ -61,14 +61,14 @@ class HUDController:
         self.pause = True
 
     def showHealth(self):
-        x = 78
-        y = Scripts.Settings.WINDOW_SIZE - 34
+        x = 109
+        y = Scripts.Settings.WINDOW_SIZE - 43
         maxHealth = self.player.maxHealth // 2
         for i in range(maxHealth):
-            self.hearts.append(Heart((x,y),Heart_Assets.HEART_FULL, (20,20)))
-            x += 30
+            self.hearts.append(Heart((x,y),Heart_Assets.HEART_FULL, (30,30)))
+            x += 45
         if self.player.maxHealth % 2 != 0:
-            self.hearts.append(Heart((x,y),Heart_Assets.HALFHEART_FULL, (20,20)))
+            self.hearts.append(Heart((x,y),Heart_Assets.HALFHEART_FULL, (30,30)))
         
     def takeDamage(self):
         if self.player.maxHealth % 2 != 0 and self.player.health == self.player.maxHealth - 1:
@@ -80,13 +80,13 @@ class HUDController:
         self.playerHealth = self.player.health
     
     def healthUpgrade(self):
-        x = 78
-        y = Scripts.Settings.WINDOW_SIZE - 34
+        x = 109
+        y = Scripts.Settings.WINDOW_SIZE - 43
         if self.player.maxHealth / 2 > len(self.hearts):
             if self.player.maxHealth == self.player.health:
-                self.hearts.append(Heart((x+(30*len(self.hearts)),y),Heart_Assets.HALFHEART_FULL, (20,20)))
+                self.hearts.append(Heart((x+(45*len(self.hearts)),y),Heart_Assets.HALFHEART_FULL, (30,30)))
             else:
-                self.hearts.append(Heart((x+(30*len(self.hearts)),y),Heart_Assets.HALFHEART_EMPTY, (20,20)))
+                self.hearts.append(Heart((x+(45*len(self.hearts)),y),Heart_Assets.HALFHEART_EMPTY, (30,30)))
         if self.player.health != self.playerHealth:
             if self.player.health % 2 == 0:
                 self.hearts[(self.player.health // 2)-1].newImage(Heart_Assets.HEART_FULL)

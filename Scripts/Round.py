@@ -108,7 +108,9 @@ class Round:
         while currentPointY < MAP_SIZE - ((MAP_SIZE//3)//2):
             while currentPointX < MAP_SIZE - ((MAP_SIZE//3)//2):
                 if x == randomNum:
-                    self.stars.append(ImageSprite((currentPointX + randint(-16,16), currentPointY + randint(-16,16)), self.allSprites, STAR_IMAGE, (32,32)))
+                    star_img = pygame.transform.scale(STAR_IMAGE, (32, 32)).copy()
+                    star_img.set_alpha(int(255 * 0.7))
+                    self.stars.append(ImageSprite((currentPointX + randint(-16,16), currentPointY + randint(-16,16)), self.allSprites, star_img))
                     randomNum = randint(4,20)
                     x = 1
                 else:    
