@@ -37,9 +37,11 @@ async def main():
 			MainMenuGame = MainMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 500) // 2, (Scripts.Settings.WINDOW_SIZE - 300) // 2,(500,300), True, gameState)
 			while MainMenuGame.enabled:
 					await asyncio.sleep(0)
-					for event in pygame.event.get():
+					events = pygame.event.get()
+					for event in events:
 						if event.type == pygame.QUIT:
 							endGame()
+					MainMenuGame.handle_events(events)
 					screen.fill((0,0,0))
 					cameraSurface.fill((7, 0, 25))
 					MainMenuGame.draw()
@@ -53,9 +55,11 @@ async def main():
 		endGameMenu = EndGameMenu(cameraSurface, (Scripts.Settings.WINDOW_SIZE - 400) // 2, (Scripts.Settings.WINDOW_SIZE - 400) // 2,(400,400), gameState, True, score)
 		while endGameMenu.enabled:
 				await asyncio.sleep(0)
-				for event in pygame.event.get():
+				events = pygame.event.get()
+				for event in events:
 					if event.type == pygame.QUIT:
 						endGame()
+				endGameMenu.handle_events(events)
 				screen.fill((0,0,0))
 				endGameMenu.draw()
 				drawFunction()

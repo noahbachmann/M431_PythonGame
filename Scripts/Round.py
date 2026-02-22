@@ -25,7 +25,7 @@ class Round:
         self.collisionSprites = pygame.sprite.Group()
         self.border = []
         self.stars = []
-        self.player = Player((Scripts.Settings.WINDOW_SIZE // 2, Scripts.Settings.WINDOW_SIZE // 2), self.offset, 6, 200, 120, 2,
+        self.player = Player((Scripts.Settings.WINDOW_SIZE // 2, Scripts.Settings.WINDOW_SIZE // 2), self.offset, 8, 210, 120, 2,
                             (self.allSprites,self.playerShotSprites), self.collisionSprites, (64, 64),
                             {"idle":{"frames": Sunset.animationArray_idle, "speed": 8}, "boosting":{"frames": Sunset.animationArray_boost, "speed": 8}})
         self.hudController = HUDController(self.cameraSurface, self.player, gameState, self.allSprites)
@@ -39,7 +39,8 @@ class Round:
         _win = platform.window
         while self.running:
             await asyncio.sleep(0)
-            for event in pygame.event.get():
+            events = pygame.event.get()
+            for event in events:
                 if event.type == pygame.QUIT:
                     self.running = False
                     return 0
@@ -68,7 +69,7 @@ class Round:
                 for sprite in self.enemySprites.sprites():
                     if hasattr(sprite, 'animationState') and sprite.animationState == "death":
                         sprite.update(dt)
-                self.hudController.update(self.cameraSurface, dt)
+                self.hudController.update(self.cameraSurface, dt, events)
                 self.drawToScreen()
                 if not self.running:
                     return 0
@@ -84,7 +85,7 @@ class Round:
                 self.enemySpawner.update()
                 self.allSprites.update(self.cameraSurface, dt, self.player.moveOffset)
                 self.player.update(self.cameraSurface, dt)
-                self.hudController.update(self.cameraSurface,dt)
+                self.hudController.update(self.cameraSurface, dt, events)
                 self.drawToScreen()
         
     def collisions(self):

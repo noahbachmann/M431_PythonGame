@@ -1,5 +1,4 @@
 import pygame
-from Scripts.Timer import *
 from Scripts.AssetsManager import font, UI_Assets, Audio
 import Scripts.Settings
 import Scripts.DataManager
@@ -39,7 +38,6 @@ class Button(pygame.sprite.Sprite):
             self.textRect = self.text.get_frect(center = pos)
         else:
             self.text = None
-        self.cdTimer = Timer(0.3)
         self.rect = self.image.get_frect(center = pos)
 
     def _updateKeyTextCache(self):
@@ -64,16 +62,12 @@ class Button(pygame.sprite.Sprite):
         if self.icon:
             surface.blit(self.icon, self.iconRect)
 
-    def update(self, surface, dt = None):
-        mousePos = pygame.mouse.get_pos()
-        mousePos = (mousePos[0] - self.offset[0], mousePos[1] - self.offset[1])
-        if self.rect.collidepoint(mousePos):
-            if pygame.mouse.get_pressed()[0] and not self.cdTimer.active:
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            click_pos = (event.pos[0] - self.offset[0], event.pos[1] - self.offset[1])
+            if self.rect.collidepoint(click_pos):
                 self.func()
                 Audio.BUTTON_PRESS.play()
-                self.cdTimer.activate()
-        
-        if self.cdTimer.active:
-            self.cdTimer.update()
 
+    def update(self, surface, dt = None):
         self.draw(surface)

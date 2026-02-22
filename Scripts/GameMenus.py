@@ -22,6 +22,11 @@ class Menu:
         else:
             self.rect = pygame.FRect(self.left, self.top, 500, 500)
 
+    def handle_events(self, events):
+        for event in events:
+            for button in self.buttons:
+                button.handle_event(event)
+
     def draw(self):
         pygame.draw.rect(self.cameraSurface, self.color, self.rect, 0, 0)
         for button in self.buttons:

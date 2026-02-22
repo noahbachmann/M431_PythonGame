@@ -42,13 +42,17 @@ class HUDController:
             for heart in self.hearts:
                heart.draw(surface)
 
-    def update(self, surface, dt):
+    def update(self, surface, dt, events=None):
         if self.player.score != self._cachedScore:
             self._cachedScore = self.player.score
             self.scoreText = karmaticArcadeFont.render(f"{self.player.score:07d}", True, (255,255,255))
         if self.player.gold != self._cachedGold:
             self._cachedGold = self.player.gold
             self.hudGoldText = font.render(f"$ {self.player.gold}", False, (255, 215, 0))
+        if events:
+            for event in events:
+                self.upgradeButton.handle_event(event)
+            self.upgradeMenu.handle_events(events)
         self.upgradeButton.update(surface)
         if self.playerHealth != self.player.health:
             if self.pause:
