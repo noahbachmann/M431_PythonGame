@@ -62,6 +62,8 @@ class UpgradesMenu(Menu):
         goldSurface = font_32.render(f"$ {self.player.gold}", False, (250, 188, 0))
         goldRect = goldSurface.get_frect(center=(self.rect.centerx, self.rect.top + 30))
         self.texts.append((goldSurface, goldRect))
+        self._upgradesLevelSnapshot = None
+        self._cachedGeneralTexts = []
 
     def restart(self):
       self.hudController.pause = False
@@ -76,17 +78,22 @@ class UpgradesMenu(Menu):
         level_x = self.rect.left + int(self.rect.width * 0.55)
         btn_x = self.rect.left + int(self.rect.width * 0.68)
         cost_x = self.rect.left + int(self.rect.width * 0.85)
-        for i in range(1, 8):
-            y = self.rect.top + header_height + (rows_area / 14) * (i * 2 - 1)
-            upgradeText = font_32.render(self.upgrades[i - 1], False, (0, 0, 0))
-            self.cameraSurface.blit(upgradeText, upgradeText.get_frect(midleft=(name_x, y)))
-            levelText = font_32.render("Lvl." if i == 1 else str(self.upgradesLevel[i - 2]), False, (0, 0, 0))
-            self.cameraSurface.blit(levelText, levelText.get_frect(center=(level_x, y)))
-            if not self.generatedButtons and i > 1:
-                self.buttons.append(Button((btn_x, y), UI_Assets.BUTTON_32x32, "+", lambda j=i: self.player.upgrade(self.upgrades[j - 1], self.upgradesLevel)))
-            costText = font_32.render("Cost" if i == 1 else str((self.upgradesLevel[i - 2] * self.upgradesMultiplier[i - 2]) + (self.upgradesMultiplier[i - 2] * 2)), False, (0, 0, 0))
-            self.cameraSurface.blit(costText, costText.get_frect(center=(cost_x, y)))
-        self.generatedButtons = True
+        if self.upgradesLevel != self._upgradesLevelSnapshot:
+            self._upgradesLevelSnapshot = self.upgradesLevel[:]
+            self._cachedGeneralTexts = []
+            for i in range(1, 8):
+                y = self.rect.top + header_height + (rows_area / 14) * (i * 2 - 1)
+                upgradeText = font_32.render(self.upgrades[i - 1], False, (0, 0, 0))
+                self._cachedGeneralTexts.append((upgradeText, upgradeText.get_frect(midleft=(name_x, y))))
+                levelText = font_32.render("Lvl." if i == 1 else str(self.upgradesLevel[i - 2]), False, (0, 0, 0))
+                self._cachedGeneralTexts.append((levelText, levelText.get_frect(center=(level_x, y))))
+                if not self.generatedButtons and i > 1:
+                    self.buttons.append(Button((btn_x, y), UI_Assets.BUTTON_32x32, "+", lambda j=i: self.player.upgrade(self.upgrades[j - 1], self.upgradesLevel)))
+                costText = font_32.render("Cost" if i == 1 else str((self.upgradesLevel[i - 2] * self.upgradesMultiplier[i - 2]) + (self.upgradesMultiplier[i - 2] * 2)), False, (0, 0, 0))
+                self._cachedGeneralTexts.append((costText, costText.get_frect(center=(cost_x, y))))
+            self.generatedButtons = True
+        for surf, rect in self._cachedGeneralTexts:
+            self.cameraSurface.blit(surf, rect)
 
     def draw(self, surface):
         pygame.draw.rect(self.cameraSurface, self.color, self.rect, 0, 0)

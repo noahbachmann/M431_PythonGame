@@ -4,6 +4,27 @@ from Scripts.Shot import *
 from Scripts.Timer import *
 from Scripts.AssetsManager import Enemy_Laser, Audio, Enemy_Explosion
 
+_scaledImageCache = {}
+_scaledFramesCache = {}
+
+def _getCachedScaledImage(image, size):
+    key = (id(image), size)
+    if key not in _scaledImageCache:
+        _scaledImageCache[key] = pygame.transform.scale(image, size)
+    return _scaledImageCache[key]
+
+def _getCachedScaledFrames(frames, size):
+    key = (tuple(sorted((state, id(data["frames"][0])) for state, data in frames.items())), size)
+    if key not in _scaledFramesCache:
+        scaled = {}
+        for state, data in frames.items():
+            scaled[state] = {
+                "frames": [pygame.transform.scale(f, size) for f in data["frames"]],
+                "speed": data["speed"]
+            }
+        _scaledFramesCache[key] = scaled
+    return _scaledFramesCache[key]
+
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, pos:tuple, health, damage, gold, speed, player, image, frames, groups, rotationSpeed = 0, size:tuple = None):
         super().__init__(groups)
@@ -18,13 +39,8 @@ class Enemy(pygame.sprite.Sprite):
         self.angle = 0
         if size:
             self.size = size
-            self.image = pygame.transform.scale(image, size)
-            self.scaledFrames = {}
-            for state, data in frames.items():
-                self.scaledFrames[state] = {
-                    "frames": [pygame.transform.scale(f, size) for f in data["frames"]],
-                    "speed": data["speed"]
-                }
+            self.image = _getCachedScaledImage(image, size)
+            self.scaledFrames = _getCachedScaledFrames(frames, size)
         else:
             self.image = image
             self.scaledFrames = frames
