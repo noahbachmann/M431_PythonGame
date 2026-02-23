@@ -58,7 +58,6 @@ class UpgradesMenu(Menu):
         self.player = player
         self.upgrades = ["Upgrades", "atkSpeed", "atkDmg", "health", "heavy cd", "boost tank", "boost power"]
         self.upgradesLevel = [0,0,0,0,0,0]
-        self.upgradesMultiplier = [20,40,40,15,20,40]
         self.generatedButtons = False
         self.hudController = hudController
         self.buttons.append(Button((self.rect.centerx - TILE_SIZE, self.rect.midbottom[1] - TILE_SIZE), func=self.endPause, icon=UI_Assets.ICON_PLAY))
@@ -93,8 +92,8 @@ class UpgradesMenu(Menu):
                 levelText = font_32.render("Lvl." if i == 1 else str(self.upgradesLevel[i - 2]), False, (0, 0, 0))
                 self._cachedGeneralTexts.append((levelText, levelText.get_frect(center=(level_x, y))))
                 if not self.generatedButtons and i > 1:
-                    self.buttons.append(Button((btn_x, y), UI_Assets.BUTTON_32x32, "+", lambda j=i: self.player.upgrade(self.upgrades[j - 1], self.upgradesLevel)))
-                costText = font_32.render("Cost" if i == 1 else str((self.upgradesLevel[i - 2] * self.upgradesMultiplier[i - 2]) + (self.upgradesMultiplier[i - 2] * 2)), False, (0, 0, 0))
+                    self.buttons.append(Button((btn_x, y), UI_Assets.BUTTON_32x32, "+", lambda j=i: self.player.upgrade(j - 2, self.upgradesLevel)))
+                costText = font_32.render("Cost" if i == 1 else str(int(((self.player.upgradesMultiplier * self.upgradesLevel[i - 2]) + 1) * self.player.upgradeCosts[i - 2])), False, (0, 0, 0))
                 self._cachedGeneralTexts.append((costText, costText.get_frect(center=(cost_x, y))))
             self.generatedButtons = True
         for surf, rect in self._cachedGeneralTexts:

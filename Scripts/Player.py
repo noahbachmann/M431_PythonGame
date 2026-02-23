@@ -31,6 +31,8 @@ class Player(pygame.sprite.Sprite):
         self.heavyCd = 8
         self.heavyCdTimer = Timer(self.heavyCd)
         self.gold = 0
+        self.upgradesMultiplier = 1.1
+        self.upgradeCosts = [30,30,25,30,40,45]
         self.score = 0
         self.frameIndex = 0
         self.animationState = "idle"
@@ -165,44 +167,28 @@ class Player(pygame.sprite.Sprite):
         self.image = frames["frames"][int(self.frameIndex) % len(frames["frames"])]
         self.savedImage = self.image
 
-    def upgrade(self, type:str, upgradesLevel):
-        cost = 0
+    def upgrade(self, type:int, upgradesLevel):
+        cost = int(((self.upgradesMultiplier*upgradesLevel[type]) + 1) * self.upgradeCosts[type])
+        if cost > self.gold:
+            return
         match type:
-            case "atkSpeed":
-                cost = ((upgradesLevel[0]*20) + 40)
-                if cost > self.gold or upgradesLevel[0] >= 10:
-                    return
-                self.atkSpeed += 5
-                upgradesLevel[0] += 1
-            case "atkDmg":
-                cost = ((upgradesLevel[1]*40) + 80)
-                if cost > self.gold or upgradesLevel[1] >= 10:
-                    return
+            case 0:
+               self.atkSpeed += 5
+               upgradesLevel[0] += 1
+            case 1:
                 self.atkDamage += 1
                 upgradesLevel[1] += 1
-            case "health":
-                cost = ((upgradesLevel[2]*40) + 80)
-                if cost > self.gold or upgradesLevel[2] >= 10:
-                    return
+            case 2:
                 self.maxHealth += 1
                 self.health += 1
                 upgradesLevel[2] += 1
-            case "heavy cd":
-                cost = ((upgradesLevel[3]*15) + 30)
-                if cost > self.gold or upgradesLevel[3] >= 10:
-                    return
+            case 3:
                 self.heavyCd -= 0.5
                 upgradesLevel[3] += 1
-            case "boost tank":
-                cost = ((upgradesLevel[4]*20) + 40)
-                if cost > self.gold or upgradesLevel[4] >= 10:
-                    return
+            case 4:
                 self.boostTank += 0.5
                 upgradesLevel[4] += 1
-            case "boost power":
-                cost = ((upgradesLevel[5]*40) + 80)
-                if cost > self.gold or upgradesLevel[5] >= 10:
-                    return
+            case 5:
                 self.boostStrength += 10
                 upgradesLevel[5] += 1
         self.gold -= cost
